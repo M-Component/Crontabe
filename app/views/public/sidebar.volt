@@ -46,6 +46,7 @@
                     <li>
                         {{link_to('jobs/index','<i class="fa fa-circle-o"></i>mysql队列')}}
                     </li>
+                    <li>{{link_to('oauth/index','<i class="fa fa-circle-o"></i>信任登陆')}}</li>
                     <li>
                         {{link_to('setting/index','<i class="fa fa-circle-o"></i>配置')}}
                     </li>

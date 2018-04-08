@@ -19,35 +19,17 @@ try{
         }
     );
 
-    $app->before(
-        new \Api\Middleware\Auth()
-    );
-
-    $app->post(
-        "/api/member",
-        array( new \Api\Member(),"signup")
-    );
-    $app->patch(
-        "/api/member",
-        array( new \Api\Member(),"update")
-    );
-
-    $app->post(
-        "/api/member/signin",
-        array( new \Api\Member(),"signin")
-    );
-
-    $app->post(
-        "/api/member/oauth",
-        array( new \Api\Member(),"oauth")
-    );
-
+    $app->map(
+        "/openapi/oauth/callback/{oauth_class}",
+        array( new \Openapi\Oauth(),"callback")
+    )->via(array(
+        "GET",
+        "POST",
+    ));
     $app->get(
-        "/api/member/{id}/logout",
-        array( new \Api\Member(),"logout")
+        "/openapi/qrcode",
+        array( new \Openapi\Tools(),"qrcode")
     );
-
-
     $app->handle();
 }catch (\Phalcon\Exception $e){
     echo $e->getMessage() . '<br>';

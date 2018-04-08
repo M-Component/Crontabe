@@ -27,10 +27,10 @@ class Setting extends \Mvc\AdvModel{
         $value = serialize($value);
         if($setting){
             $setting->value = $value;
-            $setting->update();
+            return $setting->update();
         }else{
             $setting = new Setting();
-            $setting ->create(array('key'=>$key ,'value'=>$value));
+            return $setting ->create(array('key'=>$key ,'value'=>$value));
         }
     }
 }

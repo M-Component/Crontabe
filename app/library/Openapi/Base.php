@@ -1,6 +1,4 @@
-<?php
-
-namespace Api;
+namespace Openapi;
 use Phalcon\Mvc\User\Component;
 class  Base extends Component{
     protected function success($data){

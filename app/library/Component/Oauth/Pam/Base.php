@@ -8,8 +8,7 @@ class Base extends Component
 {
     public function __construct()
     {
-        $this ->pam_members = new \MembersPam();
-        $this ->pam = new Pam();
+
     }
 
     /**
