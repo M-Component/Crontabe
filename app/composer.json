@@ -1,0 +1,17 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "~6.0",
+        "upyun/sdk": "^3.3",
+        "pear/services_json": "dev-bugfix"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/haarlike/Services_JSON"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+\#*
+!.gitignore
+*.swp
+*~
+*.swo
+$.swn
+app/cache
+app/logs
+public/sass/.sass-cache
+public/upload
+public/export
+.DS_Store
+app/library/M.php
