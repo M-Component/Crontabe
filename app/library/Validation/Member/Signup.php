@@ -1,9 +1,9 @@
 <?php
-namespace Validation;
+namespace Validation\Member;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Email;
-class Member extends Validation{
+class Signup extends Validation{
 
     public function initialize()
     {

@@ -8,7 +8,7 @@ class Member  extends Base{
     public function signup(){
         $data =$this->request->getPost();
         try{
-            $validation = new \Validation\Member();
+            $validation = new \Validation\Member\Signup();
             $messages = $validation->validate($data);
             if (count($messages)) {
                 foreach ($messages as $message) {
