@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 10.25.70.179 (MySQL 5.6.20-ucloudrel1-log)
+# Host: 127.0.0.1 (MySQL 5.5.42)
 # Database: pianyijiaowo
-# Generation Time: 2018-04-08 04:18:43 +0000
+# Generation Time: 2018-04-08 13:21:31 +0000
 # ************************************************************
 
 
@@ -41,8 +41,6 @@ CREATE TABLE `account` (
 
 
 
-
-
 # Dump of table crontab
 # ------------------------------------------------------------
 
@@ -61,8 +59,6 @@ CREATE TABLE `crontab` (
   `last_time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
 
 
 
@@ -87,6 +83,41 @@ CREATE TABLE `jobs` (
 
 
 
+# Dump of table member
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `member`;
+
+CREATE TABLE `member` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '会员ID',
+  `username` varchar(100) NOT NULL DEFAULT '',
+  `login_password` char(60) NOT NULL DEFAULT '',
+  `member_lv_id` mediumint(8) unsigned DEFAULT '0' COMMENT '会员等级',
+  `avatar` char(32) DEFAULT NULL COMMENT '头像',
+  `name` varchar(50) DEFAULT NULL COMMENT '姓名',
+  `area` varchar(255) DEFAULT NULL COMMENT '地区',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
+  `mobile` varchar(50) DEFAULT NULL COMMENT '手机',
+  `tel` varchar(50) DEFAULT NULL COMMENT '固定电话',
+  `email` varchar(200) DEFAULT '' COMMENT 'EMAIL',
+  `zip` varchar(20) DEFAULT NULL COMMENT '邮编',
+  `b_year` smallint(5) unsigned DEFAULT NULL COMMENT '生年',
+  `b_month` tinyint(3) unsigned DEFAULT NULL COMMENT '生月',
+  `b_day` tinyint(3) unsigned DEFAULT NULL COMMENT '生日',
+  `sex` tinyint(1) DEFAULT '0' COMMENT '性别,0未知，1男，2女',
+  `advance` decimal(20,3) unsigned DEFAULT '0.000' COMMENT '会员账户余额',
+  `advance_freeze` decimal(20,3) DEFAULT '0.000' COMMENT '会员冻结金额',
+  `reg_ip` varchar(16) DEFAULT NULL COMMENT '注册时IP地址',
+  `login_count` int(11) DEFAULT '0' COMMENT '登录次数',
+  `reg_time` int(11) unsigned DEFAULT NULL COMMENT '注册时间',
+  `disabled` tinyint(1) DEFAULT '0' COMMENT '是否可用',
+  `remark` text COMMENT '备注',
+  `login_time` int(11) DEFAULT NULL COMMENT '上次登录时间',
+  PRIMARY KEY (`id`),
+  KEY `ind_regtime` (`reg_time`),
+  KEY `ind_disabled` (`disabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 # Dump of table message
@@ -107,8 +138,6 @@ CREATE TABLE `message` (
 
 
 
-
-
 # Dump of table pam_account
 # ------------------------------------------------------------
 
@@ -124,6 +153,21 @@ CREATE TABLE `pam_account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+
+# Dump of table pam_member
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pam_member`;
+
+CREATE TABLE `pam_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `member_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `login_account` varchar(100) NOT NULL COMMENT '登录账号',
+  `login_type` enum('local','mobile','email','wechat','qq','weibo','wxapp') NOT NULL DEFAULT 'local' COMMENT '登录账号类型',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `ind_account` (`login_account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -156,8 +200,6 @@ CREATE TABLE `role_account` (
 
 
 
-
-
 # Dump of table setting
 # ------------------------------------------------------------
 
@@ -168,7 +210,6 @@ CREATE TABLE `setting` (
   `value` longtext COMMENT 'value',
   UNIQUE KEY `unique_key` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设置';
-
 
 
 
@@ -193,14 +234,7 @@ CREATE TABLE `upload` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `account` (`id`, `name`, `username`, `login_password`, `mobile`, `email`, `avatar`, `disabled`, `login_time`, `create_time`)
-VALUES
-	(1, '', 'admin', '$2y$08$U25WM293ZXpqaGNDN0dDYOSnsOhq9ZqzsZPzf3UVveFcSPPbYpe06', '15527543053', '', NULL, 0, 1523156548, NULL);
 
-INSERT INTO `pam_account` (`id`, `account_id`, `login_account`, `login_type`)
-VALUES
-	(1, 1, 'admin', 'local'),
-	(2, 1, '15527543053', 'mobile');
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
