@@ -38,6 +38,11 @@ try{
     );
 
     $app->post(
+        "/api/member/mlogin",
+        array( new \Api\Member(),"mobileLogin")
+    );
+
+    $app->post(
         "/api/member/oauth",
         array( new \Api\Member(),"oauth")
     );
