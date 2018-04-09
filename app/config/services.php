@@ -13,6 +13,9 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\Dispatcher;
 use Component\Plugins\SecurityPlugin;
 
+use Phalcon\Db\Adapter\MongoDB\Client as MongoClient;
+use Phalcon\Mvc\Collection\Manager as CollectionManager;
+
 /**
  * Shared configuration service
  */
@@ -173,6 +176,22 @@ $di->setShared('redisDb', function () {
         return $redis;
     }
     return false;
+});
+
+$di->setShared("mongo",function () {
+        $config = $this->getConfig();
+        $mongo_config = $config->mongo->production;
+        if ($config->application->debug) {
+            $mongo_config = $config->mongo->development;
+        }
+        $mongo = new MongoClient(
+            "mongodb://{$mongo_config['host']}:{$mongo_config['port']}"
+        );
+        return $mongo->selectDatabase($mongo_config['dbname']);
+});
+
+$di->setShared('collectionManager', function () {
+    return new CollectionManager();
 });
 
 /**

@@ -52,6 +52,23 @@ try{
         array( new \Api\Member(),"logout")
     );
 
+    $app->post(
+        "/api/member/sms",
+        array( new \Api\Member(),"sendSms")
+    );
+    $app->post(
+        "/api/member/email",
+        array( new \Api\Member(),"sendEmail")
+    );
+
+    $app->get(
+        '/api/goods/subscribe',
+        array( new \Api\Goods(), "subscribe")
+    );
+    $app->post(
+        '/api/goods/subscribe',
+        array( new \Api\Goods(), "subscribe")
+    );
 
     $app->handle();
 }catch (\Phalcon\Exception $e){

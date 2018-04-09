@@ -7,4 +7,8 @@ class MessageController extends BackstageController
     var $custom_action = array(
         'use_add' => false
     );
+
+    function testAction(){
+
+    }
 }
