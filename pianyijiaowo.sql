@@ -137,6 +137,20 @@ CREATE TABLE `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+# Dump of table message_template
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `message_template`;
+CREATE TABLE `message_template` (
+`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+`name` varchar(50) NOT NULL DEFAULT '',
+`type` varchar(50) NOT NULL DEFAULT '',
+`msg_type` varchar(50) NOT NULL DEFAULT '',
+`content` longtext,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+
 
 # Dump of table pam_account
 # ------------------------------------------------------------
