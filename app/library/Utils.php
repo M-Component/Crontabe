@@ -342,6 +342,16 @@ class  Utils
         return $string;
     }
 
+    public static function randomkeys($length=6) {
+        $key = '';
+        $pattern = '1234567890'; //字符池
+        for ($i = 0;$i < $length;$i++) {
+            $key.= $pattern{mt_rand(0, 9) }; //生成php随机数
+
+        }
+        return $key;
+    }
+
     public static function curl_client($url, $data=null, $method = 'GET' ,$is_string=false){
         $opts = array(
             CURLOPT_TIMEOUT        => 30,
