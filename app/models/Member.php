@@ -63,4 +63,11 @@ class Member extends \Phalcon\Mvc\Model
         return $this->validate($validator);
     }
 
+    public function updateMemberLoginCount($member_id){
+      $member = self::findFirst($member_id);
+      $member->login_count += 1;
+      $member->login_time = time();
+      return $member->update();
+    }
+
 }

@@ -2,6 +2,7 @@
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Message as Message;
+use Phalcon\Security;
 
 class PamMember extends \Phalcon\Mvc\Model
 {
@@ -26,7 +27,7 @@ class PamMember extends \Phalcon\Mvc\Model
 
 
     public function checkLogin($account ,$password){
-        $account = self::findFirst(array(
+      $account = self::findFirst(array(
             "login_account = :login_account:",
             'bind' => array('login_account' => $account)
         ));

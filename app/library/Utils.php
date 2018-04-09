@@ -422,10 +422,10 @@ class  Utils
     }
 
     public static function isMobile($string){
-        preg_match('/^1[34578]{1}[0-9]{9}$/', $login_account) ? true :false;
+        preg_match('/^1[34578]{1}[0-9]{9}$/', $string) ? true :false;
     }
 
     public static function isEmail($string){
-        preg_match('/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/', $login_account) ? true :false;
+        preg_match('/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/', $string) ? true :false;
     }
 }
