@@ -19,7 +19,7 @@ class Message extends \Mvc\AdvModel
 
     public $target = array(
         'type'=>'text',
-        'name'=>'手机号码',
+        'name'=>'发送目标',
         'search' =>true
     );
 

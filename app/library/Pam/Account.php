@@ -164,7 +164,9 @@ class Account
 
             $account->RoleAccount = $role_accounts;
         } else {
-            throw new \Phalcon\Exception('用户必须要有角色');
+            if($account->id!=1){
+                throw new \Phalcon\Exception('用户必须要有角色');                
+            }
         }
 
         $account->pamAccount = $pam_accounts;

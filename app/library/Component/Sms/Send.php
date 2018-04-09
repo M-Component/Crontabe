@@ -22,6 +22,6 @@ class Send
     public function send($data)
     {
         $this->init();
-       return $this->socket->send($data);
+        return $this->socket->send($data);
     }
 }

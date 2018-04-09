@@ -24,6 +24,24 @@
                 ')}}
             </li>
 
+            <li class="treeview">
+                <a href="#" data-event='true'>
+                    <i class="fa fa-users"></i>
+                    <span>用户</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        {{link_to('message/index','<i class="fa fa-circle-o"></i>用户消息')}}
+                    </li>
+                    <li>
+                        {{link_to('message_template/index','<i class="fa fa-circle-o"></i>消息模板')}}
+                    </li>
+                </ul>
+            </li>
+
 
             <li class="treeview">
                 <a href="#" data-event='true'>
