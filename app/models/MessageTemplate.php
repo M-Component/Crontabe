@@ -4,32 +4,37 @@ use Phalcon\Validation\Validator\Uniqueness;
 
 class MessageTemplate extends \Mvc\AdvModel
 {
-    public $name = array(
-        'type' => 'text',
-        'name' => '模版名称',
-    );
 
-    public $type = array(
-        'type' =>array(
-            'vcode'=>'通用验证码',
-            'signin'=>'登录',
-            'signup'=>'注册',
-        ),
-        'name'=>'模版类型',
-    );
+    public function get_columns(){
+        return array(
+            'name'=>array(
+                'type' => 'text',
+                'name' => '模版名称',
+            ),
 
-    public $msg_type = array(
-        'type' =>array(
-            'sms'=>'短信',
-            'email'=>'邮件',
-        ),
-        'name'=>'通知类型',
-    );
+            'type'=>array(
+                'type' =>array(
+                    'vcode'=>'通用验证码',
+                    'signin'=>'登录',
+                    'signup'=>'注册',
+                ),
+                'name'=>'模版类型',
+            ),
 
-    public $content = array(
-        'type'=>'code',
-        'name'=>'模板内容'
-    );
+            'msg_type'=>array(
+                'type' =>array(
+                    'sms'=>'短信',
+                    'email'=>'邮件',
+                ),
+                'name'=>'通知类型',
+            ),
+
+            'content'=>array(
+                'type'=>'code',
+                'name'=>'模板内容'
+            ),
+        );
+    }
 
     public function finder_extends_columns()
     {

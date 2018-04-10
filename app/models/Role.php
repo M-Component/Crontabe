@@ -4,18 +4,22 @@ use Phalcon\Events\Event;
 
 class Role extends \Phalcon\Mvc\Model
 {
-    public $name = array(
-        'type' => 'text',
-        'name' => '角色名',
-        'update' => true,
-    );
-    public $is_super = array(
-        'type' => array(
-            '0' => '否',
-            '1' => '是',
-        ),
-        'name' => '超级管理员',
-    );
+    public function get_columns(){
+        return array(
+            'name'=>array(
+                'type' => 'text',
+                'name' => '角色名',
+                'update' => true,
+            ),
+            'is_super'=>array(
+                'type' => array(
+                    '0' => '否',
+                    '1' => '是',
+                ),
+                'name' => '超级管理员',
+            ),
+        );
+    }
 
     public function initialize()
     {

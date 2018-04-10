@@ -23,6 +23,10 @@ class Subscribe extends AdvCollection
 
     public $_id;
 
+    public function get_columns(){
+        
+    }
+
     public function initialize()
     {
         //        $this->useImplicitObjectIds(false);

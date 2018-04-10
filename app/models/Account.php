@@ -4,33 +4,37 @@ use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Message as Message;
 class Account extends \Phalcon\Mvc\Model
 {
-    public $username = array(
-        'type' => 'text',
-        'name' => '用户名',
-        'update' =>false
-    );
-    public $login_password = array(
-        'type' => 'password',
-        'name' => '密码',
-        'hide' => true
-    );
-    public $name = array(
-        'type' => 'text',
-        'name' => '姓名',
-    );
-    public $mobile = array(
-        'type' => 'text',
-        'name' => '手机号',
-    );
-    public $email = array(
-        'type' => 'text',
-        'name' => '邮箱',
-    );
-    public $create_time = array(
-        'type' => 'text',
-        'name' => '创建时间',
-        'edit' =>false
-    );
+    public function get_columns(){
+        return array(
+            'username' => array(
+                'type' => 'text',
+                'name' => '用户名',
+                'update' =>false
+            ),
+            'login_password'=> array(
+                'type'=> 'password',
+                'name' => '密码',
+                'hide' => true
+            ),
+            'name'=>array(
+                'type' => 'text',
+                'name' => '姓名',
+            ),
+            'mobile'=>array(
+                'type' => 'text',
+                'name' => '手机号',
+            ),
+            'email'=>array(
+                'type' => 'text',
+                'name' => '邮箱',
+            ),
+            'create_time'=>array(
+                'type' => 'text',
+                'name' => '创建时间',
+                'edit' =>false
+            ),
+        );
+    }
 
     public function initialize()
     {

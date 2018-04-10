@@ -205,7 +205,7 @@ class BackstageController extends ControllerBase
         $filter = is_array($filter) ? $filter : json_decode($filter, 1);
         $this->view->filter = $filter;
 
-        $columns = $model->dump();
+        $columns = $model->get_columns();
         $search = array();
         foreach ($columns as $key => $column) {
             if (!is_array($column) || empty($column)) {
@@ -301,7 +301,7 @@ class BackstageController extends ControllerBase
         $model = $model_name ? new $model_name : $this->model;
         $this->view->belongsTo = $this->modelsManager->getBelongsTo($model);
         $this->view->hasMany = $this->modelsManager->getHasMany($model);
-        $columns = $model->dump();
+        $columns = $model->get_columns();
         foreach ($columns as $key => $column) {
             if (!is_array($column) || empty($column)) {
                 unset($columns[$key]);
@@ -316,7 +316,7 @@ class BackstageController extends ControllerBase
         $model = $model_name ? new $model_name : $this->model;
         $this->view->belongsTo = $this->modelsManager->getBelongsTo($model);
         $this->view->hasMany = $this->modelsManager->getHasMany($model);
-        $columns = $model->dump();
+        $columns = $model->get_columns();
         foreach ($columns as $key => $column ) {
             if (!is_array($column)|| empty($column)) {
                 unset($columns[$key]);
@@ -330,7 +330,7 @@ class BackstageController extends ControllerBase
     protected function save($postData, $model_name = null)
     {
         $model = $model_name ? new $model_name : $this->model;
-        $columns = $model->dump();
+        $columns = $model->get_columns();
         if ($postData['id']) {
             $model = $model->findFirst($postData['id']);
         }
@@ -374,7 +374,7 @@ class BackstageController extends ControllerBase
         $data = $finder;
         $ids = array_keys(\Utils::array_change_key($data, $column));
         $belongsMdl = new $model;
-        $belongsColumns = $belongsMdl->dump();
+        $belongsColumns = $belongsMdl->get_columns();
         foreach ($belongsColumns as $k => $v) {
             if (!is_array($v) || empty($v)) {
                 unset($belongsColumns[$k]);

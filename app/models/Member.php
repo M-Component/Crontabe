@@ -5,28 +5,32 @@ use Phalcon\Mvc\Model\Message as Message;
 use Phalcon\Security;
 class Member extends \Phalcon\Mvc\Model
 {
-    public $username = array(
-        'type' => 'text',
-        'name' => '用户名',
-        'update' =>false
-    );
-    public $name = array(
-        'type' => 'text',
-        'name' => '姓名',
-    );
-    public $mobile = array(
-        'type' => 'text',
-        'name' => '手机号',
-    );
-    public $email = array(
-        'type' => 'text',
-        'name' => '邮箱',
-    );
-    public $reg_time = array(
-        'type' => 'text',
-        'name' => '注册时间',
-        'edit' =>false
-    );
+    public function get_columns(){
+        return array(
+            'username'=>array(
+                'type' => 'text',
+                'name' => '用户名',
+                'update' =>false
+            ),
+            'name'=>array(
+                'type' => 'text',
+                'name' => '姓名',
+            ),
+            'mobile'=>array(
+                'type' => 'text',
+                'name' => '手机号',
+            ),
+            'email'=>array(
+                'type' => 'text',
+                'name' => '邮箱',
+            ),
+            'reg_time'=>array(
+                'type' => 'text',
+                'name' => '注册时间',
+                'edit' =>false
+            ),
+        );
+    }
 
     public function initialize()
     {
