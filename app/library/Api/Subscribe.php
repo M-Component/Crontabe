@@ -1,6 +1,6 @@
 <?php
 namespace Api;
-use Phalcon\Paginator\Adapter\QueryBuilder as PaginatorQueryBuilder;
+use Mvc\Paginator\Adapter\Collection as PaginatorCollectionBuilder;
 class Subscribe extends Base
 {
     public function setSubscribe(){
@@ -37,24 +37,35 @@ class Subscribe extends Base
     }
 
     public function getSubscribe($id){
-        
+        $data =\Subscribe::findById($id);
+        $this->success($data);
     }
 
     public function getList(){
-        $limit =$this->request->getQuery('limit') ? :10;
-        $page =$this->request->getQuery('page') ? :1;
-        $res =\Subscribe::findFirst();
-        var_dump($res);exit;
-        $filter =array();
-        $condition = \Mvc\DbFilter::filter($filter);
-        $orderBy = 'create_time desc';
-        $builder = $this->modelsManager->createBuilder()
-                 ->columns("*")
-                 ->from('Subscribe')
-                 ->where($condition)
-                 ->orderBy($orderBy);
+        $limit =$this->request->getQuery('limit',array('int')) ? :2;
+        $page =$this->request->getQuery('page',array('int')) ? : 1;
 
-        $paginator = new PaginatorQueryBuilder(
+        $columns =array(
+            'member_id'=>true,
+            'goods_id'=>true,
+            'id'=>true
+        );
+
+        $condition =array(
+
+        );
+
+        $orderBy = array(
+            'goods_id'=>-1
+        );
+
+        $builder =array(
+            'columns'=>$columns,
+            'from'=>'Subscribe',
+            'where'=>$condition,
+            'orderBy'=>$orderBy,
+        );
+        $paginator = new PaginatorCollectionBuilder(
             [
                 "builder" => $builder,
                 "limit" => $limit,

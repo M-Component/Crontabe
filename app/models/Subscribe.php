@@ -1,7 +1,7 @@
 <?php
-//use Phalcon\Mvc\Collection;
-use Phalcon\Mvc\MongoCollection as Collection;
-class Subscribe extends Collection
+
+use Mvc\AdvCollection;
+class Subscribe extends AdvCollection
 {
     public $member_id;
 
@@ -20,4 +20,11 @@ class Subscribe extends Collection
     public $email_notice;
 
     public $create_time;
+
+    public $_id;
+
+    public function initialize()
+    {
+        //        $this->useImplicitObjectIds(false);
+    }
 }
