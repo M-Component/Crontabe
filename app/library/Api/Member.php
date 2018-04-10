@@ -85,8 +85,8 @@ class Member extends Base
                     throw new \Exception($message);
                 }
             }
-            $vcode = new \Component\Vcode();
 
+            $vcode = new \Component\Vcode();
             if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
@@ -140,15 +140,12 @@ class Member extends Base
                     throw new \Exception($message);
                 }
             }
+
             $pamMember = new \PamMember();
-            $member_data = $pamMember->checkLogin($data['username'], $data['login_password']);
-
-            $member = new \Member();
-            $member_data = $member_data->PamMember->toArray();
-            $member->updateMemberLoginCount($member_data['member_id']);
-            $this->auth->saveLoginSession($member_data);
-
-            $this->success($member_data);
+            $member = $pamMember->checkLogin($data['username'], $data['login_password']);
+            $member->updateMemberLoginCount($member->id);
+            $this->auth->saveLoginSession($member->toArray());
+            $this->success($member);
 
         } catch (\Exception $e) {
             $this->error($e->getMessage());
