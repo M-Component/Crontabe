@@ -25,6 +25,18 @@ class Member extends Base
                     throw new \Exception($message);
                 }
             }
+            $pamMember = \PamMember::findFirst(array(
+              "login_account = :login_account:",
+              "bind" => array('login_account' => $data['username'])
+            ));
+            if($pamMember){
+              throw new \Exception('该用户名已存在，不能重复');
+            }
+            
+            $vcode = new \Component\Vcode();     
+            if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
+              throw new \Exception('验证码错误');
+            }
             $member = new \Member();
             $pamMember = new \PamMember();
 
