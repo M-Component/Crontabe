@@ -9,7 +9,8 @@ class Oauth{
     public $oauth_method =array(
         'wechat' =>'Wechat',
         'qq' =>'Qq',
-        'sina'=>'Sina'
+        'sina'=>'Sina',
+        'wxapp'=>'Wxapp'
     );
     public function getName($id){
         return $this ->oauth_method[$id];

@@ -44,6 +44,27 @@ return new \Phalcon\Config([
             'persistent' => false,
         ],
     ],
+    // mongo
+    'mongo'         => [
+        'development' => [
+            'host'       => '127.0.0.1',
+            'password'   => null,
+            'port'       => 27017,
+            'timeout'    => 60,
+            'auth'       => '',
+            'persistent' => false,
+            'dbname'     =>'pianyijiaowo'
+        ],
+        'production'  => [
+            'host'       => '192.168.71.169',
+            'password'   => null,
+            'port'       => 27017,
+            'timeout'    => 60,
+            'auth'       => '',
+            'persistent' => false,
+            'dbname'     =>'pianyijiaowo'
+        ],
+    ],
     // 上传
     'upload' =>[
         'default' =>'local',

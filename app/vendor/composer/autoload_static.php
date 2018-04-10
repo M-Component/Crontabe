@@ -10,6 +10,7 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
     );
 
     public static $firstCharsPsr4 = array (
@@ -26,6 +27,10 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Phalcon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phalcon/incubator/Library/Phalcon',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

@@ -2,7 +2,8 @@
     "require": {
         "guzzlehttp/guzzle": "~6.0",
         "upyun/sdk": "^3.3",
-        "pear/services_json": "dev-bugfix"
+        "pear/services_json": "dev-bugfix",
+	"phalcon/incubator": "^3.0"
     },
     "repositories": [
         {

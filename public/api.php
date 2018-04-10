@@ -62,12 +62,16 @@ try{
     );
 
     $app->get(
-        '/api/goods/subscribe',
-        array( new \Api\Goods(), "subscribe")
+        '/api/subscribe',
+        array( new \Api\Subscribe(), "getList")
+    );
+    $app->get(
+        '/api/subscribe/{id}',
+        array( new \Api\Subscribe(), "getSubscribe")
     );
     $app->post(
-        '/api/goods/subscribe',
-        array( new \Api\Goods(), "subscribe")
+        '/api/subscribe',
+        array( new \Api\Subscribe(), "setSubscribe")
     );
 
     $app->handle();

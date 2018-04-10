@@ -14,7 +14,3 @@ $loader->registerDirs(
     ]
 )->register();
 require $config->application->vendorDir.'autoload.php';
-$loader->registerNamespaces([
-    'Phalcon' => APP_PATH.'/app/incubator/Library/Phalcon/'
-]);
-require $config->application->vendorDir.'autoload.php';

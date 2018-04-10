@@ -184,9 +184,19 @@ $di->setShared("mongo",function () {
         if ($config->application->debug) {
             $mongo_config = $config->mongo->development;
         }
-        $mongo = new MongoClient(
-            "mongodb://{$mongo_config['host']}:{$mongo_config['port']}"
-        );
+            
+        if (!$mongo_config['username'] || !$mongo_config['password'] ) {
+            $dsn = "mongodb://{$mongo_config['host']}:{$mongo_config['port']}";
+        } else {
+            $dsn = sprintf(
+                'mongodb://%s:%s@%s:%s',
+                $mongo_config['username'],
+                $mongo_config['password'],
+                $mongo_config['host'],
+                $mongo_config['port']
+            );
+        }
+        $mongo = new MongoClient($dsn);
         return $mongo->selectDatabase($mongo_config['dbname']);
 });
 
