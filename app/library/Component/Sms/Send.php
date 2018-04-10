@@ -19,9 +19,9 @@ class Send
     }
 
 
-    public function send($data)
+    public function send($target,$content)
     {
         $this->init();
-        return $this->socket->send($data);
+        return $this->socket->send($target,$content);
     }
 }

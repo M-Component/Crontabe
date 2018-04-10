@@ -3,6 +3,12 @@
 namespace Api;
 use Phalcon\Mvc\User\Component;
 class  Base extends Component{
+    protected  $session_id;
+
+    public function __construct(){
+        $this->session_id =$this->session->getId();
+    }
+
     protected function success($data){
         if(is_string($data)){
             $data =array(
@@ -10,7 +16,8 @@ class  Base extends Component{
                 'msg'=>$data
             );
         }
-        $this ->response ->setJsonContent($data) ;
+
+        $this ->response ->setJsonContent($data);
         $this ->response ->send();
         exit;
     }

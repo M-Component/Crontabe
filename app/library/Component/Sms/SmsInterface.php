@@ -12,6 +12,5 @@ namespace Component\Sms;
 interface SmsInterface
 {
     public function setting();
-    public function send($data);
-
+    public function send($target,$content);
 }

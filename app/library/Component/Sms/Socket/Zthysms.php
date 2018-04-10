@@ -65,18 +65,18 @@ class Zthysms extends Base implements SmsInterface
         );
     }
 
-    public function send($datas)
+
+    public function send($target,$content)
     {
         $zthysms = \Setting::getConf('Zthysms');
+
         $data['tkey'] = date('YmdHis');
         $data['username'] = $zthysms['account'];
         $data['password'] = $this->getPassword($zthysms['password'], $data['tkey']);
-        $data['content'] = $datas['content'] . "【{$zthysms['sign']}】";
+        $data['content'] = $content . "【{$zthysms['sign']}】";
+        $data['mobile'] =implode(',',array_keys(\Utils::array_change_key($target ,'target')));
 
         // 根据发送手机号码决定是否调用批量发送
-        $mobile = '';
-        $target = $datas['target'];
-        $data['mobile'] =implode(',',array_keys(\Utils::array_change_key($target ,'mobile')));
         if(count($target)>1){
             $url = $zthysms['array_api'];
         }else{
@@ -87,19 +87,19 @@ class Zthysms extends Base implements SmsInterface
         $this->logger->info('sms return :' . $res.'===content:'.$data['content'].'===mobile:'.$data['mobile']);
 
         $message['type'] = 1;
-        $message['content'] = $datas['content'] . "【{$zthysms['sign']}】";
+        $message['content'] = $content . "【{$zthysms['sign']}】";
         $message['create_time'] = time();
-
 
         foreach ($target as $v){
             $msg = new \Message();
-            $message['target'] = $v['mobile'];
+            $message['target'] = $v['target'];
             $message['member_id'] = $v['member_id'];
             $msg->create($message);
         }
-
-
-        return $res;
+        $msg = explode(',',$res);
+        if ($msg[0] != 1){
+            return false;
+        }
     }
 
     private function getPassword($password, $tkey)

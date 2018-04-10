@@ -23,7 +23,7 @@ class Send
         }
     }
 
-    public function send($params,$type = 'reg')
+    public function send($target, $content)
     {
         $config = \Setting::getConf($this->driver);
         unset($config['order_num']);
@@ -35,39 +35,25 @@ class Send
         unset($config['email']);
         unset($config['name']);
 
+        $title = '便宜叫我';
         $mailer = new \Phalcon\Mailer\Manager($config);
+        $message = $mailer->createMessage()
+            ->to($target[0]['target'], $target[0]['target'])
+            ->subject($title)
+            ->content($content);
 
-        switch ($type) {
-            case 'reg':
-                $viewPath = 'mailer/themes/reg';
-                break;
-
-            case 'reset':
-                $viewPath = 'mailer/themes/reset';
-                break;
-
-            default:
-                $viewPath = 'mailer/theme/default';
-                break;
-        }
-        $params['send_time'] = date('Y年m月d日',time());
-        $message = $mailer->createMessageFromView($viewPath, $params)
-            ->to($params['email'], $params['email'])
-            ->subject($params['subject']);
-
-        if($message->send()){
+        if ($message->send()) {
             $msg = new \Message();
-            $data['target'] = $params['email'];
+            $data['target'] = $target[0]['target'];
             $data['type'] = 2;
-            $data['title'] = $params['subject'];
+            $data['title'] = $title;
             $data['content'] = $message->getContent();
             $data['create_time'] = time();
-            if($msg->create($data)){
+            if ($msg->create($data)) {
                 unset($msg);
                 return true;
-            }else{
-                return false;
             }
         }
+        return false;
     }
 }
