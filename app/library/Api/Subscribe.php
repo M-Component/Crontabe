@@ -29,6 +29,9 @@ class Subscribe extends Base
                     throw new \Exception($message);
                 }
             }
+
+            //发布商品id到cdh，等待cdh 回传新数据
+            //进入缓存，接受新数据，计算验证
             $this->success($subscribe);
 
         } catch (\Exception $e) {

@@ -11,7 +11,7 @@ class RedisQueue extends Queue implements QueueInterface
 
     protected $default;
 
-    protected $expire = 60;
+    protected $expire = null;
 
     public function __construct($redis, $config)
     {
