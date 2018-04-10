@@ -191,9 +191,6 @@ class Member extends Base
      */
     public function sendEmail(){
         $data = $this->request->getPost();
-        if ($data[''])
-
-        $data['title'] = a;
         $vcode = new Vcode();
         try{
             if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
