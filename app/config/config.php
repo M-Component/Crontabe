@@ -29,7 +29,6 @@ return new \Phalcon\Config([
     'redis'         => [
         'development' => [
             'host'       => '127.0.0.1',
-            'password'   => null,
             'port'       => 6379,
             'timeout'    => 60,
             'auth'       => '',
@@ -37,7 +36,6 @@ return new \Phalcon\Config([
         ],
         'production'  => [
             'host'       => '127.0.0.1',
-            'password'   => null,
             'port'       => 6379,
             'timeout'    => 60,
             'auth'       => '',
@@ -48,19 +46,19 @@ return new \Phalcon\Config([
     'mongo'         => [
         'development' => [
             'host'       => '127.0.0.1',
+            'username'   => null,
             'password'   => null,
             'port'       => 27017,
             'timeout'    => 60,
-            'auth'       => '',
             'persistent' => false,
             'dbname'     =>'pianyijiaowo'
         ],
         'production'  => [
             'host'       => '192.168.71.169',
+            'username'   => null,
             'password'   => null,
             'port'       => 27017,
             'timeout'    => 60,
-            'auth'       => '',
             'persistent' => false,
             'dbname'     =>'pianyijiaowo'
         ],

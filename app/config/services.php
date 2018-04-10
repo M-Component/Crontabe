@@ -213,12 +213,23 @@ $di->set('cache', function () {
             "lifetime" => 172800
         )
     );
-    return new \Phalcon\Cache\Backend\File(
+    $config = $this->getConfig();
+    $redis_config = $config->redis->production;
+    if ($config->application->debug) {
+        $redis_config = $config->redis->development;
+    }
+            
+    $cache = new \Phalcon\Cache\Backend\Redis(
         $frontCache,
-        array(
-            "cacheDir" => $this->getConfig()->application->cacheDir,
-        )
+        [
+            "host"       => $redis_config['host'],
+            "port"       => $redis_config['port'],
+            "auth"       => $redis_config['auth'],
+            "persistent" => $redis_config['persistent'],
+            "index"      => 0,
+        ]
     );
+    return $cache;
 
 });
 
