@@ -194,8 +194,8 @@ class BackstageController extends ControllerBase
         $this->view->dom_id = uniqid();
         $model_name = $params['model'];
         $model = $params['model'] ? new $params['model'] : $this->model;
-        $orderBy = $params['orderBy'] ?: 'id desc';
-        $this->view->orderBy = $orderBy;
+        $orderBy = $params['orderBy'] ?: '';
+
 
         $current_page = $this->request->getQuery("page", "int") ?: 1;
         $limit = $params['limit'] ?: ($this->request->getQuery("limit", "int") ?: 20);
@@ -244,22 +244,9 @@ class BackstageController extends ControllerBase
         if (method_exists($model, 'parseFilter')) {
             $model->parseFilter($filter);// 引用传递
         }
-        $condition = \Mvc\DbFilter::filter($filter);
-        $builder = $this->modelsManager->createBuilder()
-            ->columns("*")
-            ->from($model_name)
-            ->where($condition)
-            ->orderBy($orderBy);
+        $page =$this->getPageData($filter ,$model_name ,$current_page ,$limit ,$orderBy);
 
-        $paginator = new PaginatorQueryBuilder(
-            [
-                "builder" => $builder,
-                "limit" => $limit,
-                "page" => $current_page,
-            ]
-        );
-        $page = $paginator->getPaginate();
-        $finder = $page->items->toArray();
+        $finder = $page->items;
         $count = count($finder);
         $extendColumns = array();
         if (method_exists($model, 'finder_extends_columns')) {
@@ -369,6 +356,29 @@ class BackstageController extends ControllerBase
 
     }
 
+    //orm 通用获取数据
+    protected function getPageData($filter ,$model_name , $page ,$limit ,$orderBy=''){
+        $orderBy = $orderBy ?: 'id desc';
+        $this->view->orderBy = $orderBy;
+        $condition = \Mvc\DbFilter::filter($filter);
+        $builder = $this->modelsManager->createBuilder()
+                 ->columns("*")
+                 ->from($model_name)
+                 ->where($condition)
+                 ->orderBy($orderBy);
+
+        $paginator = new PaginatorQueryBuilder(
+            [
+                "builder" => $builder,
+                "limit" => $limit,
+                "page" => $page,
+            ]
+        );
+        $page = $paginator->getPaginate();
+        $page->items = $page->items->toArray();
+        return $page;
+    }
+
     private function finderBelongsTo(&$finder, $column, $model)
     {
         $data = $finder;
@@ -388,7 +398,8 @@ class BackstageController extends ControllerBase
         if (!$title) {
             return false;
         }
-        $belongsData = $belongsMdl->find(array('id in (\'' . implode($ids, "','") . '\')', 'columns' => 'id ,' . $title))->toArray();
+        $belongsData = $belongsMdl->find(array('id in (\'' . implode($ids, "','") . '\')', 'columns' => 'id ,' . $title));
+        $belongsData =is_object($belongsData) ?$belongsData->toArray() :$belongsData;
         if (empty($belongsData)) {
             return false;
         }

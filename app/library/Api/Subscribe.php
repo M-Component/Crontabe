@@ -52,7 +52,11 @@ class Subscribe extends Base
         );
 
         $condition =array(
+            'goods_id'=>array(
 
+                    '$regex'=>'1111'
+
+            )
         );
 
         $orderBy = array(

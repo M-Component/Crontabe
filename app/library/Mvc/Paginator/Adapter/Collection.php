@@ -63,7 +63,7 @@ class Collection implements \Phalcon\Paginator\AdapterInterface
      */
     public function getPaginate()
     {
-        $totalItems = $this->model->count($this->conditions);
+        $totalItems = $this->model->count(['conditions'=>$this->conditions]);
         $totalPages = intval(ceil($totalItems / $this->limit));
         $queryParams = [
             'conditions' =>$this->conditions,
