@@ -23,9 +23,21 @@ class Send
         }
     }
 
-    public function send($target, $content,$title)
+    public function sendOne($target,$content,$title= '')
+    {
+        return $this->send([$target],$content ,$title);
+    }
+
+    public function sendBatch(array $target_contents)
+    {
+
+    }
+
+    public function send(array $target, $content,$title)
     {
         $config = \Setting::getConf($this->driver);
+        if (!$config) return false;
+
         unset($config['order_num']);
         unset($config['status']);
         if ($config['email'] && $config['name']) {
@@ -37,21 +49,16 @@ class Send
 
         $mailer = new \Phalcon\Mailer\Manager($config);
         $message = $mailer->createMessage()
-            ->to($target, $target)
+            ->to($target[0], $target[0])
             ->subject($title)
             ->content($content);
-
-        if ($message->send()) {
-            $msg = new \Message();
-            $data['target'] = $target;
-            $data['type'] = 2;
-            $data['title'] = $title;
-            $data['content'] = $message->getContent();
-            $data['create_time'] = time();
-            if ($msg->create($data)) {
-                unset($msg);
-                return true;
+        if (count($target)>1){
+            foreach($target as $item){
+                $message->bcc($item);
             }
+        }
+        if ($message->send()) {
+            return true;
         }
         return false;
     }

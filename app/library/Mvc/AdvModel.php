@@ -51,6 +51,6 @@ class AdvModel extends \Phalcon\Mvc\Model
         $query .= implode(',' ,$updateValue);
         $query .= ' WHERE '.$condition;
 
-        return $this->getDI()->getShared('db')->execute($query, $values);
+        return $this->getDI()->getShared('db')->execute($query);
     }
 }

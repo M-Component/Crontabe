@@ -28,7 +28,7 @@ class Message{
 
     public function sendVcode(array $target ,$params=array()){
         $vcodeObj = new Vcode();
-        $vcode =$vcodeObj->setVcode($email ,$this->template);
+        $vcode =$vcodeObj->setVcode($target ,$this->template);
         $params['vcode'] =$vcode;
         return $this->sendOne($target ,$params);
     }
@@ -40,7 +40,7 @@ class Message{
 
     public function send(array $targets , array $params ,$title=''){
         $this->_getSender();
-        $template = \MessageTemplate::findFirst("type='{$this->template}' AND msg_type='{$this->msg_type}'");
+        $template = \MessageTemplate::findFirst("template='{$this->template}' AND msg_type='{$this->msg_type}'");
         if(!$template){
             throw new \Exception('未知的消息模板');
         }
@@ -64,20 +64,21 @@ class Message{
                 'create_time' =>$time
             );
         }
-        $this->log_model->batchCreate($log_data);
+       return $this->log_model->batchCreate($log_data);
     }
 
     public function batchSend(array $target_contents){
         $this->_getSender();
         $templates =\MessageTemplate::find("type='{$this->msg_type}'")->toArray();
-        $templates =\Utils::array_change_key($templates ,'msg_type');
+        $templates =\Utils::array_change_key($templates ,'template');
         $log_data = $send_data =[];
+        $time =time();
         foreach($target_contents as $v){
             $target =$v['target'];
-            $template =$templates[$v['msg_type']];
+            $template =$templates[$v['template']];
             $content =$template->content;
             $this->_getContent($content ,$v['params']);
-            $title =$title ?: $this->_getTitle($content ,$params);
+            $title =$v['title'] ?: $this->_getTitle($content ,$v['params']);
             $send_data[]=[
                 'target'=>$target,
                 'content' =>$content,
@@ -91,7 +92,7 @@ class Message{
                 'create_time' =>$time
             ];
         }
-        $this->sender->sendList($send_data);
+        $this->sender->batchSend($send_data);
     }
 
 
@@ -124,7 +125,7 @@ class Message{
             $search[] ='{{'.$k.'}}';
             $replace[] =$v;
         }
-        $content =str_replace($search ,$replace ,$template ->content);
+        $content =str_replace($search ,$replace ,$content);
     }
 
     private function  _getTitle($content){

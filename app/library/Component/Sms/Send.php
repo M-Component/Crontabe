@@ -28,7 +28,7 @@ class Send
         return $this->send([$target] ,$content );
     }
 
-    public function sendBatch(array $target_contents)
+    public function batchSend(array $target_contents)
     {
         return $this->_sendSms($target_contents);
     }
