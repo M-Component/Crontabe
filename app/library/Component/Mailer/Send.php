@@ -33,7 +33,7 @@ class Send
 
     }
 
-    public function send(array $target, $content,$title)
+    public function send(array $target, $content,$title='')
     {
         $config = \Setting::getConf($this->driver);
         if (!$config) return false;
@@ -52,11 +52,6 @@ class Send
             ->to($target[0], $target[0])
             ->subject($title)
             ->content($content);
-        if (count($target)>1){
-            foreach($target as $item){
-                $message->bcc($item);
-            }
-        }
         if ($message->send()) {
             return true;
         }

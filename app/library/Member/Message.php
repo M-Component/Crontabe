@@ -28,7 +28,7 @@ class Message{
 
     public function sendVcode(array $target ,$params=array()){
         $vcodeObj = new Vcode();
-        $vcode =$vcodeObj->setVcode($target ,$this->template);
+        $vcode =$vcodeObj->setVcode($target['target'] ,$this->template);
         $params['vcode'] =$vcode;
         return $this->sendOne($target ,$params);
     }
@@ -100,19 +100,19 @@ class Message{
         switch($this->msg_type){
         case 'sms':
             $this->sender =  new SmsSender();
-            $this->log_model =new MessageSms();
+            $this->log_model =new \MessageSms();
             break;
         case 'email':
             $this->sender =  new EmailSender();
-            $this->log_model =new MessageEmail();
+            $this->log_model =new \MessageEmail();
             break;
         case 'wechat':
             $this->sender =  null;
-            $this->log_model =new MessageWechat();
+            $this->log_model =new \MessageWechat();
             break;
         case 'app':
             $this->sender =  null;
-            $this->log_model =new MessageApp();
+            $this->log_model =new \MessageApp();
             break;
         default:
             throw new \Exception('不支持的通知类型');

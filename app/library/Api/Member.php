@@ -195,7 +195,7 @@ class Member extends Base
     /**
      * @params String  $type  Vcode|signin|signup 模版类型
      */
-    public function sendEmail()
+    public function sendEmailVcode()
     {
         $data = $this->request->getPost();
         $vcode = new Vcode();
@@ -204,7 +204,7 @@ class Member extends Base
             $template =$data['type'];
             $this->messageSender->setMsgType('email')->setTemplate($template)->sendVcode(
                 array(
-                    'target' =>$data['target']
+                    'target' =>$data['email']
                 )
             );
         } catch (\Exception $e) {
