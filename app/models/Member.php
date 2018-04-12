@@ -10,7 +10,8 @@ class Member extends \Phalcon\Mvc\Model
             'username'=>array(
                 'type' => 'text',
                 'name' => '用户名',
-                'update' =>false
+                'update' =>false,
+                'is_title'=>true
             ),
             'name'=>array(
                 'type' => 'text',
@@ -34,6 +35,7 @@ class Member extends \Phalcon\Mvc\Model
 
     public function initialize()
     {
+        $this->useDynamicUpdate(true);
         $this->hasMany(
             'id',
             'PamMember',

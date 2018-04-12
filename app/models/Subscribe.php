@@ -1,6 +1,7 @@
 <?php
 
 use Mvc\AdvCollection;
+use Event\Model\SubscribeManager;
 class Subscribe extends AdvCollection
 {
     public $member_id;
@@ -27,6 +28,10 @@ class Subscribe extends AdvCollection
         return array(
             'goods_id'=>array(
                 'name'=>'商品ID',
+                'type'=>'text',
+            ),
+            'current_price'=>array(
+                'name'=>'订阅时的价格',
                 'type'=>'text',
             ),
             'rule'=>array(
@@ -77,8 +82,15 @@ class Subscribe extends AdvCollection
         );
     }
 
+    private $eventManager;
+
     public function initialize()
     {
+        $this->eventManager =new SubscribeManager;
+    }
 
+    public function afterSave(){
+        parent::afterSave();
+        $this->eventManager->afterSave($this);
     }
 }

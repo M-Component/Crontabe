@@ -2,21 +2,13 @@
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness;
 
-class Message extends \Mvc\AdvModel
+class MessageWechat extends \Mvc\AdvModel
 {
     public function get_columns(){
         return array(
             'member_id'=>array(
                 'type' => 'belongsTo:Member',
                 'name' => '用户名',
-            ),
-
-            'type'=>array(
-                'type' =>array(
-                    '0'=>'邮箱',
-                    '1'=>'手机'
-                ),
-                'name'=>'发送方式',
             ),
 
             'target'=>array(
@@ -41,6 +33,6 @@ class Message extends \Mvc\AdvModel
 
     public function initialize()
     {
-        $this->belongsTo('member_id', 'Member', 'id');
+        
     }
 }

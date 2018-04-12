@@ -32,6 +32,24 @@ class AdvModel extends \Phalcon\Mvc\Model
             $columns,
             $bind
         );
-        return $this->getDI()->get('db')->execute($query, $values);
+        return $this->getDI()->getShared('db')->execute($query, $values);
+    }
+
+
+    public function batchUpdate(array $data ,$condition ='1'){
+        if(empty($data)){
+            return false;
+        }
+        $table =$this->getSource();
+        $query ="UPDATE $table SET ";
+
+        $updateValue =array();
+        foreach($data as $column=>$value){
+            $updateValue[] = '`'.$column.'` ='.'\''.$value.'\'';
+        }
+        $query .= implode(',' ,$updateValue);
+        $query .= ' WHERE '.$condition;
+
+        return $this->getDI()->getShared('db')->execute($query, $values);
     }
 }

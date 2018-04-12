@@ -49,7 +49,8 @@ class Crontab extends Resolve{
                             "cron"=>$cron,
                             "id"=>$id,
                             "unique"=>$task['unique'] ? : 0,
-                            "runStatus"=>self::RunStatusWait
+                            "runStatus"=>self::RunStatusWait,
+                            'job'=>$task['job']
                         );
                         Table::setTask($unique_id ,$data);
                     }

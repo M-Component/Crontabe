@@ -26,6 +26,10 @@ class Crontab extends \Phalcon\Mvc\Model
                 'type' =>'text',
                 'name' =>'任务处理类'
             ),
+            'unique'=>array(
+                'type' =>'number',
+                'name' =>'进程数限制'
+            ),
             'create_time'=>array(
                 'type' =>'create_time',
                 'name' =>'任务创建时间',

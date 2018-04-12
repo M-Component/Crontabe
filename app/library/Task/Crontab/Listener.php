@@ -67,7 +67,7 @@ class Listener
                 foreach($tasks as $task){
                     $process = new \swoole_process(function(\swoole_process $worker) use($task){
                         if(PHP_OS != 'Darwin'){
-                            $worker->name("Seven_cron_worker");
+                            $worker->name("Seven_cron_worker_".$task['job']);
                         }
                         try{
                             $this->cronWorker ->fire($task);

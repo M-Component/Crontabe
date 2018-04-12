@@ -15,6 +15,7 @@ class Table
         "unique" => [\swoole_table::TYPE_INT, 8],
         "cron" => [\swoole_table::TYPE_STRING, 1024],//cron
         "runStatus" => [\swoole_table::TYPE_INT, 1],
+        "job" => [\swoole_table::TYPE_STRING, 64],//cron
     ];
 
     public static function init()

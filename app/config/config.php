@@ -35,7 +35,7 @@ return new \Phalcon\Config([
             'persistent' => false,
         ],
         'production'  => [
-            'host'       => '127.0.0.1',
+            'host'       => '192.168.71.169',
             'port'       => 6379,
             'timeout'    => 60,
             'auth'       => '',

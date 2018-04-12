@@ -34,7 +34,19 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        {{link_to('message/index','<i class="fa fa-circle-o"></i>用户消息')}}
+                        {{link_to('subscribe/index','<i class="fa fa-circle-o"></i>商品订阅')}}
+                    </li>
+                    <li>
+                        {{link_to('message_sms/index','<i class="fa fa-circle-o"></i>短信消息')}}
+                    </li>
+                    <li>
+                        {{link_to('message_email/index','<i class="fa fa-circle-o"></i>邮件消息')}}
+                    </li>
+                    <li>
+                        {{link_to('message_app/index','<i class="fa fa-circle-o"></i>APP消息')}}
+                    </li>
+                    <li>
+                        {{link_to('message_wechat/index','<i class="fa fa-circle-o"></i>微信消息')}}
                     </li>
                     <li>
                         {{link_to('message_template/index','<i class="fa fa-circle-o"></i>消息模板')}}

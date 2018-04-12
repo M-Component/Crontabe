@@ -171,7 +171,7 @@ $di->setShared('redisDb', function () {
         if ($config->application->debug) {
             $redis_config = $config->redis->development;
         }
-        $redis = new \Redis();
+        $redis = new \Mvc\RedisDb();
         $redis->pconnect($redis_config->host, $redis_config->port, $redis_config->timeout);
         return $redis;
     }
@@ -207,7 +207,7 @@ $di->setShared('collectionManager', function () {
 /**
  * cache
  */
-$di->set('cache', function () {
+$di->setShared('cache', function () {
     $frontCache = new \Phalcon\Cache\Frontend\Data(
         array(
             "lifetime" => 172800
@@ -218,16 +218,19 @@ $di->set('cache', function () {
     if ($config->application->debug) {
         $redis_config = $config->redis->development;
     }
-            
+    $options =[
+        "host"       => $redis_config['host'],
+        "port"       => $redis_config['port'],
+        "persistent" => $redis_config['persistent'],
+        "index"      => 0,
+        "statsKey"   =>'_PHCR'
+    ];
+    if($redis_config['auth']){
+        $options['auth'] = $options;
+    }
     $cache = new \Phalcon\Cache\Backend\Redis(
         $frontCache,
-        [
-            "host"       => $redis_config['host'],
-            "port"       => $redis_config['port'],
-            "auth"       => $redis_config['auth'],
-            "persistent" => $redis_config['persistent'],
-            "index"      => 0,
-        ]
+        $options
     );
     return $cache;
 

@@ -15,8 +15,12 @@ class MessageTemplate extends \Mvc\AdvModel
             'type'=>array(
                 'type' =>array(
                     'vcode'=>'通用验证码',
-                    'signin'=>'登录',
-                    'signup'=>'注册',
+                    'signin'=>'登录验证码',
+                    'signup'=>'注册验证码',
+                    'gt'=>'商品价格订阅（高于）',
+                    'lt'=>'商品价格订阅（低于）',
+                    'up_percent'=>'商品价格订阅（上涨）',
+                    'down_percent'=>'商品价格订阅（下降）',
                 ),
                 'name'=>'模版类型',
             ),
@@ -25,6 +29,7 @@ class MessageTemplate extends \Mvc\AdvModel
                 'type' =>array(
                     'sms'=>'短信',
                     'email'=>'邮件',
+                    'app' =>'APP',
                 ),
                 'name'=>'通知类型',
             ),
