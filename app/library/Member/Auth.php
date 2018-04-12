@@ -1,5 +1,5 @@
 <?php
-namespace Component\Member;
+namespace Member;
 use Phalcon\Mvc\User\Component;
 class Auth extends Component{
     public function  isLogin(){
@@ -12,16 +12,15 @@ class Auth extends Component{
         $this ->removeLoginSession();
         return false;
     }
-    public function saveLoginSession($pam_data)
+    public function saveLoginSession($member_data)
     {
-
         $expire = time() +3600*24*30;
-        $this ->cookies->set('UID' ,$pam_data['member_id'] ,$expire);
-        $this ->cookies->set('UNAME' ,$pam_data['login_account'] ,$expire);
+        $this ->cookies->set('UID' ,$member_data['id'] ,$expire);
+        $this ->cookies->set('UNAME' ,$member_data['username'] ,$expire);
 
         $this->session->set('member', array(
-            'member_id' => $pam_data['member_id'],
-            'login_account' => $pam_data['login_account'],
+            'member_id' => $member_data['id'],
+            'login_account' => $member_data['username'],
         ));
 
         $this->updateExpireTime();
@@ -52,12 +51,12 @@ class Auth extends Component{
     }
 
 
-    public function rememberMember($pam_data)
+    public function rememberMember($member_data)
     {
         $userAgent = $this->request->getUserAgent();
-        $token = md5($pam_data['login_account'] . $pam_data['login_password'] . $userAgent);
+        $token = md5($member_data['username'] . $member_data['login_password'] . $userAgent);
         $expire = time() + 86400 * 8;
-        $this->cookies->set('RMU',$pam_data['member_id'], $expire);
+        $this->cookies->set('RMU',$member_data['id'], $expire);
         $this->cookies->set('RMT', $token, $expire);
     }
 }

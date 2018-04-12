@@ -22,7 +22,7 @@ class Vcode extends Component{
     }
 
     public function sendEmail($email,$type ='vcode' ,$params =array()) {
-        $vcode =$this->getVcode($mobile ,$type);
+        $vcode =$this->setVcode($email ,$type);
         $message = new Message();
         $params =array_merge($params ,array(
             'vcode'=>$vcode
@@ -34,12 +34,12 @@ class Vcode extends Component{
     public function setVcode($account ,$type='vcode'){
         $vcodeData = $this->getVcode($account, $type);
         if($vcodeData){
-            if ($vcodeData['createtime'] == date('Ymd') && $vcodeData['count'] >= $retry) {
-                throw new \Exception('每天只能进行'.$retry.'次验证');
+            if ($vcodeData['createtime'] == date('Ymd') && $vcodeData['count'] >= $this->retry) {
+                throw new \Exception('每天只能进行'.$this->retry.'次验证');
             }
             $left_time = (time() - $vcodeData['lastmodify']);
-            if ($left_time < $retry_time) {
-                throw new \Exception('请'.($retry_time - $left_time).'秒后重试');
+            if ($left_time < $this->retry_time) {
+                throw new \Exception('请'.($this->retry_time - $left_time).'秒后重试');
             }
             if ($vcodeData['createtime'] != date('Ymd')) {
                 $vcodeData['count'] = 0;

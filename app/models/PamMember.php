@@ -25,6 +25,9 @@ class PamMember extends \Phalcon\Mvc\Model
         return $this->validate($validator);
     }
 
+    public function beforeCreate(){
+        $this->create_time =time();
+    }
 
     public function checkLogin($account ,$password){
       $account = self::findFirst(array(

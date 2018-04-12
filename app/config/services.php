@@ -160,6 +160,13 @@ $di->setShared('session', function () {
 
     return $session;
 });
+$di->setShared('crypt', function () {
+    $config = $this->getConfig();
+
+    $crypt = new \Phalcon\Crypt();
+    $crypt->setKey($config->application->cryptSalt);
+    return $crypt;
+});
 
 
 // redis
