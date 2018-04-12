@@ -112,15 +112,5 @@ return new \Phalcon\Config([
                 'table' => 'crontab',
             ],
         ]
-    ],
-    'api'=>[
-        //'getPageGroup'=>'http://120.132.20.241:8833/api/member/{member_id}/page_group',
-        'getPageGroupList'=>'http://prism/api/member/{member_id}/page_group',
-        //'getPageGroup'=>'http://120.132.20.241:8833/api/page_group/{id}',
-        'getPageGroup'=>'http://prism/api/page_group/{id}',
-        //'delePageGroup'=>'http://120.132.20.241:8833/api/page_group/{id}',
-        'delePageGroup'=>'http://prism/api/page_group',
-        //'upPageGroup'=>'http://120.132.20.241:8833/api/member/page_group',
-        'upPageGroup'=>'http://prism/api/member/page_group',
     ]
 ]);

@@ -45,6 +45,7 @@ class AdvModel extends \Phalcon\Mvc\Model
 
         $updateValue =array();
         foreach($data as $column=>$value){
+            $value = addslashes($value);
             $updateValue[] = '`'.$column.'` ='.'\''.$value.'\'';
         }
         $query .= implode(',' ,$updateValue);

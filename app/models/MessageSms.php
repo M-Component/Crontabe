@@ -17,9 +17,9 @@ class MessageSms extends \Mvc\AdvModel
                 'search' =>true
             ),
 
-            'content'=>array(
+            'title'=>array(
                 'type'=>'text',
-                'name'=>'发送内容'
+                'name'=>'标题'
             ),
 
             'create_time'=>array(
@@ -33,6 +33,6 @@ class MessageSms extends \Mvc\AdvModel
 
     public function initialize()
     {
-        
+
     }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace Component;
 use Phalcon\Mvc\User\Component;
-use Member\Message;
 class Vcode extends Component{
     private $ttl =86400;
 
@@ -10,26 +9,6 @@ class Vcode extends Component{
     private $retry_time =120;
 
     private $vcode_length=6;
-
-    public function sendSms($mobile,$type ='vcode',$params=array()) {
-        $vcode =$this->setVcode($mobile ,$type);
-        $message = new Message();
-        $params =array_merge($params ,array(
-            'vcode'=>$vcode
-        ));
-        $message ->send($mobile, $type ,'sms' ,$params);
-        return $vcode;
-    }
-
-    public function sendEmail($email,$type ='vcode' ,$params =array()) {
-        $vcode =$this->setVcode($email ,$type);
-        $message = new Message();
-        $params =array_merge($params ,array(
-            'vcode'=>$vcode
-        ));
-        $message ->send($email, $type ,'email' ,$params);
-        return $vcode;
-    }
 
     public function setVcode($account ,$type='vcode'){
         $vcodeData = $this->getVcode($account, $type);

@@ -1,8 +1,7 @@
 <?php
 namespace Api;
-
-use Component\Vcode;
 use Member\Auth;
+use Component\Vcode;
 
 class Member extends Base
 {
@@ -178,10 +177,19 @@ class Member extends Base
     public function sendSms()
     {
         $data = $this->request->getPost();
-        $vcode = new Vcode();
+        //?验证消息类型
         try {
             if (!\Utils::isMobile($data['mobile'])) throw new \Exception('请输入有效的手机号码');
-            $vcode->sendSms($data['mobile'], $data['type']);
+ 
+            $template =$data['type'];
+             $this->messageSender->setMsgType('sms')->setTemplate($template)->sendOne(
+                array(
+                    'target' =>$data['mobile']
+                ),
+                array(
+                    'member_id' =>0
+                )// 可以为空
+            );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
@@ -196,7 +204,15 @@ class Member extends Base
         $vcode = new Vcode();
         try {
             if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
-            $vcode->sendEmail($data['email'], $data['type']);
+            $template =$data['type'];
+            $this->messageSender->setMsgType('email')->setTemplate($template)->sendOne(
+                array(
+                    'target' =>$data['target']
+                ),
+                array(
+                    'member_id' =>0
+                )// 可以为空
+            );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }

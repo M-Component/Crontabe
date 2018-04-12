@@ -274,10 +274,11 @@ $di->set('dispatcher',function (){
 
     return $dispatch;
 
-
 });
 
-
+$di->setShared('messageSender', function () {
+    return new Member\Message();
+});
 
 $config = $di->getConfig();
 date_default_timezone_set($config->datetime_zone);
