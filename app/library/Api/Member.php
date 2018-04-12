@@ -174,21 +174,18 @@ class Member extends Base
     /**
      * @params String  $type  Vcode|signin|signup 模版类型
      */
-    public function sendSms()
+    public function sendSmsVcode()
     {
         $data = $this->request->getPost();
         //?验证消息类型
         try {
             if (!\Utils::isMobile($data['mobile'])) throw new \Exception('请输入有效的手机号码');
  
-            $template =$data['type'];
-             $this->messageSender->setMsgType('sms')->setTemplate($template)->sendOne(
+             $template =$data['template'];
+             $this->messageSender->setMsgType('sms')->setTemplate($template)->sendVcode(
                 array(
                     'target' =>$data['mobile']
-                ),
-                array(
-                    'member_id' =>0
-                )// 可以为空
+                )
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -198,20 +195,17 @@ class Member extends Base
     /**
      * @params String  $type  Vcode|signin|signup 模版类型
      */
-    public function sendEmail()
+    public function sendEmailVcode()
     {
         $data = $this->request->getPost();
         $vcode = new Vcode();
         try {
             if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
             $template =$data['type'];
-            $this->messageSender->setMsgType('email')->setTemplate($template)->sendOne(
+            $this->messageSender->setMsgType('email')->setTemplate($template)->sendVcode(
                 array(
-                    'target' =>$data['target']
-                ),
-                array(
-                    'member_id' =>0
-                )// 可以为空
+                    'target' =>$data['email']
+                )
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
