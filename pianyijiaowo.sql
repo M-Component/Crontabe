@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.42)
 # Database: pianyijiaowo
-# Generation Time: 2018-04-08 13:21:31 +0000
+# Generation Time: 2018-04-12 10:44:33 +0000
 # ************************************************************
 
 
@@ -39,6 +39,15 @@ CREATE TABLE `account` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+
+INSERT INTO `account` (`id`, `name`, `username`, `login_password`, `mobile`, `email`, `avatar`, `disabled`, `login_time`, `create_time`)
+VALUES
+	(1,'','admin','$2y$08$HCHaEV79db6Rs7WDVXOQVOy6CCdQuu/U6HbEfJK6GqTTYvpKy83oG','15527543053','',NULL,0,1523529823,NULL);
+
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table crontab
@@ -48,7 +57,7 @@ DROP TABLE IF EXISTS `crontab`;
 
 CREATE TABLE `crontab` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `name` varchar(32) NOT NULL,
+  `name` varchar(100) NOT NULL DEFAULT '',
   `rule` text NOT NULL COMMENT '规则 可以是crontab规则也可以是json类型的精确时间任务',
   `unique` tinyint(5) DEFAULT '0' COMMENT '0 唯一任务 大于0表示同时可并行的任务进程个数',
   `job` varchar(32) NOT NULL COMMENT '运行这个任务的类',
@@ -120,14 +129,76 @@ CREATE TABLE `member` (
 
 
 
-# Dump of table message
+# Dump of table member_email
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `message`;
+DROP TABLE IF EXISTS `member_email`;
 
-CREATE TABLE `message` (
+CREATE TABLE `member_email` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` tinyint(1) NOT NULL,
+  `member_id` int(11) unsigned NOT NULL,
+  `email` varchar(50) NOT NULL DEFAULT '',
+  `default` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table member_mobile
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `member_mobile`;
+
+CREATE TABLE `member_mobile` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) unsigned NOT NULL,
+  `mobile` int(11) NOT NULL,
+  `default` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table member_oauth
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `member_oauth`;
+
+CREATE TABLE `member_oauth` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) unsigned NOT NULL,
+  `open_id` varchar(200) NOT NULL DEFAULT '',
+  `type` varchar(50) NOT NULL DEFAULT '',
+  `union_id` varchar(200) DEFAULT NULL,
+  `create_time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table message_app
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `message_app`;
+
+CREATE TABLE `message_app` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `target` varchar(100) NOT NULL DEFAULT '',
+  `member_id` int(11) unsigned DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table message_email
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `message_email`;
+
+CREATE TABLE `message_email` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(100) DEFAULT NULL,
   `content` text,
   `target` varchar(100) NOT NULL DEFAULT '',
@@ -137,18 +208,62 @@ CREATE TABLE `message` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+
+# Dump of table message_sms
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `message_sms`;
+
+CREATE TABLE `message_sms` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `target` varchar(100) NOT NULL DEFAULT '',
+  `member_id` int(11) unsigned DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 # Dump of table message_template
 # ------------------------------------------------------------
 
 DROP TABLE IF EXISTS `message_template`;
+
 CREATE TABLE `message_template` (
-`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-`name` varchar(50) NOT NULL DEFAULT '',
-`type` varchar(50) NOT NULL DEFAULT '',
-`msg_type` varchar(50) NOT NULL DEFAULT '',
-`content` longtext,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `type` varchar(50) NOT NULL DEFAULT '',
+  `msg_type` varchar(50) NOT NULL DEFAULT '',
+  `content` longtext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+LOCK TABLES `message_template` WRITE;
+/*!40000 ALTER TABLE `message_template` DISABLE KEYS */;
+
+INSERT INTO `message_template` (`id`, `name`, `type`, `msg_type`, `content`)
+VALUES
+	(1,'通用短信验证码','vcode','sms','您的验证码:{{vcode}},请尽快填写完成验证，为保障您的账户安全，请勿外泄。'),
+	(2,'商品价格低于','lt','sms','尊敬的{{username}} ,您订阅的{{goods_name}}，现在价格{{price}}低于{{value}}，请及时查看');
+
+/*!40000 ALTER TABLE `message_template` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table message_wechat
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `message_wechat`;
+
+CREATE TABLE `message_wechat` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text,
+  `target` varchar(100) NOT NULL DEFAULT '',
+  `member_id` int(11) unsigned DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -166,6 +281,16 @@ CREATE TABLE `pam_account` (
   KEY `ind_account` (`login_account`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `pam_account` WRITE;
+/*!40000 ALTER TABLE `pam_account` DISABLE KEYS */;
+
+INSERT INTO `pam_account` (`id`, `account_id`, `login_account`, `login_type`)
+VALUES
+	(1,1,'admin','local'),
+	(2,1,'15527543053','mobile');
+
+/*!40000 ALTER TABLE `pam_account` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table pam_member
@@ -224,6 +349,61 @@ CREATE TABLE `setting` (
   `value` longtext COMMENT 'value',
   UNIQUE KEY `unique_key` (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设置';
+
+LOCK TABLES `setting` WRITE;
+/*!40000 ALTER TABLE `setting` DISABLE KEYS */;
+
+INSERT INTO `setting` (`key`, `value`)
+VALUES
+	('Wechat','a:6:{s:12:\"display_name\";s:18:\"微信信任登录\";s:9:\"order_num\";s:1:\"0\";s:6:\"app_id\";s:0:\"\";s:10:\"app_secret\";s:0:\"\";s:12:\"redirect_uri\";s:0:\"\";s:6:\"status\";s:5:\"false\";}');
+
+/*!40000 ALTER TABLE `setting` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table subscribe
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subscribe`;
+
+CREATE TABLE `subscribe` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) unsigned NOT NULL,
+  `goods_id` bigint(20) unsigned NOT NULL,
+  `rule` varchar(50) NOT NULL DEFAULT '',
+  `value` decimal(10,3) NOT NULL,
+  `mobile` bigint(15) DEFAULT NULL,
+  `email` tinyint(200) DEFAULT NULL,
+  `current_price` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `notice_price` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `app_notice` tinyint(1) NOT NULL DEFAULT '0',
+  `sms_notice` tinyint(1) NOT NULL DEFAULT '0',
+  `email_notice` tinyint(1) NOT NULL DEFAULT '0',
+  `wechat_notice` tinyint(1) NOT NULL DEFAULT '0',
+  `from_time` time DEFAULT NULL,
+  `to_time` time DEFAULT NULL,
+  `create_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table subscribe_notice
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subscribe_notice`;
+
+CREATE TABLE `subscribe_notice` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `member_id` int(11) NOT NULL,
+  `subscribe_id` int(11) unsigned NOT NULL,
+  `current_price` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `notice_price` decimal(10,3) NOT NULL DEFAULT '0.000',
+  `goods_id` bigint(18) unsigned NOT NULL,
+  `rule` varchar(255) NOT NULL DEFAULT '',
+  `create_time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 
