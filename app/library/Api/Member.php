@@ -3,7 +3,6 @@ namespace Api;
 
 use Component\Vcode;
 use Member\Auth;
-use Member\Message;
 
 class Member extends Base
 {
@@ -173,40 +172,33 @@ class Member extends Base
 
     }
 
-
     /**
-     * @String 手机号码
-     * @String 模版类型
-     *
-     * 发送短信
-     */
-    public function sendSms(){
-        $data = $this->request->getPost();
-        $vcode = new Vcode();
-        try{
-            if (!\Utils::isMobile($data['mobile'])) throw new \Exception('请输入有效的手机号码');
-            $vcode->sendSms($data['mobile'],$data['type']);
-        }catch(\Exception $e){
-            $this->error($e->getMessage());
-        }
-    }
-
-    /**
-     * @params String 邮箱地址
      * @params String  $type  Vcode|signin|signup 模版类型
-     * @params String  $title 标题
-     *
-     * 发送邮件
      */
-    public function sendEmail(){
+    public function sendSms()
+    {
         $data = $this->request->getPost();
         $vcode = new Vcode();
-        try{
-            if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
-            $vcode->sendEmail($data['email'],$data['type']);
-        }catch(\Exception $e){
+        try {
+            if (!\Utils::isMobile($data['mobile'])) throw new \Exception('请输入有效的手机号码');
+            $vcode->sendSms($data['mobile'], $data['type']);
+        } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
     }
 
+    /**
+     * @params String  $type  Vcode|signin|signup 模版类型
+     */
+    public function sendEmail()
+    {
+        $data = $this->request->getPost();
+        $vcode = new Vcode();
+        try {
+            if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
+            $vcode->sendEmail($data['email'], $data['type']);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+    }
 }

@@ -54,11 +54,11 @@ try{
 
     $app->post(
         "/api/member/sms",
-        array( new \Api\Member(),"sendSms")
+        array(new \Api\Member(),"sendSms")
     );
     $app->post(
         "/api/member/email",
-        array( new \Api\Member(),"sendEmail")
+        array(new \Api\Member(),"sendEmail")
     );
 
     $app->get(

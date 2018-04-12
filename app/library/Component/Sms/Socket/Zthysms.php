@@ -66,47 +66,31 @@ class Zthysms extends Base implements SmsInterface
     }
 
 
-    public function send($target,$content)
+    public function send($targets,$content)
     {
         $zthysms = \Setting::getConf('Zthysms');
-
         $data['tkey'] = date('YmdHis');
         $data['username'] = $zthysms['account'];
         $data['password'] = $this->getPassword($zthysms['password'], $data['tkey']);
         $data['content'] = $content . "【{$zthysms['sign']}】";
-        $data['mobile'] =implode(',',array_keys(\Utils::array_change_key($target ,'target')));
-
-        // 根据发送手机号码决定是否调用批量发送
-        if(count($target)>1){
+        $data['mobile'] =implode(',',$targets);
+        if(count($targets)>1){
             $url = $zthysms['array_api'];
         }else{
             $url = $zthysms['api'];
         }
-
         $res = \Utils::curl_client($url, $data, 'POST', 1);
         $this->logger->info('sms return :' . $res.'===content:'.$data['content'].'===mobile:'.$data['mobile']);
 
-        $message['type'] = 1;
-        $message['content'] = $content . "【{$zthysms['sign']}】";
-        $message['create_time'] = time();
-
-        foreach ($target as $v){
-            $msg = new \Message();
-            $message['target'] = $v['target'];
-            $message['member_id'] = $v['member_id'];
-            $msg->create($message);
-        }
         $msg = explode(',',$res);
-        if ($msg[0] != 1){
-            return false;
+        if ($msg[0] == 1){
+            return true;
         }
+        return false;
     }
 
     private function getPassword($password, $tkey)
     {
-
         return md5(md5($password) . $tkey);
     }
-
-
 }

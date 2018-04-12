@@ -18,10 +18,25 @@ class Send
         return false;
     }
 
+    public function send(array  $targets,$content,$title='')
+    {
+       return $this->_sendSms($targets,$content);
+    }
 
-    public function send($target,$content)
+    public function sendOne($target,$content,$title='')
+    {
+        return $this->send([$target] ,$content );
+    }
+
+    public function sendBatch(array $target_contents)
+    {
+        return $this->_sendSms($target_contents);
+    }
+
+    public function _sendSms($target,$content)
     {
         $this->init();
         return $this->socket->send($target,$content);
     }
+
 }

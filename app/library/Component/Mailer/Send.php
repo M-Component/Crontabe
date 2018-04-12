@@ -23,7 +23,7 @@ class Send
         }
     }
 
-    public function send($target, $content)
+    public function send($target, $content,$title)
     {
         $config = \Setting::getConf($this->driver);
         unset($config['order_num']);
@@ -35,16 +35,15 @@ class Send
         unset($config['email']);
         unset($config['name']);
 
-        $title = '便宜叫我';
         $mailer = new \Phalcon\Mailer\Manager($config);
         $message = $mailer->createMessage()
-            ->to($target[0]['target'], $target[0]['target'])
+            ->to($target, $target)
             ->subject($title)
             ->content($content);
 
         if ($message->send()) {
             $msg = new \Message();
-            $data['target'] = $target[0]['target'];
+            $data['target'] = $target;
             $data['type'] = 2;
             $data['title'] = $title;
             $data['content'] = $message->getContent();

@@ -2,7 +2,7 @@
 
 namespace Api;
 use Phalcon\Mvc\User\Component;
-class  Base extends Component{
+class Base extends Component{
     protected  $session_id;
 
     public function __construct(){
