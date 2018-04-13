@@ -66,24 +66,50 @@ class Zthysms extends Base implements SmsInterface
     }
 
 
-    public function send($targets,$content)
+    public function send($targets, $content)
     {
-        $zthysms = \Setting::getConf('Zthysms');
+        $zthysms = $this->getConfig();
         $data['tkey'] = date('YmdHis');
         $data['username'] = $zthysms['account'];
         $data['password'] = $this->getPassword($zthysms['password'], $data['tkey']);
         $data['content'] = $content . "【{$zthysms['sign']}】";
-        $data['mobile'] =implode(',',$targets);
-        if(count($targets)>1){
-            $url = $zthysms['array_api'];
-        }else{
-            $url = $zthysms['api'];
+        $data['mobile'] = implode(',', $targets);
+        if (count($targets) > 1) {
+            $url = $zthysms['batch_url'];
+        } else {
+            $url = $zthysms['url'];
         }
         $res = \Utils::curl_client($url, $data, 'POST', 1);
-        $this->logger->info('sms return :' . $res.'===content:'.$data['content'].'===mobile:'.$data['mobile']);
+        $this->logger->info('sms return :' . $res . '===content:' . $data['content'] . '===mobile:' . $data['mobile']);
 
-        $msg = explode(',',$res);
-        if ($msg[0] == 1){
+        $msg = explode(',', $res);
+        if ($msg[0] == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public function batchSend($target_contents)
+    {
+        $config = $this->getConfig();
+        $request_list = array();
+
+        $time = date('YmdHis');
+        foreach ($target_contents as $target) {
+            $request_list[] = array(
+                'url' => $config['url'],
+                'data' => array(
+                    'tkey' => $time,
+                    'username' => $config['account'],
+                    'password' => $this->getPassword($config['password'], $time),
+                    'content' => $target['content']."【{$config['sign']}】",
+                    'mobile' => $target['target']
+                )
+            );
+        }
+        $httpClient = new \HttpClient();
+        $result = $httpClient->multiple($request_list,'POST');
+        if ($result) {
             return true;
         }
         return false;
@@ -92,5 +118,10 @@ class Zthysms extends Base implements SmsInterface
     private function getPassword($password, $tkey)
     {
         return md5(md5($password) . $tkey);
+    }
+
+    public function getConfig()
+    {
+        return \Setting::getConf('Zthysms');
     }
 }

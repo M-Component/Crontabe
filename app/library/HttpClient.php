@@ -22,6 +22,7 @@ class HttpClient{
         return $this->errors;
     }
 
+
     //同一个请求地址
     public function  simpleMultiple($url ,$method='GET' , $pramas=[] ,$headers=[] ,$timeout=60){
         $request_list = [];

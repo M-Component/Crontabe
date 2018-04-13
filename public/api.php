@@ -53,11 +53,11 @@ try{
     );
 
     $app->post(
-        "/api/member/sms_vcode",
+        "/api/member/sms/vcode",
         array(new \Api\Member(),"sendSmsVcode")
     );
     $app->post(
-        "/api/member/email_vcode",
+        "/api/member/email/vcode",
         array(new \Api\Member(),"sendEmailVcode")
     );
 
