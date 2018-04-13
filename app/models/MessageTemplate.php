@@ -12,7 +12,7 @@ class MessageTemplate extends \Mvc\AdvModel
                 'name' => '模版名称',
             ),
 
-            'type'=>array(
+            'template'=>array(
                 'type' =>array(
                     'vcode'=>'通用验证码',
                     'signin'=>'登录验证码',
@@ -54,7 +54,7 @@ class MessageTemplate extends \Mvc\AdvModel
     public function validation()
     {
         $validator = new Validation();
-        $validator->add(array('type','msg_type'), new Uniqueness([
+        $validator->add(array('template','msg_type'), new Uniqueness([
             "message" => "已存在相同通知类型、模板类型的记录"
         ]));
         return $this->validate($validator);

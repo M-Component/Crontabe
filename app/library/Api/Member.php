@@ -1,11 +1,12 @@
 <?php
 namespace Api;
+
 use Member\Auth;
 use Component\Vcode;
 
 class Member extends Base
 {
-   // private $session_id;
+    // private $session_id;
     public function __construct()
     {
         $this->auth = new Auth();
@@ -24,16 +25,16 @@ class Member extends Base
                 }
             }
             $pamMember = \PamMember::findFirst(array(
-              "login_account = :login_account:",
-              "bind" => array('login_account' => $data['username'])
+                "login_account = :login_account:",
+                "bind" => array('login_account' => $data['username'])
             ));
-            if($pamMember){
-              throw new \Exception('该用户名已存在，不能重复');
+            if ($pamMember) {
+                throw new \Exception('该用户名已存在，不能重复');
             }
-            
-            $vcode = new \Component\Vcode();     
+
+            $vcode = new \Component\Vcode();
             if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
-              throw new \Exception('验证码错误');
+                throw new \Exception('验证码错误');
             }
             $member = new \Member();
             $pamMember = new \PamMember();
@@ -112,7 +113,7 @@ class Member extends Base
                         throw new \Exception($message);
                     }
                 }
-            }else{
+            } else {
                 $member = $pamMember->member;
             }
 
@@ -180,11 +181,12 @@ class Member extends Base
         //?验证消息类型
         try {
             if (!\Utils::isMobile($data['mobile'])) throw new \Exception('请输入有效的手机号码');
- 
-             $template =$data['template'];
-             $this->messageSender->setMsgType('sms')->setTemplate($template)->sendVcode(
+
+            $template = $data['template'];
+
+            $this->messageSender->setMsgType('sms')->setTemplate($template)->sendVcode(
                 array(
-                    'target' =>$data['mobile']
+                    'target' => $data['mobile']
                 )
             );
         } catch (\Exception $e) {
@@ -201,10 +203,10 @@ class Member extends Base
         $vcode = new Vcode();
         try {
             if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
-            $template =$data['type'];
+            $template = $data['type'];
             $this->messageSender->setMsgType('email')->setTemplate($template)->sendVcode(
                 array(
-                    'target' =>$data['email']
+                    'target' => $data['email']
                 )
             );
         } catch (\Exception $e) {

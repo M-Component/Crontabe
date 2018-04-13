@@ -64,26 +64,28 @@ class Message{
                 'create_time' =>$time
             );
         }
-       return $this->log_model->batchCreate($log_data);
+        return $this->log_model->batchCreate($log_data);
     }
 
     public function batchSend(array $target_contents){
         $this->_getSender();
-        $templates =\MessageTemplate::find("type='{$this->msg_type}'")->toArray();
+        $templates =\MessageTemplate::find("msg_type='{$this->msg_type}'")->toArray();
         $templates =\Utils::array_change_key($templates ,'template');
+
         $log_data = $send_data =[];
         $time =time();
-        foreach($target_contents as $v){
+        foreach($target_contents as $k => $v){
             $target =$v['target'];
-            $template =$templates[$v['template']];
-            $content =$template->content;
+            $template =$templates[$this->template];
+            $content =$template['content'];
             $this->_getContent($content ,$v['params']);
-            $title =$v['title'] ?: $this->_getTitle($content ,$v['params']);
+            $title =$v['title'] ?: $this->_getTitle($content ,$v);
             $send_data[]=[
                 'target'=>$target,
                 'content' =>$content,
                 'title' =>$title
             ];
+
             $log_data[] =[
                 'member_id' =>$v['member_id'] ? :0,
                 'target'=>$target,
@@ -93,6 +95,7 @@ class Message{
             ];
         }
         $this->sender->batchSend($send_data);
+        return $this->log_model->batchCreate($log_data);
     }
 
 

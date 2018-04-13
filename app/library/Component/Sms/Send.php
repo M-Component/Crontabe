@@ -5,38 +5,37 @@ class Send
 {
     private $socket;    // 通道
 
-    public function init($data = '')
+    public function __construct()
     {
         $smsModel = new \Sms();
-        $sockets= $smsModel->getAll();
-        foreach ($sockets as &$v){
-            if($v['status']=='true'){
-                $this ->socket = $smsModel->getObj($v['sms_name']);
+        $sockets = $smsModel->getAll();
+        foreach ($sockets as &$v) {
+            if ($v['status'] == 'true') {
+                $this->socket = $smsModel->getObj($v['sms_name']);
                 return $v;
             }
         }
         return false;
     }
 
-    public function send(array  $targets,$content,$title='')
+    public function send(array $targets, $content, $title = '')
     {
-       return $this->_sendSms($targets,$content);
+        return $this->_sendSms($targets, $content);
     }
 
-    public function sendOne($target,$content,$title='')
+    public function sendOne($target, $content, $title = '')
     {
-        return $this->send([$target] ,$content );
+        return $this->send([$target], $content);
     }
 
     public function batchSend(array $target_contents)
     {
-        return $this->_sendSms($target_contents);
+        return $this->socket->batchsend($target_contents);
     }
 
-    public function _sendSms($target,$content)
+    public function _sendSms($target, $content)
     {
-        $this->init();
-        return $this->socket->send($target,$content);
+        return $this->socket->send($target, $content);
     }
 
 }

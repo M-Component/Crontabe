@@ -20,9 +20,10 @@ class HttpClient{
     }
 
     public function multiple($request_list ,$method='GET' ,$timeout=20 ,$headers=array() ){
-
         $this->method =strtoupper($method);
-        $this->headers =$headers;
+        $this->headers =array(
+            'Content-Type'=>'application/x-www-form-urlencoded'
+        );
         $this->timeout =$timeout;
 
         $client = new Client(array(
@@ -57,14 +58,14 @@ class HttpClient{
         'Content-Length' =>strlen($data),
     )
     */
-    public function request($request_list ){
+    public function request($request_list){
         foreach ($request_list as $request) {
             $url =$request['url'];
             yield new Request(
                 $this->method,
                 $url,
                 $this->headers,
-                $request['data']
+                http_build_query($request['data'])
             );
         }
     }
