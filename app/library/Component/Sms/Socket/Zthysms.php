@@ -92,23 +92,21 @@ class Zthysms extends Base implements SmsInterface
     public function batchSend($target_contents)
     {
         $config = $this->getConfig();
-        $request_list = array();
+        $request_params = array();
 
         $time = date('YmdHis');
+        $url = $config['url'];
         foreach ($target_contents as $target) {
-            $request_list[] = array(
-                'url' => $config['url'],
-                'data' => array(
-                    'tkey' => $time,
-                    'username' => $config['account'],
-                    'password' => $this->getPassword($config['password'], $time),
-                    'content' => $target['content']."【{$config['sign']}】",
-                    'mobile' => $target['target']
-                )
+            $request_params[] = array(
+            'tkey' => $time,
+            'username' => $config['account'],
+            'password' => $this->getPassword($config['password'], $time),
+            'content' => $target['content']."【{$config['sign']}】",
+            'mobile' => $target['target']
             );
         }
         $httpClient = new \HttpClient();
-        $result = $httpClient->multiple($request_list,'POST');
+        $result = $httpClient->simpleMultiple($url,'POST',$request_params);
         if ($result) {
             return true;
         }
