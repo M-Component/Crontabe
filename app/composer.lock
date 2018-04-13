@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e334b15e0a654f5a469e3138f39bf7f",
+    "content-hash": "0663c4b0352caba9788fde895b20a634",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -186,6 +186,49 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "jpush/jpush",
+            "version": "v3.5.36",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jpush/jpush-api-php-client.git",
+                "reference": "5821589e6ae6dfabeee2bbc885045813bc079c24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/jpush/jpush-api-php-client/5821589e6ae6dfabeee2bbc885045813bc079c24.zip",
+                "reference": "5821589e6ae6dfabeee2bbc885045813bc079c24",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JPush\\": "src/JPush/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "JPush",
+                    "email": "support@jpush.cn",
+                    "homepage": "https://www.jpush.cn/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "JPush API PHP Client",
+            "homepage": "https://github.com/jpush/jpush-api-php-client",
+            "time": "2018-04-08T02:20:10+00:00"
         },
         {
             "name": "pear/pear_exception",

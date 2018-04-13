@@ -187,6 +187,51 @@
         ]
     },
     {
+        "name": "jpush/jpush",
+        "version": "v3.5.36",
+        "version_normalized": "3.5.36.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jpush/jpush-api-php-client.git",
+            "reference": "5821589e6ae6dfabeee2bbc885045813bc079c24"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/jpush/jpush-api-php-client/5821589e6ae6dfabeee2bbc885045813bc079c24.zip",
+            "reference": "5821589e6ae6dfabeee2bbc885045813bc079c24",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "*"
+        },
+        "time": "2018-04-08T02:20:10+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "JPush\\": "src/JPush/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "JPush",
+                "email": "support@jpush.cn",
+                "homepage": "https://www.jpush.cn/",
+                "role": "Developer"
+            }
+        ],
+        "description": "JPush API PHP Client",
+        "homepage": "https://github.com/jpush/jpush-api-php-client"
+    },
+    {
         "name": "pear/pear_exception",
         "version": "v1.0.0",
         "version_normalized": "1.0.0.0",

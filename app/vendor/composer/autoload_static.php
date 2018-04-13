@@ -16,6 +16,7 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
     public static $firstCharsPsr4 = array (
         'U' => true,
         'P' => true,
+        'J' => true,
         'G' => true,
     );
 
@@ -31,6 +32,10 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
         'Phalcon\\' => 
         array (
             0 => __DIR__ . '/..' . '/phalcon/incubator/Library/Phalcon',
+        ),
+        'JPush\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jpush/jpush/src/JPush',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

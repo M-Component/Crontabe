@@ -3,7 +3,8 @@
         "guzzlehttp/guzzle": "~6.0",
         "upyun/sdk": "^3.3",
         "pear/services_json": "dev-bugfix",
-	"phalcon/incubator": "^3.0"
+        "jpush/jpush": "^3.5",
+	      "phalcon/incubator": "^3.0"
     },
     "repositories": [
         {
