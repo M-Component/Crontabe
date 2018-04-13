@@ -12,7 +12,7 @@ class MessageAppController extends BackstageController
         $start =time();
 
         $request_list ;
-        for($i=0 ;$i<60;$i++){
+        for($i=0 ;$i<100;$i++){
             $request_list[] =array(
                 'url'=>'http://mmgo.com',
             );            
@@ -24,14 +24,13 @@ class MessageAppController extends BackstageController
 
         $end =time();
         echo $end-$start ;
-        exit;
     }
 
     function test2Action(){
         $start =time();
 
         $request_list =[];
-        for($i=0 ;$i<60;$i++){
+        for($i=0 ;$i<100;$i++){
             $request_list[] =array(
                 'url'=>'http://mmgo.com',
             );            
