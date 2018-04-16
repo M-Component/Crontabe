@@ -9,6 +9,9 @@ final class Sina extends Base implements OauthInterface
     public $login_type = 'weibo';
     public $name = '新浪微博(weibo)信任登录';
     public $version = '';
+    public $platform=array(
+        'pc','h5'
+    );
 
     public function __construct()
     {

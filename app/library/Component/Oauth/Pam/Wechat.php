@@ -10,6 +10,10 @@ final class Wechat extends Base implements OauthInterface
     public $name = '微信信任登录';
     public $version = '';
 
+    public $platform =array(
+        'pc','h5'
+    );
+
     public function __construct()
     {
         parent::__construct();

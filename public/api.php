@@ -53,12 +53,22 @@ try{
     );
 
     $app->post(
-        "/api/member/sms/vcode",
+        "/api/member/sms_vcode",
         array(new \Api\Member(),"sendSmsVcode")
     );
     $app->post(
-        "/api/member/email/vcode",
+        "/api/member/email_vcode",
         array(new \Api\Member(),"sendEmailVcode")
+    );
+
+
+    $app->get(
+        "/api/oauth",
+        array( new \Api\Oauth(),"getList")
+    );
+    $app->get(
+        "/api/oauth/{oauth_name}",
+        array( new \Api\Oauth(),"getOauth")
     );
 
     $app->get(

@@ -10,6 +10,10 @@ final class Wxapp extends Base implements OauthInterface
     public $name = 'APP微信信任登录';
     public $version = '';
 
+    public $platform =array(
+        'app'
+    );
+
     public function __construct()
     {
         parent::__construct();

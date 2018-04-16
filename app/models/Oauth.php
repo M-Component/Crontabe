@@ -16,11 +16,23 @@ class Oauth{
         return $this ->oauth_method[$id];
     }
 
-    public function getAll(){
+    public function getAll($filter =array()){
         $result =array();
         foreach($this ->oauth_method as $oauth_name){
-            $result[] = $this ->getInfo($oauth_name);
+            $oauth =$this ->getInfo($oauth_name);
+            if($filter['platform'] && !in_array( $filter['platform'], $oauth['platform'])){
+                continue;
+            }
+            if(isset($filter['status']) && $filter['status']!=$oauth['status']){
+                continue;
+            }
+            $result[] = $oauth;
         }
+        $volume =[];
+        foreach ($result as $key => $row) {
+            $volume[$key]  = $row['sort'];
+        }
+        array_multisort($volume, SORT_ASC,SORT_NUMERIC , $result);
         return $result;
     }
 
@@ -45,6 +57,7 @@ class Oauth{
             'name' => $oauth->name,
             'version' => $oauth->version,
             'login_type'=>$oauth->login_type,
+            'platform' => $oauth->platform,
             'display_name' => $conf['display_name'],
             'order_num' => $conf['order_num'] ? $conf['order_num'] : 0,
             'oauth_name' => $oauth_name,

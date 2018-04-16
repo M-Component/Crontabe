@@ -9,6 +9,9 @@ final class Qq extends Base implements OauthInterface
     public $login_type = 'qq';
     public $name = 'QQ信任登录';
     public $version = '';
+    public $platform=array(
+        'pc','h5'
+    );
 
     public function __construct()
     {
