@@ -16,12 +16,15 @@ class HttpClient{
 
     private $return=[];
 
-    private $max_concurrency =16;
+    private $max_concurrency =3000;
 
     public function getErrors(){
         return $this->errors;
     }
 
+    public function cliMultiple(){
+        
+    }
 
     //同一个请求地址
     public function  simpleMultiple($url ,$method='GET' , $pramas=[] ,$headers=[] ,$timeout=60){
@@ -92,6 +95,7 @@ class HttpClient{
         $promise->wait();
         return $this->return;
     }
+
 
     private function getHeaders($data){
         if($this->method !='GET' && !isset($this->headers['Content-Type'])){
