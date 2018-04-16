@@ -169,7 +169,12 @@ class Member extends Base
     //第三方登录绑定
     public function oauth()
     {
-
+        $data =$this->request->getPost();
+        try{
+            
+        }catch(\Exception  $e){
+            $this->erro($e->getMessage());
+        }
     }
 
     /**

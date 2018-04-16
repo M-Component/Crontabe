@@ -108,7 +108,7 @@ class HttpClient{
         $host =$options['host'];
         $port =$options['port'];
         $ssl =$options['ssl'];
-        foreach($params as $request_data) {
+        foreach($params as $i=>$request_data) {
             $uri =$options['path'];
 
             $this->getHeaders($request_data);
@@ -119,12 +119,18 @@ class HttpClient{
             if($method =='GET'){
                 $uri .= $request_data ? '?'.$request_data : '';
                 $client->get($uri, function ($o) use($client ,&$result) {
-                    $result[] =$o->body;
+                    $result[] =array(
+                        'index'=>$i,
+                        'content'=>$o->body
+                    );
                     $client->close();
                 });                
             }else{
                 $client->post($uri, $request_data, function ($o) use($client ,&$result) {
-                    $result[] =$o->body;
+                    $result[] =array(
+                        'index'=>$i,
+                        'content'=>$o->body
+                    );
                     $client->close();
                 });                  
             }

@@ -15,10 +15,12 @@ $loader->registerDirs(
     [
         APP_PATH . "/app/tasks",
         APP_PATH . "/app/library",
+        APP_PATH.'/app/vendor'
     ]
 );
 
 $loader->register();
+require APP_PATH.'/app/vendor/autoload.php';
 
 
 

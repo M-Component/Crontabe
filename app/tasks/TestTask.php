@@ -12,7 +12,7 @@ class TestTask extends Task implements \Task\TaskInterface
     {
         echo 'This is the default task and the default action' . PHP_EOL;
         $http = new \HttpClient();
-        $url ='http://www.mmgo.com/passport-login.html';
+        $url ='https://www.dongchaguan.cn/passport/login';
         $params =array();
         for($i=0;$i<100 ;$i++){
             $params[] =array(
@@ -21,7 +21,8 @@ class TestTask extends Task implements \Task\TaskInterface
         }
         $re =$http->simpleMultiple($url ,'GET' ,$params );
         foreach($re as $v){
-            var_dump(strlen($v));
+            var_dump($v['content']);
+            var_dump(strlen($v['content']));
         }
     }
 }
