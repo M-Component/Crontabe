@@ -26,7 +26,7 @@ class SubscribeConsumer implements \Task\TaskInterface{
 
         $pattern = 'subscribe-'.$goods_id.'-*';
         $it = null;
-        $limit =1000;
+        $limit =100;
 
         do  
         {  
