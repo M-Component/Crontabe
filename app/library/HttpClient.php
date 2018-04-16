@@ -22,20 +22,21 @@ class HttpClient{
         return $this->errors;
     }
 
-    public function cliMultiple(){
-        
-    }
-
     //同一个请求地址
     public function  simpleMultiple($url ,$method='GET' , $params=[] ,$headers=[] ,$timeout=60){
-        $request_list = [];
-        foreach($params as $data){
-            $request_list[] =[
-                'url' =>$url,
-                'data' =>$data
-            ];
+        $method =strtoupper($method);
+        if(isset($_SERVER['SHELL']) && in_array($method ,array('GET', 'POST'))){
+            return $this->_cliMultiple($url ,$method ,$params ,$headers ,$timeout);
+        }else{
+            $request_list = [];
+            foreach($params as $data){
+                $request_list[] =[
+                    'url' =>$url,
+                    'data' =>$data
+                ];
+            }
+            return $this->multiple($request_list ,$method ,$headers ,$timeout);            
         }
-        return $this->multiple($request_list ,$method ,$headers ,$timeout);
     }
 
 
@@ -48,15 +49,17 @@ class HttpClient{
         $client = new Client(array(
             'timeout'  => $timeout,
         ));
+        //        $client->setDefaultOption('verify', false);
 
         $requests = function ($request_count)use($request_list ,$client ) {
             foreach($request_list as $request){
                 $this->getHeaders($request['data']);
                 $url =$request['url'];
-                $request_data =is_array($request['data']) ? http_build_query($request['data']) : null;
+                $request_data =is_array($request['data']) ? http_build_query($request['data']) : '';
 
                 if($this->method =='GET'){
                     $url .= $request_data ? ('?'.$request_data)  :'';
+                    $request_data =null;
                 }
                 yield new Request(
                     $this->method,
@@ -96,6 +99,40 @@ class HttpClient{
         return $this->return;
     }
 
+    private function _cliMultiple($url, $method, $params  ,$headers=array() ,$timeout=60){
+        $this->method =strtoupper($method);
+        $this->headers =$headers;
+        $timeout =$timeout ? : -1;
+        $result =[];
+        $options =$this->_getOptions($url);
+        $host =$options['host'];
+        $port =$options['port'];
+        $ssl =$options['ssl'];
+        foreach($params as $request_data) {
+            $uri =$options['path'];
+
+            $this->getHeaders($request_data);
+            $client = new \swoole_http_client($host , $port, $ssl);
+            $client->set(['timeout'=>$timeout]);
+            $client->setHeaders($this->headers);
+            $request_data =is_array($request_data) ? http_build_query($request_data) : '';
+            if($method =='GET'){
+                $uri .= $request_data ? '?'.$request_data : '';
+                $client->get($uri, function ($o) use($client ,&$result) {
+                    $result[] =$o->body;
+                    $client->close();
+                });                
+            }else{
+                $client->post($uri, $request_data, function ($o) use($client ,&$result) {
+                    $result[] =$o->body;
+                    $client->close();
+                });                  
+            }
+        }
+        \Swoole\Event::wait();
+        return $result;
+    }
+
 
     private function getHeaders($data){
         if($this->method !='GET' && !isset($this->headers['Content-Type'])){
@@ -105,5 +142,15 @@ class HttpClient{
                 $this->headers['Content-Length'] =strlen($data);
             }
         }
+        return $this->headers;
+    }
+
+    private function _getOptions($url){
+        $url_arr =parse_url($url);
+        $return['host']= $url_arr['host'];
+        $return['path']= $url_arr['path'];
+        $return['ssl'] =$url_arr['scheme']=='https' ? true :false;
+        $return['port'] =isset($url_arr['port']) ? $url_arr['port'] :($url_arr['scheme']=='https' ?443: 80);
+        return $return;
     }
 }
