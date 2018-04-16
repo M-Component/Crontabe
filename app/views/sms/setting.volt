@@ -2,7 +2,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             <span aria-hidden="true">×</span>
         </button>
-        <h3 class="modal-title">配置 {{sms['display_name']}}<small>{{sms['sms_name']}}</small></h3>
+        <h3 class="modal-title">配置 {{sms['display_name']}}<small> {{sms['sms_name']}} </small></h3>
 </div>
 
 
@@ -37,7 +37,7 @@
                             {%endif%}
 
                             {%if input['type'] == 'hidden'%}
-                                <input type="hidden" name="{{input_name}}" value="{{proxy['setting'][key]}}">
+                                <input type="hidden" name="{{input_name}}" value="{{sms['setting'][key]}}">
                             {%else%}
 
                             <div class="form-group">
