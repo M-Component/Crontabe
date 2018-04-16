@@ -27,10 +27,10 @@ class HttpClient{
     }
 
     //同一个请求地址
-    public function  simpleMultiple($url ,$method='GET' , $pramas=[] ,$headers=[] ,$timeout=60){
+    public function  simpleMultiple($url ,$method='GET' , $params=[] ,$headers=[] ,$timeout=60){
         $request_list = [];
         foreach($params as $data){
-            $request_list =[
+            $request_list[] =[
                 'url' =>$url,
                 'data' =>$data
             ];
@@ -53,8 +53,8 @@ class HttpClient{
             foreach($request_list as $request){
                 $this->getHeaders($request['data']);
                 $url =$request['url'];
-                $request_data =is_array($request['data']) ? http_build_query($request_data['data']) : null;
-                
+                $request_data =is_array($request['data']) ? http_build_query($request['data']) : null;
+
                 if($this->method =='GET'){
                     $url .= $request_data ? ('?'.$request_data)  :'';
                 }
@@ -100,7 +100,7 @@ class HttpClient{
     private function getHeaders($data){
         if($this->method !='GET' && !isset($this->headers['Content-Type'])){
             $this->headers['Content-Type']=['application/x-www-form-urlencoded'];
-            if(is_string($request['data'])){
+            if(is_string($data)){
                 $this->headers['Content-Type'] =['application/json; charset=utf-8'];
                 $this->headers['Content-Length'] =strlen($data);
             }
