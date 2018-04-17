@@ -187,6 +187,8 @@ class Member extends Base
                     'target' => $data['mobile']
                 )
             );
+
+            $this->success('发送成功');
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
@@ -207,6 +209,7 @@ class Member extends Base
                     'target' => $data['email']
                 )
             );
+            $this->success('发送成功');
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
