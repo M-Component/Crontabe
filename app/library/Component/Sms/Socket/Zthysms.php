@@ -38,12 +38,12 @@ class Zthysms extends Base implements SmsInterface
                 'type' => 'text',
                 'default' => ''
             ),
-            'api' => array(
+            'url' => array(
                 'title' => 'API地址',
                 'type' => 'text',
                 'default' => ''
             ),
-            'array_api' => array(
+            'batch_url' => array(
                 'title' => '批量发送地址',
                 'type' => 'text',
                 'default' => ''
