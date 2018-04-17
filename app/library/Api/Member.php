@@ -59,8 +59,7 @@ class Member extends Base
                     throw new \Exception($message);
                 }
             }
-            $member->updateMemberLoginCount($member->id);
-            $this->auth->saveLoginSession($member->toArray());
+            $this->auth->saveLoginSession($member);
             $this->success($member);
 
         } catch (\Exception $e) {
@@ -117,8 +116,7 @@ class Member extends Base
                 $member = $pamMember->member;
             }
 
-            $member->updateMemberLoginCount($member->id);
-            $this->auth->saveLoginSession($member->toArray());
+            $this->auth->saveLoginSession($member);
             $this->success($member);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
@@ -142,8 +140,7 @@ class Member extends Base
 
             $pamMember = new \PamMember();
             $member = $pamMember->checkLogin($data['username'], $data['login_password']);
-            $member->updateMemberLoginCount($member->id);
-            $this->auth->saveLoginSession($member->toArray());
+            $this->auth->saveLoginSession($member);
             $this->success($member);
 
         } catch (\Exception $e) {
