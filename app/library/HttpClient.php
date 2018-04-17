@@ -16,7 +16,7 @@ class HttpClient{
 
     private $return=[];
 
-    private $max_concurrency =3000;
+    private $max_concurrency =100;
 
     public function getErrors(){
         return $this->errors;

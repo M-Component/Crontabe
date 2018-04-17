@@ -12,15 +12,15 @@ class Auth extends Component{
         $this ->removeLoginSession();
         return false;
     }
-    public function saveLoginSession($member_data)
+    public function saveLoginSession(\Member $member)
     {
         $expire = time() +3600*24*30;
-        $this ->cookies->set('UID' ,$member_data['id'] ,$expire);
-        $this ->cookies->set('UNAME' ,$member_data['username'] ,$expire);
+        $this ->cookies->set('UID' ,$member->id ,$expire);
+        $this ->cookies->set('UNAME' ,$member->username ,$expire);
 
         $this->session->set('member', array(
-            'member_id' => $member_data['id'],
-            'login_account' => $member_data['username'],
+            'member_id' => $member->id,
+            'username' => $member->username,
         ));
 
         $this->updateExpireTime();
@@ -51,12 +51,12 @@ class Auth extends Component{
     }
 
 
-    public function rememberMember($member_data)
+    public function rememberMember(\Member $member)
     {
         $userAgent = $this->request->getUserAgent();
-        $token = md5($member_data['username'] . $member_data['login_password'] . $userAgent);
+        $token = md5($member->username. $member->login_password . $userAgent);
         $expire = time() + 86400 * 8;
-        $this->cookies->set('RMU',$member_data['id'], $expire);
-        $this->cookies->set('RMT', $token, $expire);
+        $this->cookies->set('RMU',$member->id, $expire);
+        $this->cookies->set('RMT',$token, $expire);
     }
 }

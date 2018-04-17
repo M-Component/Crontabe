@@ -23,10 +23,13 @@ class SubscribeConsumer implements \Task\TaskInterface{
         $this->goods =json_decode($goods_row);
         $goods_id =$this->goods['goods_id'];
         $price =$this->goods['price'];
+        //更新订阅记录的价格
+        $subscribe = new \Subscribe();
+        $subscribe->batchUpdate(array('last_price'=>$price),array('goods_id' =>$goods_id));
 
         $pattern = 'subscribe-'.$goods_id.'-*';
         $it = null;
-        $limit =1000;
+        $limit =100;
 
         do  
         {  

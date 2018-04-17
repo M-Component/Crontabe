@@ -3,10 +3,19 @@
 namespace Api;
 use Phalcon\Mvc\User\Component;
 class Base extends Component{
-    protected  $session_id;
+    protected $session_id;
+
+    protected $member;
 
     public function __construct(){
         $this->session_id =$this->session->getId();
+    }
+
+    protected function checkLogin(){
+        if(!$member =$this->auth->isLogin()){
+            $this->error('请先登录',500);
+        }
+        $this->member =$member;
     }
 
     protected function success($data){
