@@ -112,5 +112,8 @@ return new \Phalcon\Config([
                 'table' => 'crontab',
             ],
         ]
+    ],
+    'api'=>[
+        'translation'=>'http://120.132.13.132'
     ]
 ]);
