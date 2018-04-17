@@ -16,7 +16,7 @@ class Goods extends Base
         if(!$goods['errorCode']){
             $this->success($goods);   
         }
-        $this->error($goods['msg'])
+        $this->error($goods['msg']);
     }
 
     public function getGoodsRow($id)
@@ -29,6 +29,6 @@ class Goods extends Base
         if(!$goods['errorCode']){
             $this->success($goods);   
         }
-        $this->error($goods['msg'])
+        $this->error($goods['msg']);
     }
 }
