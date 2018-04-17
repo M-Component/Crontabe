@@ -25,8 +25,11 @@ class Base extends Component{
                 'msg'=>$data
             );
         }
-
-        $this ->response ->setJsonContent($data);
+        if($fun =$this->request->get('callback')){
+            $this->response->setContent($fun.'('.json_encode($data).')');
+        }else{
+            $this ->response ->setJsonContent($data);            
+        }
         $this ->response ->send();
         exit;
     }
@@ -36,7 +39,12 @@ class Base extends Component{
             'errorCode'=>$code,
             'msg' =>$msg
         );
-        $this ->response ->setJsonContent($data) ;
+        if($fun =$this->request->get('callback')){
+            $this->response->setContent($fun.'('.json_encode($data).')');
+        }else{
+            $this ->response ->setJsonContent($data);            
+        }
+
         $this ->response ->send();
         exit;
     }
