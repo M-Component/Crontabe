@@ -12,11 +12,7 @@ class Goods extends Base
         $data['keywords'] = $this->request->get('keywords');
         $data['store_name'] = $this->request->get('store_name');
         $goods = \Utils::curl_client($this->config."/api/search/goods", $data);
-        $this->response->setHeader('Content-Type', 'application/json');
-        $this->response->setContent($goods);
-        $this->response->send();
-        exit;
-
+        $this->success($goods);
     }
 
     public function getGoodsRow($id)
@@ -25,9 +21,6 @@ class Goods extends Base
             $this->getList();
         }
         $goods = \Utils::curl_client($this->config."/api/search/goods/" . $id);
-        $this->response->setHeader('Content-Type', 'application/json');
-        $this->response->setContent($goods);
-        $this->response->send();
-        exit;
+        $this->success($goods);
     }
 }
