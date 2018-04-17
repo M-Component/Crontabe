@@ -12,7 +12,11 @@ class Goods extends Base
         $data['keywords'] = $this->request->get('keywords');
         $data['store_name'] = $this->request->get('store_name');
         $goods = \Utils::curl_client($this->config."/api/search/goods", $data);
-        $this->success($goods);
+        $goods = json_decode($goods,1);
+        if(!$goods['errorCode']){
+            $this->success($goods);   
+        }
+        $this->error($goods['msg'])
     }
 
     public function getGoodsRow($id)
@@ -21,6 +25,10 @@ class Goods extends Base
             $this->getList();
         }
         $goods = \Utils::curl_client($this->config."/api/search/goods/" . $id);
-        $this->success($goods);
+        $goods = json_decode($goods,1);
+        if(!$goods['errorCode']){
+            $this->success($goods);   
+        }
+        $this->error($goods['msg'])
     }
 }
