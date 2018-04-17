@@ -71,7 +71,7 @@ try{
     );
 
     $app->get(
-        "/api/comments/{id}",
+        "/api/goods/{id}/comments",
         array(new \Api\Goods(),"getComments")
     );
 
