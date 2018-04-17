@@ -19,7 +19,7 @@ class Jpush extends Base implements MsgPushInterface {
                 'type' => 'text',
                 'default' => $this->name
             ),
-            'push' => array(
+            /*'push' => array(
                 'title' => '推送地址 API',
                 'type' => 'text',
                 'default' => ''
@@ -38,7 +38,7 @@ class Jpush extends Base implements MsgPushInterface {
                 'title' => '推送校验 API',
                 'type' => 'text',
                 'default' => ''
-            ),
+            ),*/
             'app_key' => array(
                 'title' => 'APP_KEY',
                 'type' => 'text',
