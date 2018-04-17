@@ -80,14 +80,16 @@ class Member extends Base
                 }
             }
 
-            $vcode = new \Component\Vcode();
-            if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
-                throw new \Exception('验证码错误');
-            }
             $pamMember = \PamMember::findFirst(array(
                 "login_account = :login_account:",
                 "bind" => array('login_account' => $data['username'])
             ));
+
+            $pamMember?$template = 'signin':$template='signup';
+            $vcode = new \Component\Vcode();
+            if (!$vcode->verify($data['username'], $template, $data['vcode'])) {
+                throw new \Exception('验证码错误');
+            }
 
             if (!$pamMember) {
                 $member = new \Member();
@@ -187,7 +189,6 @@ class Member extends Base
                     'target' => $data['mobile']
                 )
             );
-
             $this->success('发送成功');
         } catch (\Exception $e) {
             $this->error($e->getMessage());
