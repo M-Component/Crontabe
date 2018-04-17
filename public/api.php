@@ -71,6 +71,11 @@ try{
     );
 
     $app->get(
+        "/api/comments/{id}",
+        array(new \Api\Goods(),"getComments")
+    );
+
+    $app->get(
         "/api/oauth",
         array( new \Api\Oauth(),"getList")
     );
