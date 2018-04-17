@@ -7,10 +7,6 @@ use Component\Vcode;
 class Member extends Base
 {
     // private $session_id;
-    public function __construct()
-    {
-        $this->auth = new Auth();
-    }
 
     //用户注册
     public function signup()

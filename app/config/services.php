@@ -280,5 +280,9 @@ $di->setShared('messageSender', function () {
     return new Member\Message();
 });
 
+$di->setShared('auth', function () {
+    return new Member\Auth();
+});
+
 $config = $di->getConfig();
 date_default_timezone_set($config->datetime_zone);
