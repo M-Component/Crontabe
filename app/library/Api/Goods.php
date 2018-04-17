@@ -32,9 +32,8 @@ class Goods extends Base
         $this->error($goods['msg']);
     }
     
-    public function getComments(){
-        $id= $this->request->get('id');
-        $comments = \Utils::curl_client($this->config."/api/search/goods/".$id."/comments");
+    public function getComments($goods_id){
+        $comments = \Utils::curl_client($this->config."/api/search/goods/".$goods_id."/comments");
         $comments = json_decode($comments,1);
         if (!$comments['errorCode']){
             $this->success($comments);
