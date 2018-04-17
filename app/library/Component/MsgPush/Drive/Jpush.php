@@ -2,9 +2,15 @@
 namespace Component\MsgPush\Drive;
 use Component\MsgPush\MsgPushInterface;
 
+use JPush\Client as JpushClient;
 class Jpush extends Base implements MsgPushInterface {
+
     public $name = '极光推送';
 
+    public function __construct(){
+        $conf = $this->getConf('jpush');
+        $this->jpush_client = new JpushClient($conf['app_key'],$conf['master_secret']);
+    }
     public function setting()
     {
         return array(
@@ -59,16 +65,31 @@ class Jpush extends Base implements MsgPushInterface {
             ),
         );
     }
-    
-    public function send(){
 
+    public function send(array $registrationId,$alert,$title,$message){
+        $push_payload = $this->jpush_client->push()
+            ->setPlatform(array('ios','android'))
+            ->addRegistrationId($registrationId)
+            ->setNotificationAlert($alert)  // 统一通知的内容
+            ->iosNotification('',array(
+                'sound' => 'sound.caf',
+            ))
+            ->androidNotification('',array(
+                'title' => $title,
+            ))
+            ->message($message,array(
+                'title' =>$title,
+            ));
+        try {
+            $response = $push_payload->send();
+            return true;
+        } catch (\JPush\Exceptions\APIConnectionException $e) {
+            return false;
+        } catch (\JPush\Exceptions\APIRequestException $e) {
+            return false;
+        }
     }
-    
-    public function SendOne(){
-
-    }
-    
-    public function batchSend(){
-
+    public function sendOne($registrationId,$alert,$title,$message){
+        $this->send([$registrationId],$alert,$title,$message);
     }
 }

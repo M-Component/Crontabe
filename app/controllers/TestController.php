@@ -48,26 +48,13 @@ class TestController extends BackstageController
     // App 推送消息
     public function pushAction()
     {
-        $setting = new Setting();
-        $conf = $setting->getConf('jpush');
-        $client = new Client($conf['app_key'],$conf['master_secret']);
+        $jpush =new \Component\MsgPush\Drive\Jpush();
+        $send = $jpush->send();
 
-        $push_api = "https://bjapi.push.jiguang.cn/v3/push";
+        var_dump($send);exit;
 
-        $push_payload = $client->push()
-            ->setPlatform('all')
-            ->addAllAudience()  // 如果要发广播（全部设备），则直接填写 “all”。推送设备对象，表示一条推送可以被推送到哪些设备列表。确认推送设备对象，JPush 提供了多种方式，比如：别名、标签、注册ID、分群、广播等。
-            ->setNotificationAlert('Hi, JPush');
-        try {
-            $response = $push_payload->send();
-            print_r($response);
-        } catch (\JPush\Exceptions\APIConnectionException $e) {
-            // try something here
-            print $e;
-        } catch (\JPush\Exceptions\APIRequestException $e) {
-            // try something here
-            print $e;
-        }
+
+
     }
 
 }
