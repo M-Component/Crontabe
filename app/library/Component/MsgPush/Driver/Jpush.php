@@ -7,9 +7,10 @@ class Jpush extends Base implements MsgPushInterface {
 
     public $name = '极光推送';
 
+    private $conf;
+
     public function __construct(){
-        $conf = $this->getConf('jpush');
-        $this->jpush_client = new JpushClient($conf['app_key'],$conf['master_secret']);
+        $this->conf =$this->getConf(null ,'JPush');
     }
     public function setting()
     {
@@ -19,26 +20,6 @@ class Jpush extends Base implements MsgPushInterface {
                 'type' => 'text',
                 'default' => $this->name
             ),
-            /*'push' => array(
-                'title' => '推送地址 API',
-                'type' => 'text',
-                'default' => ''
-            ),
-            'cid' => array(
-                'title' => 'cid池 API',
-                'type' => 'text',
-                'default' => ''
-            ),
-            'group_push' => array(
-                'title' => '应用分组推送 API',
-                'type' => 'text',
-                'default' => ''
-            ),
-            'validate' => array(
-                'title' => '推送校验 API',
-                'type' => 'text',
-                'default' => ''
-            ),*/
             'app_key' => array(
                 'title' => 'APP_KEY',
                 'type' => 'text',
@@ -66,8 +47,9 @@ class Jpush extends Base implements MsgPushInterface {
         );
     }
 
-    public function send(array $registrationId,$alert,$title,$message){
-        $push_payload = $this->jpush_client->push()
+    public function send(array $registrationId,$message,$title,$alert){
+        $jpush_client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
+        $push_payload = $jpush_client->push()
             ->setPlatform(array('ios','android'))
             ->addRegistrationId($registrationId)
             ->setNotificationAlert($alert)  // 统一通知的内容
@@ -97,5 +79,9 @@ class Jpush extends Base implements MsgPushInterface {
         foreach ($registrationid_alerts as $item){
             $this->sendOne($item['registrationId'],$item['alert'],$item['title'],$item['message']);
         }
+    }
+
+    public function sendByTags(){
+        
     }
 }

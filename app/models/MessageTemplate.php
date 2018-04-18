@@ -33,7 +33,10 @@ class MessageTemplate extends \Mvc\AdvModel
                 ),
                 'name'=>'通知类型',
             ),
-
+            'title'=>array(
+                'type' => 'text',
+                'name' => '标题',
+            ),
             'content'=>array(
                 'type'=>'code',
                 'name'=>'模板内容'

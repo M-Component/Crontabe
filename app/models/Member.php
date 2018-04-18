@@ -36,11 +36,6 @@ class Member extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->useDynamicUpdate(true);
-        $this->hasMany(
-            'id',
-            'PamMember',
-            'member_id'
-        );
     }
 
     public function finder_extends_columns()
@@ -62,11 +57,7 @@ class Member extends \Phalcon\Mvc\Model
 
     public function validation()
     {
-        $validator = new Validation();
-        $validator->add(array('username'), new Uniqueness([
-            "message" => "该用户名已存在，不能重复"
-        ]));
-        return $this->validate($validator);
+
     }
 
 }

@@ -11,9 +11,9 @@ class Base extends Component
      * @param $pkey string
      * @return mixed
      */
-    public function getConf($pkey)
+    public function getConf($key=null ,$pkey)
     {
         $val = \Setting::getConf($pkey);
-        return $val;
+        return $key ? $val[$key] :$val;
     }
 }

@@ -48,13 +48,21 @@ class Member extends Base
                 $pamMember->login_type = 'email';
                 $member->email = $data['username'];
             }
-
-            $member->pamMember = $pamMember;
+            $this->db->begin();
             if (false === $member->create()) {
                 foreach ($member->getMessages() as $message) {
+                    $this->db->rollback();
                     throw new \Exception($message);
                 }
             }
+            $pamMember->member_id =$member->id;
+            if (false === $pamMember->create()) {
+                foreach ($pamMember->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
+            $this->db->commit();
             $this->auth->saveLoginSession($member);
             $this->success($member);
 
@@ -101,13 +109,23 @@ class Member extends Base
                 $pamMember->login_account = $data['username'];
                 $pamMember->login_type = 'mobile';
                 $member->mobile = $data['username'];
-                $member->pamMember = $pamMember;
 
+                $this->db->begin();
                 if ($member->create() === false) {
                     foreach ($member->getMessages() as $message) {
+                        $this->db->rollback();
                         throw new \Exception($message);
                     }
                 }
+
+                $pamMember->member_id =$member->id;
+                if (false === $pamMember->create()) {
+                    foreach ($pamMember->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                $this->db->commit();
             } else {
                 $member = $pamMember->member;
             }
@@ -164,7 +182,60 @@ class Member extends Base
     {
         $data =$this->request->getPost();
         try{
-            
+            $validation = new \Validation\Member\Oauth();
+            $messages = $validation->validate($data);
+            if (count($messages)) {
+                foreach ($messages as $message) {
+                    throw new \Exception($message);
+                }
+            }
+
+            $userinfo =$data['userinfo'];
+            $type =$data['type'];
+            $userinfo = json_decode($userinfo,1);
+
+            $memberOauth =\MemberOauth::findFirst(array(
+                "open_id = :open_id: AND type= :type:",
+                "bind" => array('open_id' => $userinfo['openid'] ,'type'=>$type)
+            ));
+            if(!$memberOauth){
+                $member = new \Member();
+
+                $password = \Utils::generate_password();
+                $member->username = $userinfo['nickname'];
+                $member->login_password = $password;
+                $member->reg_ip = $this->request->getClientAddress();
+
+                $member->nickname = $userinfo['nickname'];
+                $member->avatar = $userinfo['headimgurl'];
+                $member->sex = $userinfo['sex'] ? :0;
+
+                $memberOauth = new \MemberOauth();
+                $memberOauth->open_id =$userinfo['openid'];
+                $memberOauth->type =$type;
+                $memberOauth->union_id =$userinfo['unionid'];
+
+                $this->db->begin();
+                if ($member->create() === false) {
+                    foreach ($member->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                $memberOauth->member_id =$member->id;
+                if ($memberOauth->create() ===false) {
+                    foreach ($memberOauth->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                $this->db->commit();
+            }else{
+                $member =$memberOauth->member;
+            }
+            $this->auth->saveLoginSession($member);
+            $this->success($member);
+
         }catch(\Exception  $e){
             $this->error($e->getMessage());
         }
