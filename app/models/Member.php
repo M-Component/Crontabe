@@ -62,11 +62,7 @@ class Member extends \Phalcon\Mvc\Model
 
     public function validation()
     {
-        $validator = new Validation();
-        $validator->add(array('username'), new Uniqueness([
-            "message" => "该用户名已存在，不能重复"
-        ]));
-        return $this->validate($validator);
+
     }
 
 }

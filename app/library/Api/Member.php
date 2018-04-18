@@ -185,9 +185,12 @@ class Member extends Base
 
                 $password = \Utils::generate_password();
                 $member->username = $userinfo['nickname'];
-                $member->nickname = $userinfo['nickname'];
                 $member->login_password = $password;
                 $member->reg_ip = $this->request->getClientAddress();
+
+                $member->nickname = $userinfo['nickname'];
+                $member->avatar = $userinfo['headimgurl'];
+                $member->sex = $userinfo['sex'] ? :0;
 
                 $memberOauth = new \MemberOauth();
                 $memberOauth->open_id =$userinfo['openid'];
@@ -200,8 +203,8 @@ class Member extends Base
                     }
                 }
                 $memberOauth->member_id =$member->id;
-                if ($memberOauth->create() === false) {
-                    foreach ($member->getMessages() as $message) {
+                if ($memberOauth->create() ===false) {
+                    foreach ($memberOauth->getMessages() as $message) {
                         throw new \Exception($message);
                     }
                 }

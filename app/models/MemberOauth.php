@@ -18,13 +18,6 @@ class MemberOauth extends \Phalcon\Mvc\Model
 
     public function validation()
     {
-        /*
-        $validator = new Validation();
-        $validator->add(array('login_account'), new Uniqueness([
-            "message" => "该账号/手机号/邮箱已存在"
-        ]));
-        return $this->validate($validator);
-        */
     }
 
     public function beforeCreate(){
