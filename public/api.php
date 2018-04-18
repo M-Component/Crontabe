@@ -47,6 +47,11 @@ try{
         array( new \Api\Member(),"oauth")
     );
 
+    $app->post(
+        "/api/member/bind",
+        array( new \Api\Member(),"bind")
+    );
+
     $app->get(
         "/api/member/{id}/logout",
         array( new \Api\Member(),"logout")

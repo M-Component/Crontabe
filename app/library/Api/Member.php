@@ -177,7 +177,7 @@ class Member extends Base
 
     }
 
-    //第三方登录绑定
+    //第三方登录
     public function oauth()
     {
         $data =$this->request->getPost();
@@ -237,6 +237,75 @@ class Member extends Base
             $this->success($member);
 
         }catch(\Exception  $e){
+            $this->error($e->getMessage());
+        }
+    }
+
+    //绑定手机号
+    public function bind(){
+        $data =$this->request->getPost();
+        try{
+            $validation = new \Validation\Member\Bind();
+            $messages = $validation->validate($data);
+            if (count($messages)) {
+                foreach ($messages as $message) {
+                    throw new \Exception($message);
+                }
+            }
+            $vcode = new \Component\Vcode();
+            if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
+                throw new \Exception('验证码错误');
+            }
+            $memberOauth =\MemberOauth::findFirst(array(
+                "open_id =:opend_id: AND type= :type:",
+                "bind"=>array('opend_id'=>$data['opendid'] ,'type'=>'type')
+            ));
+            if(!$memberOauth){
+                throw new \Exception('无效的openid');
+            }
+            $member =$memberOauth->member;
+            $pamMember = \PamMember::findFirst(array(
+                "login_account = :login_account:",
+                "bind" => array('login_account' => $data['username'])
+            ));
+            $this->db->begin();
+            if(!$pamMember){
+                $pamMember =new \PamMember();
+                $pamMember->login_account =$data['username'];
+                $pamMember->login_type =$data['type'];
+                $pamMember->member_id =$member->id;
+                if ($pamMember->create() ===false) {
+                    foreach ($pamMember->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+            }else{
+                $memberOauth->member_id =$pamMember->member_id;
+                $memberOauth->save();
+
+                $merge_member =$pamMember->member;
+                $merge_member->nickname = $member->nickname;
+                $merge_member->avatar = $member->avatar;
+                $merge_member->sex = $member->sex;
+
+                if ($member->delete()===false) {
+                    foreach ($member->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                if ($merge_member->save()===false) {
+                    foreach ($merge_member->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                $this->db->commit();
+                $this->auth->saveLoginSession($merge_member);
+            }
+            $this->success($merge_member);
+        }catch(\Exception $e){
             $this->error($e->getMessage());
         }
     }
