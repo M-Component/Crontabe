@@ -16,6 +16,8 @@ use Component\Plugins\SecurityPlugin;
 use Phalcon\Db\Adapter\MongoDB\Client as MongoClient;
 use Phalcon\Mvc\Collection\Manager as CollectionManager;
 
+use Phalcon\Filter;
+
 /**
  * Shared configuration service
  */
@@ -280,6 +282,17 @@ $di->setShared('messageSender', function () {
 
 $di->setShared('auth', function () {
     return new Member\Auth();
+});
+
+$di->setShared('filter', function () {
+    $filter =new Filter();
+    $filter->add(
+        "addslashes",
+        function ($value) {
+            return addslashes($value);
+        }
+    );
+    return $filter;
 });
 
 $config = $di->getConfig();
