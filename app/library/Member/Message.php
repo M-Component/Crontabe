@@ -46,7 +46,7 @@ class Message{
         }
         $content =$template->content;
         $this->_getContent($content ,$params);
-        $title =$params['title'] ?: $this->_getTitle($content);
+        $title = $this->_getTitle($content);
         $send_targets =array();
         foreach($targets as $target){
             $send_targets[]= $target['target'];

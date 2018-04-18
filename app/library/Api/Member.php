@@ -277,9 +277,6 @@ class Member extends Base
             $this->messageSender->setMsgType('email')->setTemplate($template)->sendVcode(
                 array(
                     'target' => $data['email'],
-                ),
-                array(
-                    'title' => $data['title'] ?:'邮箱验证码'
                 )
             );
             $this->success('发送成功');
