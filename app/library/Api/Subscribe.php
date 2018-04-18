@@ -59,28 +59,29 @@ class Subscribe extends Base
 
     public function getList(){
 
-        $limit =$this->request->getQuery('limit',array('int')) ? :2;
+        $limit =$this->request->getQuery('limit',array('int')) ? :10;
         $page =$this->request->getQuery('page',array('int')) ? : 1;
         $status =$this->request->getQuery('status') ? : 0;
-        $keyword = $this->request->getQuery('keyword');
+        $tag = $this->request->getQuery('tag' ,array('trim' ,'addslashes'));
 
         $columns =array(
-            'member_id'=>true,
-            'goods_id'=>true,
+            //            'goods_id'=>true,
         );
-
-        $condition =array(
-            '$where' =>'this.price>this.current_price',
-
-            'goods_id'=>array(
-
-                    '$regex'=>'1111'
-
-            )
+        $condition=array(
+            //    'member_id'=>$this->member['member_id']
         );
+        if($status==1){
+            $condition['$where'] ='this.price>this.current_price';
+        }
+        if($status==2){
+            $condition['$where'] ='this.price<this.current_price';
+        }
+        if($tag){
+            $condition['tag'] =$tag;
+        }
 
         $orderBy = array(
-            'goods_id'=>-1
+            'create_time'=>-1
         );
 
         $builder =array(
