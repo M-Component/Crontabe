@@ -2,7 +2,7 @@
 
 class Mailer
 {
-    public $mailer_driver = array('Smtp', 'Sendmail', 'Phpmail');
+    public $mailer_driver = array('smtp', 'sendmail', 'phpmail');
 
     // 显示所有配置项
     public function getAll()
