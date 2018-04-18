@@ -146,9 +146,9 @@ $di->setShared('session', function () {
     ini_set('session.gc_maxlifetime', 3600*24);
     ini_set('session.cookie_lifetime',  3600*24);
 
-    if($_SERVER['HTTP_X_APP_SID']){
+    if($session_id =$_SERVER['HTTP_X_APP_SID'] || $session_id =$this->getRequest()->get('_SID')){
         //for 微信小程序
-        $session->setId($_SERVER['HTTP_X_APP_SID']);
+        $session->setId($session_id);
         ini_set('session.gc_maxlifetime', 3600*24*365);
         ini_set('session.cookie_lifetime',  3600*24*365);
     }
@@ -156,8 +156,6 @@ $di->setShared('session', function () {
     if($_SERVER['HTTP_X_REQUESTED_ISAPP']){
         $this->getResponse()->setHeader("Set-appstorage",'_SID='.$session->getId());
     }
-    $session->start();
-
     return $session;
 });
 $di->setShared('crypt', function () {

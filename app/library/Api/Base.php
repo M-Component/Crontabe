@@ -9,6 +9,7 @@ class Base extends Component{
 
     public function __construct(){
         $this->session_id =$this->session->getId();
+        $this->response->setHeader('_SID' ,$this->session_id);
     }
 
     protected function checkLogin(){
