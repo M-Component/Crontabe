@@ -76,11 +76,6 @@ try{
     );
 
     $app->get(
-        "/api/version",
-        array(new \Api\Version(),'getVersion')
-    );
-
-    $app->get(
         "/api/oauth",
         array( new \Api\Oauth(),"getList")
     );
@@ -100,6 +95,16 @@ try{
     $app->post(
         '/api/subscribe',
         array( new \Api\Subscribe(), "setSubscribe")
+    );
+
+    $app->get(
+        "/api/version",
+        array(new \Api\Version(),'getVersion')
+    );
+
+    $app->get(
+        "/api/menu",
+        array(new \Api\Menu(),'getList')
     );
 
     $app->handle();
