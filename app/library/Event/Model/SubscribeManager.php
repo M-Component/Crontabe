@@ -19,8 +19,9 @@ class SubscribeManager{
 
         $value =array(
             $subscribe->rule,
-            $subscribe->notice_price,
             $subscribe->value,
+            $subscribe->notice_price,
+            $subscribe->current_price,
             $subscribe->id
         );
         $this->redisDb->set($key ,json_encode($value));

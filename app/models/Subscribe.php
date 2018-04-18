@@ -2,6 +2,7 @@
 
 use Mvc\AdvCollection;
 use Event\Model\SubscribeManager;
+use Phalcon\Mvc\Model\Message as Message;
 class Subscribe extends AdvCollection
 {
     public $member_id;
@@ -89,8 +90,21 @@ class Subscribe extends AdvCollection
         $this->eventManager =new SubscribeManager;
     }
 
+    public function beforeSave(){
+
+        $checker = new \Member\Subscribe();
+        $this->notice_price =$checker->getLastPrice($this->current_price ,$this->rule ,$this->value);
+        if(!$this->notice_price){
+            $message = new Message('不支持的规则');
+            $this->appendMessage($message);
+            return false;
+        }
+        return true;
+    }
+
     public function afterSave(){
         parent::afterSave();
         $this->eventManager->afterSave($this);
+        return true;
     }
 }

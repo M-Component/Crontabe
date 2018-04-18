@@ -1,5 +1,5 @@
 <?php
-namespace Validation\Goods;
+namespace Validation;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Email;

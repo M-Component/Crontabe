@@ -42,9 +42,10 @@ class SubscribeConsumer implements \Task\TaskInterface{
                     $value = json_decode($value,1);
 
                     $rule =$value[0];
-                    $notice_price =$value[1];
-                    $curent_price =$value[2];//订阅时候的价格
-                    $subscribe_id =$value[3];
+                    $value =$value[1];
+                    $notice_price =$value[2];//临界提醒价格
+                    $curent_price =$value[3];//订阅时候的价格
+                    $subscribe_id =$value[4];
 
                     if($this->checker->checkRule($notice_price ,$rule ,$price)){
                         $this->redisDb->delete($key);
