@@ -36,10 +36,9 @@ class Menu extends Phalcon\Mvc\Model
     }
 
     public function modify_finder(&$list){
-        $upload_config = $this->getDI()->getConfig()->upload;
+        $upload = \Upload::getFilesUrl(array_keys(\Utils::array_change_key($list,'icon')));
         foreach($list as &$item){
-            $upload = \Upload::findFirst(\Mvc\DbFilter::filter(array('md5'=>$item['icon'])));
-            $item['icon'] = '<img height="25" src='.$upload_config['drivers']['local']['domain'].$upload->save_path.$upload->save_name.'>';
+            $item['icon'] = '<img height="25" src='.$upload[$item['icon']].'>';
         }
     }
 }

@@ -64,7 +64,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        {{link_to('menu/index','<i class="fa fa-circle-o"></i>菜单栏管理')}}
+                        {{link_to('menu/index','<i class="fa fa-circle-o"></i>菜单栏管理')}}                                              {{link_to('start_page/index','<i class="fa fa-circle-o"></i>app启动页')}}
                     </li>
                 </ul>
             </li>

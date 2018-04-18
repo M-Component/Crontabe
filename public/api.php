@@ -107,6 +107,11 @@ try{
         array(new \Api\Menu(),'getList')
     );
 
+    $app->get(
+        "/api/spage",
+        array(new \Api\Spage(),'getList')
+    );
+
     $app->handle();
 }catch (\Phalcon\Exception $e){
     echo $e->getMessage() . '<br>';
