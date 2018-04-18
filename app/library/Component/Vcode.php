@@ -4,9 +4,9 @@ use Phalcon\Mvc\User\Component;
 class Vcode extends Component{
     private $ttl =86400;
 
-    private $retry =6;
+    private $retry =20;
 
-    private $retry_time =120;
+    private $retry_time =30;
 
     private $vcode_length=6;
 
