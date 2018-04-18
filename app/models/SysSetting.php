@@ -39,7 +39,7 @@ class SysSetting
 
     public function getObj($drive_name)
     {
-        $socket_class = "\\Component\\" . $this->namespace . "\\Drive\\" . ucfirst(strtolower($drive_name));
+        $socket_class = "\\Component\\" . $this->namespace . "\\Driver\\" . ucfirst(strtolower($drive_name));
         return new $socket_class;
     }
 
@@ -51,7 +51,7 @@ class SysSetting
      */
     public function getInfo($drive_name)
     {
-        $drive_class = "\\Component\\" . $this->namespace . "\\Drive\\" . ucfirst(strtolower($drive_name));
+        $drive_class = "\\Component\\" . $this->namespace . "\\Driver\\" . ucfirst(strtolower($drive_name));
         $drive = new $drive_class;
         $conf = Setting::getConf($drive_name); // 首先查一遍数据
         return array(

@@ -1,5 +1,5 @@
 <?php
-namespace Component\MsgPush\Drive;
+namespace Component\MsgPush\Driver;
 
 use Phalcon\Mvc\User\Component;
 

@@ -1,5 +1,5 @@
 <?php
-namespace Component\MsgPush\Drive;
+namespace Component\MsgPush\Driver;
 use Component\MsgPush\MsgPushInterface;
 
 use JPush\Client as JpushClient;
@@ -91,5 +91,11 @@ class Jpush extends Base implements MsgPushInterface {
     }
     public function sendOne($registrationId,$alert,$title,$message){
         $this->send([$registrationId],$alert,$title,$message);
+    }
+    
+    public function batchSend(array $registrationid_alerts){
+        foreach ($registrationid_alerts as $item){
+            $this->sendOne($item['registrationId'],$item['alert'],$item['title'],$item['message']);
+        }
     }
 }
