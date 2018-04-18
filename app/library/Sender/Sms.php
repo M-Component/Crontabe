@@ -1,7 +1,7 @@
 <?php
-namespace Component\Sms;
+namespace Sender;
 
-class Send
+class Sms implements SenderInterface
 {
     private $socket;    // 通道
 
@@ -12,30 +12,24 @@ class Send
         foreach ($sockets as &$v) {
             if ($v['status'] == 'true') {
                 $this->socket = $smsModel->getObj($v['sms_name']);
-                return $v;
+                break;
             }
         }
-        return false;
     }
 
     public function send(array $targets, $content, $title = '')
     {
-        return $this->_sendSms($targets, $content);
+        return $this->socket->send($targets, $content);
     }
 
     public function sendOne($target, $content, $title = '')
     {
-        return $this->send([$target], $content);
+        return $this->socket->send([$target], $content);
     }
 
-    public function batchSend(array $target_contents)
+    public function sendList(array $target_contents)
     {
         return $this->socket->batchsend($target_contents);
-    }
-
-    public function _sendSms($target, $content)
-    {
-        return $this->socket->send($target, $content);
     }
 
 }

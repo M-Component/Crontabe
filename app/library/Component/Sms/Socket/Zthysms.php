@@ -68,7 +68,7 @@ class Zthysms extends Base implements SmsInterface
 
     public function send($targets, $content)
     {
-        $zthysms = $this->getConfig();
+        $zthysms = $this->getConf(null ,'Zthysms');
         $data['tkey'] = date('YmdHis');
         $data['username'] = $zthysms['account'];
         $data['password'] = $this->getPassword($zthysms['password'], $data['tkey']);
@@ -91,7 +91,7 @@ class Zthysms extends Base implements SmsInterface
 
     public function batchSend($target_contents)
     {
-        $config = $this->getConfig();
+        $config = $this->getConf(null ,'Zthysms');
         $request_params = array();
 
         $time = date('YmdHis');
@@ -116,10 +116,5 @@ class Zthysms extends Base implements SmsInterface
     private function getPassword($password, $tkey)
     {
         return md5(md5($password) . $tkey);
-    }
-
-    public function getConfig()
-    {
-        return \Setting::getConf('Zthysms');
     }
 }

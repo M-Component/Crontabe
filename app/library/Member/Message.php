@@ -2,8 +2,8 @@
 namespace Member;
 use Phalcon\Di;
 use Component\Vcode;
-use Component\Sms\Send as SmsSender;
-use Component\Mailer\Send as EmailSender;
+use Sender\Sms as SmsSender;
+use Sender\Mailer as EmailSender;
 
 class Message{
 
@@ -94,7 +94,7 @@ class Message{
                 'create_time' =>$time
             ];
         }
-        $this->sender->batchSend($send_data);
+        $this->sender->sendList($send_data);
         return $this->log_model->batchCreate($log_data);
     }
 

@@ -1,10 +1,10 @@
 <?php
-namespace Component\Mailer;
+namespace Sender;
 /**
  *  发送邮件
  */
 
-class Send
+class Email implements SenderInterface
 {
 
     private $driver;
@@ -12,8 +12,7 @@ class Send
     public function __construct()
     {
         $mailer = new \Mailer();
-        $drivers = $mailer->getAll();
-
+        $this->drivers = $mailer->getAll();
         // 获取被启用的配置项
         foreach ($drivers as $k => &$v) {
             if ($v['status'] == 'true') {
@@ -21,20 +20,7 @@ class Send
                 break;
             }
         }
-    }
 
-    public function sendOne($target,$content,$title= '')
-    {
-        return $this->send([$target],$content ,$title);
-    }
-
-    public function sendBatch(array $target_contents)
-    {
-
-    }
-
-    public function send(array $target, $content,$title='')
-    {
         $config = \Setting::getConf($this->driver);
         if (!$config) return false;
 
@@ -47,14 +33,26 @@ class Send
         unset($config['email']);
         unset($config['name']);
 
-        $mailer = new \Phalcon\Mailer\Manager($config);
-        $message = $mailer->createMessage()
-            ->to($target[0], $target[0])
-            ->subject($title)
-            ->content($content);
-        if ($message->send()) {
-            return true;
-        }
-        return false;
     }
+
+    public function sendOne($target,$content,$title= '')
+    {
+        return $this->driver->send([$target],$content ,$title);
+    }
+
+    public function send(array $targets, $content,$title='')
+    {
+        foreach($targets as $target){
+            $this->driver->send($target ,$content ,$title);
+        }
+    }
+
+    public function sendList(array $target_contents)
+    {
+        foreach($target_contents as $v){
+            $this->driver->send($v['target'] ,$v['content'] ,$v['title']);
+        }
+    }
+
+
 }
