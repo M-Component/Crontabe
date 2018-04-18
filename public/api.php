@@ -76,6 +76,11 @@ try{
     );
 
     $app->get(
+        "/api/version",
+        array(new \Api\Version(),'getVersion')
+    );
+
+    $app->get(
         "/api/oauth",
         array( new \Api\Oauth(),"getList")
     );
