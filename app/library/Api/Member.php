@@ -164,9 +164,47 @@ class Member extends Base
     {
         $data =$this->request->getPost();
         try{
-            
+            $userinfo =$data['userinfo'];
+            $type =$data['type'];
+            $userinfo = json_decode($userinfo,1);
+
+            $memberOauth =\MemberOauth::findFirst(array(
+                "open_id = :open_id: AND type= :type:",
+                "bind" => array('open_id' => $userinfo['openid'] ,'type'=>$type)
+            ));
+            if(!$memberOauth){
+                $member = new \Member();
+
+                $password = \Utils::generate_password();
+                $member->username = $userinfo['nickname'];
+                $member->nickname = $userinfo['nickname'];
+                $member->login_password = $password;
+                $member->reg_ip = $this->request->getClientAddress();
+
+                $memberOauth = new \MemberOauth();
+                $memberOauth->open_id =$userinfo['openid'];
+                $memberOauth->type =$type;
+                $memberOauth->union_id =$userinfo['unionid'];
+
+                if ($member->create() === false) {
+                    foreach ($member->getMessages() as $message) {
+                        throw new \Exception($message);
+                    }
+                }
+                $memberOauth->member_id =$member->id;
+                if ($memberOauth->create() === false) {
+                    foreach ($member->getMessages() as $message) {
+                        throw new \Exception($message);
+                    }
+                }
+            }else{
+                $member =$memberOauth->member;
+            }
+            $this->auth->saveLoginSession($member);
+            $this->success($member);
+
         }catch(\Exception  $e){
-            $this->erro($e->getMessage());
+            $this->error($e->getMessage());
         }
     }
 

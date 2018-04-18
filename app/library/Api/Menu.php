@@ -8,7 +8,7 @@ class Menu extends Base
         $menus =\Menu::find(array(
             'sort'=>'sort asc'
         ))->toArray();
-        
+
         if(!empty($menus)){
             $image_ids =array_keys(\Utils::array_change_key($menus ,'icon'));
         
