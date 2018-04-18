@@ -18,6 +18,10 @@ class Menu extends Phalcon\Mvc\Model
                 'name' => '图标',
                 'update' => false,
                 'hidd' =>true
+            ),
+            'sort' =>array(
+                'type' =>'number',
+                'name' => '排序'
             )
         );
     }
