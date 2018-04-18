@@ -81,7 +81,7 @@ class Member extends Base
             }
 
             $vcode = new \Component\Vcode();
-            if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
+            if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
             $pamMember = \PamMember::findFirst(array(
