@@ -48,13 +48,21 @@ class Member extends Base
                 $pamMember->login_type = 'email';
                 $member->email = $data['username'];
             }
-
-            $member->pamMember = $pamMember;
+            $this->db->begin();
             if (false === $member->create()) {
                 foreach ($member->getMessages() as $message) {
+                    $this->db->rollback();
                     throw new \Exception($message);
                 }
             }
+            $pamMember->member_id =$member->id;
+            if (false === $pamMember->create()) {
+                foreach ($pamMember->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
+            $this->db->commit();
             $this->auth->saveLoginSession($member);
             $this->success($member);
 
@@ -101,13 +109,23 @@ class Member extends Base
                 $pamMember->login_account = $data['username'];
                 $pamMember->login_type = 'mobile';
                 $member->mobile = $data['username'];
-                $member->pamMember = $pamMember;
 
+                $this->db->begin();
                 if ($member->create() === false) {
                     foreach ($member->getMessages() as $message) {
+                        $this->db->rollback();
                         throw new \Exception($message);
                     }
                 }
+
+                $pamMember->member_id =$member->id;
+                if (false === $pamMember->create()) {
+                    foreach ($pamMember->getMessages() as $message) {
+                        $this->db->rollback();
+                        throw new \Exception($message);
+                    }
+                }
+                $this->db->commit();
             } else {
                 $member = $pamMember->member;
             }
@@ -197,17 +215,21 @@ class Member extends Base
                 $memberOauth->type =$type;
                 $memberOauth->union_id =$userinfo['unionid'];
 
+                $this->db->begin();
                 if ($member->create() === false) {
                     foreach ($member->getMessages() as $message) {
+                        $this->db->rollback();
                         throw new \Exception($message);
                     }
                 }
                 $memberOauth->member_id =$member->id;
                 if ($memberOauth->create() ===false) {
                     foreach ($memberOauth->getMessages() as $message) {
+                        $this->db->rollback();
                         throw new \Exception($message);
                     }
                 }
+                $this->db->commit();
             }else{
                 $member =$memberOauth->member;
             }

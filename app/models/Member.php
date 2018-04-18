@@ -36,11 +36,6 @@ class Member extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->useDynamicUpdate(true);
-        $this->hasMany(
-            'id',
-            'PamMember',
-            'member_id'
-        );
     }
 
     public function finder_extends_columns()
