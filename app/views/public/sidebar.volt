@@ -54,6 +54,20 @@
                 </ul>
             </li>
 
+            <li class="treeview">
+                <a href="#" data-event='true'>
+                    <i class="fa fa-users"></i>
+                    <span>App</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        {{link_to('menu/index','<i class="fa fa-circle-o"></i>菜单栏管理')}}
+                    </li>
+                </ul>
+            </li>
 
             <li class="treeview">
                 <a href="#" data-event='true'>
