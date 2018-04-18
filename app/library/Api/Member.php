@@ -164,6 +164,14 @@ class Member extends Base
     {
         $data =$this->request->getPost();
         try{
+            $validation = new \Validation\Member\Oauth();
+            $messages = $validation->validate($data);
+            if (count($messages)) {
+                foreach ($messages as $message) {
+                    throw new \Exception($message);
+                }
+            }
+
             $userinfo =$data['userinfo'];
             $type =$data['type'];
             $userinfo = json_decode($userinfo,1);
