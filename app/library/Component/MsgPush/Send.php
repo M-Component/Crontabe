@@ -6,7 +6,7 @@ class Send{
 
     public function __construct()
     {
-        $jpush_model = new \Jpush();
+        $jpush_model = new \MsgPush();
         $drivers = $jpush_model->getAll();
         foreach ($drivers as &$v) {
             if ($v['status'] == 'true') {
