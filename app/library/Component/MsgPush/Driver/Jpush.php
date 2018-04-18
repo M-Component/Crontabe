@@ -80,4 +80,8 @@ class Jpush extends Base implements MsgPushInterface {
             $this->sendOne($item['registrationId'],$item['alert'],$item['title'],$item['message']);
         }
     }
+
+    public function sendByTags(){
+        
+    }
 }
