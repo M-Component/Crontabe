@@ -3,7 +3,7 @@ namespace Member;
 use Phalcon\Di;
 use Component\Vcode;
 use Sender\Sms as SmsSender;
-use Sender\Mailer as EmailSender;
+use Sender\Email as EmailSender;
 
 class Message{
 
@@ -34,11 +34,11 @@ class Message{
     }
 
     //['target'=>13533454356]
-    public function sendOne(array $target ,array  $params ,$title=''){
-        return $this->send([$target] ,$params ,$title);
+    public function sendOne(array $target ,array  $params){
+        return $this->send([$target] ,$params);
     }
 
-    public function send(array $targets , array $params ,$title=''){
+    public function send(array $targets , array $params){
         $this->_getSender();
         $template = \MessageTemplate::findFirst("template='{$this->template}' AND msg_type='{$this->msg_type}'");
         if(!$template){
@@ -46,12 +46,12 @@ class Message{
         }
         $content =$template->content;
         $this->_getContent($content ,$params);
-        $title =$title ?: $this->_getTitle($content);
+        $title =$params['title'] ?: $this->_getTitle($content);
         $send_targets =array();
         foreach($targets as $target){
             $send_targets[]= $target['target'];
         }
-        $this->sender->send($send_targets ,$content);
+        $this->sender->send($send_targets ,$content, $title);
 
         $log_data =[];
         $time =time();

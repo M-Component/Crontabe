@@ -6,10 +6,10 @@
  * Time: 11:27
  */
 
-namespace Component\Sms\Socket;
+namespace Component\Sms\Driver;
 
 use Component\Sms\SmsInterface;
-use Component\Sms\Socket\Base;
+use Component\Sms\Driver\Base;
 
 class Zthysms extends Base implements SmsInterface
 {

@@ -30,7 +30,7 @@ class Menu extends Phalcon\Mvc\Model
     public function finder_extends_edit($row){
         return \Phalcon\Tag::linkTo('menu/edit/'.$row['id'],'编辑');
     }
-    
+
     public function modify_finder(&$list){
         $upload_config = $this->getDI()->getConfig()->upload;
         foreach($list as &$item){

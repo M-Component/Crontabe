@@ -68,4 +68,25 @@ class Smtp extends Base implements \Component\Mailer\MailerInterface{
             )
        );
     }
+
+    public function send($target,$content,$title){
+
+        $config = $this->getConf(null,'Smtp');
+        $new_config['driver'] = $config['driver'];
+        $new_config['host'] = $config['host'];
+        $new_config['port'] = $config['port'];
+        $new_config['username'] = $config['username'];
+        $new_config['password'] = $config['password'];
+        $new_config['from']['email'] = $config['email'];
+        $new_config['from']['name'] = $config['name'];
+        if ($config['encryption']){
+            $new_config['encryption'] = $config['encryption'];
+        }
+        $mailer = new \Phalcon\Mailer\Manager($new_config);
+        $message = $mailer->createMessage()
+            ->to($target, $target)
+            ->subject($title)
+            ->content($content);
+        return $message->send();
+    }
 }

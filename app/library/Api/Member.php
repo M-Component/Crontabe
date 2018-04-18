@@ -166,7 +166,7 @@ class Member extends Base
         try{
             
         }catch(\Exception  $e){
-            $this->erro($e->getMessage());
+            $this->error($e->getMessage());
         }
     }
 
@@ -202,10 +202,13 @@ class Member extends Base
         $vcode = new Vcode();
         try {
             if (!\Utils::isEmail($data['email'])) throw new \Exception('请输入有效的邮箱地址');
-            $template = $data['type'];
+            $template = $data['template'];
             $this->messageSender->setMsgType('email')->setTemplate($template)->sendVcode(
                 array(
-                    'target' => $data['email']
+                    'target' => $data['email'],
+                ),
+                array(
+                    'title' => $data['title'] ?:'邮箱验证码'
                 )
             );
             $this->success('发送成功');

@@ -3,15 +3,15 @@ namespace Sender;
 
 class Sms implements SenderInterface
 {
-    private $socket;    // 通道
+    private $driver;    // 通道
 
     public function __construct()
     {
         $smsModel = new \Sms();
-        $sockets = $smsModel->getAll();
-        foreach ($sockets as &$v) {
+        $drivers = $smsModel->getAll(array('status'=>'true'));
+        foreach ($drivers as &$v) {
             if ($v['status'] == 'true') {
-                $this->socket = $smsModel->getObj($v['sms_name']);
+                $this->driver = $smsModel->getObj($v['driver_name']);
                 break;
             }
         }
@@ -19,17 +19,17 @@ class Sms implements SenderInterface
 
     public function send(array $targets, $content, $title = '')
     {
-        return $this->socket->send($targets, $content);
+        return $this->driver->send($targets, $content);
     }
 
     public function sendOne($target, $content, $title = '')
     {
-        return $this->socket->send([$target], $content);
+        return $this->driver->send([$target], $content);
     }
 
     public function sendList(array $target_contents)
     {
-        return $this->socket->batchsend($target_contents);
+        return $this->driver->batchsend($target_contents);
     }
 
 }

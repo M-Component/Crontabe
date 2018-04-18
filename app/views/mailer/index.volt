@@ -12,7 +12,7 @@
 <section class="content">
     <div class="row">
         {%for mailer in mailer_list%}
-        <div class="modal fade" id="conf_setting_{{mailer['mailer_name']}}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="conf_setting_{{mailer['driver_name']}}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
@@ -25,8 +25,8 @@
                     <h3 class="box-title">{{mailer['display_name']}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <p>{{mailer['mailer_name']}}</p>
-                    <a href="{{link_url('mailer/setting/'~mailer['mailer_name'])}}" data-target="#conf_setting_{{mailer['mailer_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
+                    <p>{{mailer['driver_name']}}</p>
+                    <a href="{{link_url('mailer/setting/'~mailer['driver_name'])}}" data-target="#conf_setting_{{mailer['driver_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->

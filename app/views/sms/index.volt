@@ -12,7 +12,7 @@
 <section class="content">
     <div class="row">
         {%for sms in sms_list%}
-        <div class="modal fade" id="conf_setting_{{sms['sms_name']}}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="conf_setting_{{sms['driver_name']}}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
@@ -25,8 +25,8 @@
                     <h3 class="box-title">{{sms['display_name']}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <p>{{sms['sms_name']}}</p>
-                    <a href="{{link_url('sms/setting/'~sms['sms_name'])}}" data-target="#conf_setting_{{sms['sms_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
+                    <p>{{sms['driver_name']}}</p>
+                    <a href="{{link_url('sms/setting/'~sms['driver_name'])}}" data-target="#conf_setting_{{sms['driver_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->

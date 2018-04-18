@@ -8,16 +8,16 @@ class  SmsController extends BackstageController
         $this->view->sms_list = $sms->getAll();
     }
 
-    public function settingAction($sms_name)
+    public function settingAction($driver_name)
     {
         if ($this->request->isPost()) {
             $this->begin();
             $post = $this->request->getPost();
-            Setting::setConf($sms_name, $post['setting']);
+            Setting::setConf($driver_name, $post['setting']);
             $this->end(true);
         }
         $sms = new Sms();
-        $this->view->setting = $sms->getObj($sms_name)->setting();
-        $this->view->sms = $sms->getByName($sms_name);
+        $this->view->setting = $sms->getObj($driver_name)->setting();
+        $this->view->sms = $sms->getByName($driver_name);
     }
 }

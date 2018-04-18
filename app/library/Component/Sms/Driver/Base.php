@@ -1,6 +1,6 @@
 <?php
 
-namespace Component\Sms\Socket;
+namespace Component\Sms\Driver;
 
 use Phalcon\Mvc\User\Component;
 

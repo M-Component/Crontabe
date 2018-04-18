@@ -2,11 +2,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
             <span aria-hidden="true">×</span>
         </button>
-        <h3 class="modal-title">配置 {{sms['display_name']}}<small> {{sms['sms_name']}} </small></h3>
+        <h3 class="modal-title">配置 {{sms['display_name']}}<small> {{sms['driver_name']}} </small></h3>
 </div>
 
 
-<form method="post" action="{{link_url('sms/setting/'~sms['sms_name'])}}" id='conf_form' class="form">
+<form method="post" action="{{link_url('sms/setting/'~sms['driver_name'])}}" id='conf_form' class="form">
     <div class="modal-body">
         <div class="row">
             <div class="col-md-5">
