@@ -19,11 +19,11 @@ class SubscribeMessageBase
     public function getMessage($queue){
         $queue ='subscribe_'.$queue;
 
-        $limit =1000; //限制每次发送短信的最大数量
+        $limit =100; //限制每次发送消息的最大数量
         $start = $total =0;
         $messages =array();
         $delay =array();
-        $max =10000;  //限制每次取出数据的最大数量
+        $max =1000;  //限制每次取出数据的最大数量
 
         while($total<$limit && $start<$max && $job_raw = $this->RedisDb->lpop($queue)){
             $start++;
