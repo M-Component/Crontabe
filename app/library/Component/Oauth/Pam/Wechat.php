@@ -144,7 +144,7 @@ final class Wechat extends Base implements OauthInterface
         $app_id = $this->getConf('app_id', 'Wechat');
         $app_secret = $this->getConf('app_secret', 'Wechat');
         $action_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$app_id&secret=$app_secret&code=$code&grant_type=authorization_code";
-        $res = curl_get($action_url);
+        $res = \Utils::curl_client($action_url);
         $res = json_decode($res, 1);
         if ($res['errcode'] || !$res['access_token']) {
             $msg = 'access_token获取失败!'.$res['errmsg'];
@@ -160,7 +160,7 @@ final class Wechat extends Base implements OauthInterface
     private function get_userinfo($token, $openid, &$msg)
     {
         $action_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$token&openid=$openid&lang=zh_CN";
-        $res = curl_get($action_url);
+        $res = \Utils::curl_client($action_url);
         $res = json_decode($res, 1);
         if ($res['errcode'] || !$res['nickname']) {
             $msg = '用户信息获得失败!'.$res['errmsg'];
