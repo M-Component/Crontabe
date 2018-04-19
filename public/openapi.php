@@ -18,7 +18,7 @@ try{
             echo "This is crazy, but this page was not found!";
         }
     );
-
+   
     $app->map(
         "/openapi/oauth/callback/{oauth_class}",
         array( new \Openapi\Oauth(),"callback")
@@ -27,9 +27,13 @@ try{
         "POST",
     ));
     $app->get(
+        '/api/wechat',
+        array( new \Openapi\Wechat(), "doRequest")
+    );
+    /* $app->get(
         "/openapi/qrcode",
         array( new \Openapi\Tools(),"qrcode")
-    );
+        );*/
     $app->handle();
 }catch (\Phalcon\Exception $e){
     echo $e->getMessage() . '<br>';

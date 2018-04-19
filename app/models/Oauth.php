@@ -49,7 +49,7 @@ class Oauth{
         return new $oauth_class;
     }
 
-    private function getInfo($oauth_name){
+    public function getInfo($oauth_name){
         $oauth_class = "\\Component\\Oauth\\Pam\\".ucfirst(strtolower($oauth_name));
         $oauth = new $oauth_class;
         $conf = Setting::getConf($oauth_name);
