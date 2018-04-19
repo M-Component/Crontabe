@@ -3,8 +3,8 @@ namespace Api;
 use Mvc\Paginator\Adapter\Collection as PaginatorCollectionBuilder;
 class Subscribe extends Base
 {
-    public function __construct(){
-        parent::__construct();
+
+    public function initialize(){
         $this->checkLogin();
     }
 
