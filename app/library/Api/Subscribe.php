@@ -4,12 +4,8 @@ use Mvc\Paginator\Adapter\Collection as PaginatorCollectionBuilder;
 class Subscribe extends Base
 {
 
-    public function initialize(){
-        $this->checkLogin();
-    }
-
     public function setSubscribe(){
-
+        $this->checkLogin();
         $data =$this->request->getPost();
         try {
             $validation = new \Validation\Subscribe();
@@ -53,12 +49,13 @@ class Subscribe extends Base
     }
 
     public function getSubscribe($id){
+        $this->checkLogin();
         $data =\Subscribe::findById($id);
         $this->success($data);
     }
 
     public function getList(){
-
+        $this->checkLogin();
         $limit =$this->request->getQuery('limit',array('int')) ? :10;
         $page =$this->request->getQuery('page',array('int')) ? : 1;
         $status =$this->request->getQuery('status') ? : 0;
