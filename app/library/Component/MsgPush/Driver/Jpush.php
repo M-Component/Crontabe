@@ -47,23 +47,26 @@ class Jpush extends Base implements MsgPushInterface {
         );
     }
 
-    public function send(array $registrationId,$content,$title, $extend_params = null){
-        $jpush_client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
-        $push_payload = $jpush_client->push()
-            ->setPlatform(array('ios','android'))
+    public function send(array $registrationId,$message,$title='', $extend_params = null){
+        $client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
+        $push = $client->push()
+            ->setPlatform(array('all'))
+            ->addAllAudience()
             ->addRegistrationId($registrationId)
-            ->setNotificationAlert($extend_params['alert'])  // 统一通知的内容
+            ->setNotificationAlert($message)  // 统一通知的内容
             ->iosNotification('',array(
-                'sound' => 'sound.caf',
+                'sound' => 'default',
+                'extras'=>$extend_params
             ))
             ->androidNotification('',array(
-                'title' => $title,
+                'extras'=>$extend_params
             ))
-            ->message($content,array(
+            ->message($message,array(
                 'title' =>$title,
+                'extras'=>$extend_params
             ));
         try {
-            $response = $push_payload->send();
+            $response = $push->send();
             return true;
         } catch (\JPush\Exceptions\APIConnectionException $e) {
             return false;
@@ -71,13 +74,13 @@ class Jpush extends Base implements MsgPushInterface {
             return false;
         }
     }
-    public function sendOne($registrationId,$content, $title, $extend_params = null){
+    public function sendOne($registrationId,$message, $title='', $extend_params = null){
         $this->send([$registrationId],$content, $title, $extend_params);
     }
     
     public function batchSend(array $registrationid_alerts){
         foreach ($registrationid_alerts as $item){
-            $this->sendOne($item['target'],$item['content'],$item['title'],array('alert' => $item['alert']));
+            $this->sendOne($item['target'],$item['content'],$item['title']);
         }
     }
 
