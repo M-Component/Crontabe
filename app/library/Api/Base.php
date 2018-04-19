@@ -5,7 +5,7 @@ use Phalcon\Mvc\User\Component;
 class Base extends Component{
     protected $session_id;
 
-    protected $member;
+    protected $member =[];
 
     public function __construct(){
         $this->session_id =$this->session->getId();

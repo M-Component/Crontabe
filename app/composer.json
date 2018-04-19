@@ -4,7 +4,8 @@
         "upyun/sdk": "^3.3",
         "pear/services_json": "dev-bugfix",
         "jpush/jpush": "^3.5",
-	      "phalcon/incubator": "^3.0"
+	      "phalcon/incubator": "^3.0",
+        "jenssegers/agent": "^2.6"
     },
     "repositories": [
         {

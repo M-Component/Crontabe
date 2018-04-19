@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'PEAR' => array($vendorDir . '/pear/pear_exception'),
+    'Detection' => array($vendorDir . '/mobiledetect/mobiledetectlib/namespaced'),
 );

@@ -212,6 +212,7 @@ class Member extends Base
 
                 $memberOauth = new \MemberOauth();
                 $memberOauth->open_id =$userinfo['openid'];
+                $memberOauth->nickname =$userinfo['nickname'];
                 $memberOauth->type =$type;
                 $memberOauth->union_id =$userinfo['unionid'];
 

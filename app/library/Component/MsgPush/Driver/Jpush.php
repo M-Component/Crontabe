@@ -84,4 +84,59 @@ class Jpush extends Base implements MsgPushInterface {
     public function sendByTags(){
         
     }
+
+    /**
+     * @params plantform ios\android\all
+     * @params title string
+     * @params content string
+     * @params send_time xxxx-xx-xx xx:xx:xx
+     * @params extras array('event_type'=>'push','event_params'=>array('style'=>'style01','present':'NO','url':'http://xxx'))
+     */
+    public function createTask($params){
+        if (!empty($params['send_time'])) {
+            $params['send_time'] = strtotime($params['send_time']);
+        }
+        switch ($params['platform']) {
+            case 'ios':
+                $platform = array('ios');
+                break;
+            case 'android':
+                $platform = array('android');
+                break;
+            default:
+                $platform = array('ios','android');
+                break;
+        }
+        try {
+            $client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
+            $task = $client->push()
+            ->setPlatform($platform)
+            ->addAllAudience()
+            ->setNotificationAlert($params['content'])
+            ->iosNotification($params['content'], array(
+            'sound'=>'default',
+            'extras' => $params['extras'],
+            ))
+            ->androidNotification($params['content'], array(
+            'title' => $params['title'],
+            'extras' => $params['extras'],
+            ))
+            ->message($params['content'], array(
+                'title' => $params['title'],
+                'extras' => $params['extras'],
+            ));
+            if (empty($params['send_time']) || $params['send_time'] < time()) {
+                $res = $task->send(); //直接发送
+            } else {
+                $task_build = $task->build();
+                $schedule = $client->schedule();
+                $res = $schedule->createSingleSchedule($params['task_mark'], $task_build, array('time' => date('Y-m-d H:i:s', $params['send_time']))); //定时发送
+            }
+        } catch (Exception $e) {
+            $err_msg = $e->getMessage();
+            $this->getDi()->get('logger')->error('Jpush report error:'.$err_msg);
+            return false;
+        }
+        return $res;
+    }
 }

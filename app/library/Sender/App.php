@@ -25,5 +25,11 @@ class App{
 
     public function sendList(array $target_contents){
         return $this->driver->batchSend($target_contents);
-    }   
+    }
+
+
+    public function createTask($params)
+    {
+
+    }
 }

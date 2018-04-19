@@ -33,6 +33,14 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
         array (
             0 => __DIR__ . '/..' . '/phalcon/incubator/Library/Phalcon',
         ),
+        'Jenssegers\\Agent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'JPush\\' => 
         array (
             0 => __DIR__ . '/..' . '/jpush/jpush/src/JPush',
@@ -59,9 +67,17 @@ class ComposerStaticInit489dff23cbb7ed9b0c9e152fb4a5ae61
                 0 => __DIR__ . '/..' . '/pear/pear_exception',
             ),
         ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
     );
 
     public static $classMap = array (
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Services_JSON' => __DIR__ . '/..' . '/pear/services_json/JSON.php',
         'Services_JSON_AssocArray_TestCase' => __DIR__ . '/..' . '/pear/services_json/Test-JSON.php',
         'Services_JSON_Empties_TestCase' => __DIR__ . '/..' . '/pear/services_json/Test-JSON.php',

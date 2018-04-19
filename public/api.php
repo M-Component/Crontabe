@@ -116,6 +116,10 @@ try{
         "/api/spage",
         array(new \Api\Spage(),'getList')
     );
+    $app->post(
+        "/api/device",
+        array(new \Api\Device(),'setDevice')
+    );
 
     $app->handle();
 }catch (\Phalcon\Exception $e){

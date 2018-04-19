@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Mobile_Detect' => $vendorDir . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     'Services_JSON' => $vendorDir . '/pear/services_json/JSON.php',
     'Services_JSON_AssocArray_TestCase' => $vendorDir . '/pear/services_json/Test-JSON.php',
     'Services_JSON_Empties_TestCase' => $vendorDir . '/pear/services_json/Test-JSON.php',
