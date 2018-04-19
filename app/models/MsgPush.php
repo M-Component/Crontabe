@@ -3,7 +3,7 @@
 class MsgPush implements \Sender\SenderModelInterface
 {
     public $drivers = array(
-        'jpush' => 'jpush'
+        'jpush' => 'Jpush'
     );
 
     public function getName($id)
@@ -39,10 +39,10 @@ class MsgPush implements \Sender\SenderModelInterface
         return $this->getInfo($class_name);
     }
 
-    public function getObj($driver)
+    public function getObj($driver_name)
     {
-        $socket_class = "\\Component\\MsgPush\\Driver\\" . ucfirst(strtolower($driver));
-        return new $socket_class;
+        $driver_class = "\\Component\\MsgPush\\Driver\\" . ucfirst(strtolower($driver_name));
+        return new $driver_class;
     }
 
     public function getInfo($driver_name)

@@ -17,19 +17,19 @@ class Sms implements SenderInterface
         }
     }
 
-    public function send(array $targets, $content, $title = '')
+    public function send(array $targets, $content, $title = '',$extend_params =null)
     {
         return $this->driver->send($targets, $content);
     }
 
-    public function sendOne($target, $content, $title = '')
+    public function sendOne($target, $content, $title = '', $extend_params =null)
     {
         return $this->driver->send([$target], $content);
     }
 
     public function sendList(array $target_contents)
     {
-        return $this->driver->batchsend($target_contents);
+        return $this->driver->batchSend($target_contents);
     }
 
 }

@@ -22,12 +22,12 @@ class Email implements SenderInterface
         }
     }
 
-    public function sendOne($target,$content,$title= '')
+    public function sendOne($target,$content,$title= '', $extend_params =null)
     {
         return $this->driver->send([$target],$content ,$title);
     }
 
-    public function send(array $targets, $content,$title='')
+    public function send(array $targets, $content,$title='' ,$extend_params =null)
     {
         foreach($targets as $target){
             $this->driver->send($target ,$content ,$title);

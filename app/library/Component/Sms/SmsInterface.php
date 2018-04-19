@@ -12,6 +12,7 @@ namespace Component\Sms;
 interface SmsInterface
 {
     public function setting();
-    public function send($targets,$content);
+    public function send(array $targets,$content);
+    public function sendOne($targets,$content);
     public function batchSend($target_contents);
 }
