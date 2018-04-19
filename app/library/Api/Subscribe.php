@@ -5,7 +5,7 @@ class Subscribe extends Base
 {
     public function __construct(){
         parent::__construct();
-        //        $this->checkLogin();
+        $this->checkLogin();
     }
 
     public function setSubscribe(){

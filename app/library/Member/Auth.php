@@ -21,7 +21,8 @@ class Auth extends Component{
         $this->session->set('member', array(
             'member_id' => $member->id,
             'username' => $member->username,
-            'nickname' =>$member->nickname
+            'nickname' =>$member->nickname,
+            'avatar' =>$member->avatar
         ));
 
         $this->updateExpireTime();
