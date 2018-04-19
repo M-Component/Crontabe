@@ -84,7 +84,6 @@ class Message{
         $time =time();
         foreach($target_contents as $k => $v){
             $target =$v['target'];
-            $alert = $v['alert'];
             $template =$templates[$this->template];
             $content =$template['content'];
             $this->_getContent($content ,$v['params']);
@@ -93,7 +92,6 @@ class Message{
                 'target'=>$target,
                 'content' =>$content,
                 'title' =>$title,
-                'alert' => $alert  // 极光推送要使用到
             ];
 
             $log_data[] =[
