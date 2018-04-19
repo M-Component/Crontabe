@@ -4,6 +4,7 @@ use Phalcon\Di;
 use Component\Vcode;
 use Sender\Sms as SmsSender;
 use Sender\Email as EmailSender;
+use Sender\App as AppSender;
 
 class Message{
 
@@ -34,11 +35,18 @@ class Message{
     }
 
     //['target'=>13533454356]
-    public function sendOne(array $target ,array  $params){
-        return $this->send([$target] ,$params);
+    public function sendOne(array $target ,array  $params ,$extend_params = null){
+        return $this->send([$target] ,$params ,$extend_params);
     }
 
-    public function send(array $targets , array $params){
+    /**
+     * @param array $targets    发送目标
+     * @param array $params     主要用于和模版吻合参数
+     * @param null $extend_params   拓展参数，主要用于app消息推送
+     * @return mixed
+     * @throws \Exception
+     */
+    public function send(array $targets , array $params ,$extend_params =null ){
         $this->_getSender();
         $template = \MessageTemplate::findFirst("template='{$this->template}' AND msg_type='{$this->msg_type}'");
         if(!$template){
@@ -46,12 +54,12 @@ class Message{
         }
         $content =$template->content;
         $this->_getContent($content ,$params);
-        $title = $this->_getTitle($content);
+        $title = $template->title?:$this->_getTitle($content);
         $send_targets =array();
         foreach($targets as $target){
             $send_targets[]= $target['target'];
         }
-        $this->sender->send($send_targets ,$content, $title);
+        $this->sender->send($send_targets ,$content, $title,$extend_params);
 
         $log_data =[];
         $time =time();
@@ -76,6 +84,7 @@ class Message{
         $time =time();
         foreach($target_contents as $k => $v){
             $target =$v['target'];
+            $alert = $v['alert'];
             $template =$templates[$this->template];
             $content =$template['content'];
             $this->_getContent($content ,$v['params']);
@@ -83,7 +92,8 @@ class Message{
             $send_data[]=[
                 'target'=>$target,
                 'content' =>$content,
-                'title' =>$title
+                'title' =>$title,
+                'alert' => $alert  // 极光推送要使用到
             ];
 
             $log_data[] =[
@@ -114,7 +124,7 @@ class Message{
             $this->log_model =new \MessageWechat();
             break;
         case 'app':
-            $this->sender =  null;
+            $this->sender =  new AppSender();
             $this->log_model =new \MessageApp();
             break;
         default:

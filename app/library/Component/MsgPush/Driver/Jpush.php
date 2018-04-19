@@ -47,19 +47,19 @@ class Jpush extends Base implements MsgPushInterface {
         );
     }
 
-    public function send(array $registrationId,$message,$title,$alert){
+    public function send(array $registrationId,$content,$title, $extend_params = null){
         $jpush_client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
         $push_payload = $jpush_client->push()
             ->setPlatform(array('ios','android'))
             ->addRegistrationId($registrationId)
-            ->setNotificationAlert($alert)  // 统一通知的内容
+            ->setNotificationAlert($extend_params['alert'])  // 统一通知的内容
             ->iosNotification('',array(
                 'sound' => 'sound.caf',
             ))
             ->androidNotification('',array(
                 'title' => $title,
             ))
-            ->message($message,array(
+            ->message($content,array(
                 'title' =>$title,
             ));
         try {
@@ -71,13 +71,13 @@ class Jpush extends Base implements MsgPushInterface {
             return false;
         }
     }
-    public function sendOne($registrationId,$alert,$title,$message){
-        $this->send([$registrationId],$alert,$title,$message);
+    public function sendOne($registrationId,$content, $title, $extend_params = null){
+        $this->send([$registrationId],$content, $title, $extend_params);
     }
     
     public function batchSend(array $registrationid_alerts){
         foreach ($registrationid_alerts as $item){
-            $this->sendOne($item['registrationId'],$item['alert'],$item['title'],$item['message']);
+            $this->sendOne($item['target'],$item['content'],$item['title'],array('alert' => $item['alert']));
         }
     }
 

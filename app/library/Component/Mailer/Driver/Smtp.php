@@ -1,10 +1,8 @@
 <?php
 namespace Component\Mailer\Driver;
-
 use Component\Mailer\MailerInterface;
-use Component\Mailer\Driver\Base;
 
-class Smtp extends Base implements \Component\Mailer\MailerInterface{
+class Smtp extends Base implements MailerInterface {
 
     public $nameConfig = 'Smtp配置';
 

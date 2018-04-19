@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: medivh
- * Date: 2017/9/6
- * Time: 11:27
- */
-
 namespace Component\Sms\Driver;
 
 use Component\Sms\SmsInterface;
-use Component\Sms\Driver\Base;
 
 class Zthysms extends Base implements SmsInterface
 {
@@ -66,7 +58,7 @@ class Zthysms extends Base implements SmsInterface
     }
 
 
-    public function send($targets, $content)
+    public function send(array $targets, $content)
     {
         $zthysms = $this->getConf(null ,'Zthysms');
         $data['tkey'] = date('YmdHis');
@@ -88,7 +80,9 @@ class Zthysms extends Base implements SmsInterface
         }
         return false;
     }
-
+    public function sendOne($target,$content){
+        return $this->send([$$target],$content);
+    }
     public function batchSend($target_contents)
     {
         $config = $this->getConf(null ,'Zthysms');

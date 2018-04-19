@@ -3,7 +3,7 @@
 class Sms implements \Sender\SenderModelInterface
 {
     public $drivers = array(
-        'zthysms' => 'zthysms',
+        'zthysms' => 'Zthysms',
     );
 
     public function getName($id)
