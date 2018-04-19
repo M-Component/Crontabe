@@ -51,7 +51,6 @@ class Jpush extends Base implements MsgPushInterface {
         $client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
         $push = $client->push()
             ->setPlatform(array('all'))
-            ->addAllAudience()
             ->addRegistrationId($registrationId)
             ->setNotificationAlert($message)  // 统一通知的内容
             ->iosNotification('',array(
