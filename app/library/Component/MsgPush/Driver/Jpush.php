@@ -75,7 +75,7 @@ class Jpush extends Base implements MsgPushInterface {
         }
     }
     public function sendOne($registrationId,$message, $title='', $extend_params = null){
-        $this->send([$registrationId],$content, $title, $extend_params);
+        $this->send([$registrationId],$message, $title, $extend_params);
     }
     
     public function batchSend(array $registrationid_alerts){
