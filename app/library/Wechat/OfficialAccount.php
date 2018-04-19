@@ -39,7 +39,7 @@ class OfficialAccount{
         if(!$data['MsgType']){
             return false;
         }
-        $reply =$this->replyMessage($msg_type ,$data);
+        $reply =$this->replyMessage($data['MsgType'] ,$data);
         $reply_data = array(
             'ToUserName' => $data['FromUserName'],
             'FromUserName' => $data['ToUserName'],

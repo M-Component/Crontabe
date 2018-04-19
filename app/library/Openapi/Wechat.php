@@ -1,3 +1,4 @@
+<?php
 namespace Openapi;
 class Wechat extends Base{
 
@@ -5,11 +6,14 @@ class Wechat extends Base{
 
     public function __construct(){
         parent::__construct();
-        $this->wechat = new \Component\Wechat();
+        $this->wechat = new \Wechat\OfficialAccount();
     }
 
     public function doRequest(){
         $echostr =$this->request->getQuery('echostr');
+        $signature =$this->request->getQuery('signature');
+        $timestamp =$this->request->getQuery('timestamp');
+        $nonce=$this->request->getQuery('nonce');
         $this->wechat->setRequestParams($this->request->getQuery());
         if($echostr){
             if($this->wechat->checkSignature($signature ,$timestamp ,$nonce)){

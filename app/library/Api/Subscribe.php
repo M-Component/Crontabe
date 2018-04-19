@@ -28,7 +28,7 @@ class Subscribe extends Base
             $subscribe->email =$data['email'];
 
             $subscribe->wechat_notice=$data['wechat_notice'];
-            $subscribe->app_notice=data['app_notice'];
+            $subscribe->app_notice=$data['app_notice'];
 
             $subscribe->sms_notice= $data['mobile'] ? 1 :0;
             $subscribe->email_notice=$data['email'] ? 1 :0;
