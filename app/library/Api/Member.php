@@ -71,73 +71,6 @@ class Member extends Base
         }
     }
 
-    /**
-     * string $mobile  手机号码
-     * string $vcode   短信验证码
-     */
-    public function mobileLogin()
-    {
-        $data = $this->request->getPost();
-
-        try {
-            $validation = new \Validation\Member\Mobile();
-            $messages = $validation->validate($data);
-            if (count($messages)) {
-                foreach ($messages as $message) {
-                    throw new \Exception($message);
-                }
-            }
-
-            $vcode = new \Component\Vcode();
-            if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
-                throw new \Exception('验证码错误');
-            }
-            $pamMember = \PamMember::findFirst(array(
-                "login_account = :login_account:",
-                "bind" => array('login_account' => $data['username'])
-            ));
-
-            if (!$pamMember) {
-                $member = new \Member();
-                $pam_member = new \Pam\Member();
-                $password = $pam_member->_generate_password();
-                $member->username = $data['username'];
-                $member->login_password = $password;
-                $member->reg_ip = $this->request->getClientAddress();
-
-                $pamMember = new \PamMember();
-                $pamMember->login_account = $data['username'];
-                $pamMember->login_type = 'mobile';
-                $member->mobile = $data['username'];
-
-                $this->db->begin();
-                if ($member->create() === false) {
-                    foreach ($member->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-
-                $pamMember->member_id =$member->id;
-                if (false === $pamMember->create()) {
-                    foreach ($pamMember->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-                $this->db->commit();
-            } else {
-                $member = $pamMember->member;
-            }
-
-            $this->auth->saveLoginSession($member);
-            $this->success($member);
-        } catch (\Exception $e) {
-            $this->error($e->getMessage());
-        }
-
-
-    }
 
     //用户登录
     public function signin()
@@ -160,6 +93,39 @@ class Member extends Base
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }
+    }
+
+
+
+    /**
+     * string $mobile  手机号码
+     * string $vcode   短信验证码
+     */
+    public function mobileLogin()
+    {
+        $data = $this->request->getPost();
+
+        try {
+            $validation = new \Validation\Member\Mobile();
+            $messages = $validation->validate($data);
+            if (count($messages)) {
+                foreach ($messages as $message) {
+                    throw new \Exception($message);
+                }
+            }
+
+            $vcode = new \Component\Vcode();
+            if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
+                throw new \Exception('验证码错误');
+            }
+            $pam =new Pam();
+            $member =$pam ->mobileLogin($data['username']);
+            $this->success($member);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
+
+
     }
 
     //用户注销

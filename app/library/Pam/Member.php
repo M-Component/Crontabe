@@ -12,15 +12,46 @@ class Member
         $this->db = Di::getDefault()->getShared('db');
         $this->auth =Di::getDefault()->getShared('auth');
     }
-    public function _generate_password($length = 8)
-    {
-        // 密码字符集，可任意添加你需要的字符
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$?';
-        $password = '';
-        for ($i = 0; $i < $length; $i++) {
-            $password .= $chars[mt_rand(0, strlen($chars) - 1)];
+
+    public function mobileLogin($mobile){
+        $pamMember = \PamMember::findFirst(array(
+            "login_account = :login_account:",
+            "bind" => array('login_account' => $mobile)
+        ));
+        if (!$pamMember) {
+            $member = new \Member();
+            $pam_member = new \Pam\Member();
+            $password = \Utils::generate_password();
+            $member->username = $mobile;
+            $member->login_password = $password;
+            $member->reg_ip = $this->request->getClientAddress();
+
+            $pamMember = new \PamMember();
+            $pamMember->login_account = $mobile;
+            $pamMember->login_type = 'mobile';
+            $member->mobile = $mobile;
+
+            $this->db->begin();
+            if ($member->create() === false) {
+                foreach ($member->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
+
+            $pamMember->member_id =$member->id;
+            if (false === $pamMember->create()) {
+                foreach ($pamMember->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
+            $this->db->commit();
+        } else {
+            $member = $pamMember->member;
         }
-        return $password;
+        $this->auth->saveLoginSession($member);
+        return $member;
     }
 
     public function oauthLogin($userinfo ,$type){
@@ -85,6 +116,9 @@ class Member
             throw new \Exception('无效的openid');
         }
         $member =$memberOauth->member;
+        if(\PamMember::count("member_id={$member->id} AND login_type='$login_type'")){
+            throw new \Exception('该账号绑定');
+        }
         $pamMember = \PamMember::findFirst(array(
             "login_account = :login_account:",
             "bind" => array('login_account' => $login_account)
