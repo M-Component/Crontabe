@@ -52,7 +52,7 @@ try{
     );
 
     $app->get(
-        "/api/member/islogin",
+        "/api/member/status",
         array( new \Api\Member(),"isLogin")
     );
     $app->get(
