@@ -25,6 +25,7 @@ class AccessToken{
             $res = json_decode($res, 1);
             if ($res['errcode'] || !$res['access_token']) {
                 $msg = 'access_token获取失败!' . $res['errmsg'];
+                //logger
                 return false;
             }
             $this->fileCache->save($this->cache_access_token , $access_token, $res['expires_in']);
@@ -41,6 +42,7 @@ class AccessToken{
             $res = json_decode($res, 1);
             if ($res['errcode'] || !$res['access_token']) {
                 $msg = 'access_token获取失败!' . $res['errmsg'];
+                //logger
                 return false;
             }
             $oauth2Token =$res;
@@ -60,6 +62,7 @@ class AccessToken{
         $res = json_decode($res, 1);
         if ($res['errcode'] || !$res['access_token']) {
             $msg = 'access_token刷新失败!' . $res['errmsg'];
+            //logger
             return false;
         }
         $oauth2Token['expires_time'] =time()+ $oauth2Token['expires_in'];

@@ -303,4 +303,17 @@ class TaskController extends BackstageController
         $jsonObj = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         var_dump($jsonObj->decode($str));exit;
     }
+
+    public function jpushAction(){
+        $sender = new \Sender\App();
+        $targets =array(
+            'target'=>'1a0018970a8b3045795'
+        );
+        $res =$sender->sendOne($target , '' ,'' ,array(
+            'message' =>'hello world !'
+        ));
+        var_dump($res);
+        exit;
+
+    }
 }
