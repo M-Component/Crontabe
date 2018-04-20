@@ -50,7 +50,7 @@ class Jpush extends Base implements MsgPushInterface {
     public function send(array $registrationId,$message,$title='', $extend_params = null){
         $client = new JpushClient($this->conf['app_key'],$this->conf['master_secret']);
         $push = $client->push()
-            ->setPlatform(array('all'))
+            ->setPlatform('all')
             ->addRegistrationId($registrationId)
             ->setNotificationAlert($message)  // 统一通知的内容
             ->iosNotification('',array(
