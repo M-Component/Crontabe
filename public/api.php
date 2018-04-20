@@ -2,7 +2,7 @@
 
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
-error_reporting(E_ALL^E_NOTICE);
+error_reporting(E_ERROR | E_WARNING );
 define('APP_PATH', realpath('..'));
 try{
     $di = new FactoryDefault();
