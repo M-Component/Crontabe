@@ -3,7 +3,7 @@ namespace Component\Wechat;
 
 use Phalcon\Mvc\User\Component;
 
-class Wechat
+class Wechat extends Component
 {
     private $app_id;
 
@@ -14,8 +14,6 @@ class Wechat
     private $key;
 
     public function __construct($config){
-        //parent::__construct();
-
         $this->app_id =$config['app_id'];
         $this->app_secret =$config['app_secret'];
         $this->token =$config['token'];

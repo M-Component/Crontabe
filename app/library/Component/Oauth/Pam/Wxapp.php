@@ -7,7 +7,7 @@ use Phalcon\Exception;
 final class Wxapp extends Base implements OauthInterface
 {
     public $login_type = 'wxapp';
-    public $name = 'APP微信信任登录';
+    public $name = '微信APP信任登录';
     public $version = '';
 
     public $platform =array(
@@ -32,7 +32,7 @@ final class Wxapp extends Base implements OauthInterface
             'display_name' => array(
                 'title' => '信任登录名称' ,
                 'type' => 'text',
-                'default' => 'APP微信信任登录',
+                'default' => '微信APP信任登录',
            ) ,
             'order_num' => array(
                 'title' => '排序' ,

@@ -8,7 +8,7 @@ use Phalcon\Exception;
 final class Wechat extends Base implements OauthInterface
 {
     public $login_type = 'wechat';
-    public $name = '微信信任登录';
+    public $name = '微信公众号信任登录';
     public $version = '';
 
     public $platform = array(
@@ -35,7 +35,7 @@ final class Wechat extends Base implements OauthInterface
             'display_name' => array(
                 'title' => '信任登录名称',
                 'type' => 'text',
-                'default' => '微信信任登录',
+                'default' => '微信公众号信任登录',
             ),
             'order_num' => array(
                 'title' => '排序',
@@ -55,6 +55,16 @@ final class Wechat extends Base implements OauthInterface
                 'title' => 'redirect_uri(回调地址)',
                 'type' => 'textarea',
                 'default' => $this->callback_url
+            ),
+            'token' => array(
+                'title' => 'Token',
+                'type' => 'text',
+                'default' => ''
+            ),
+            'key' => array(
+                'title' => 'EncodingAESKey',
+                'type' => 'text',
+                'default' => ''
             ),
             /*个性化字段结束*/
             'status' => array(
@@ -104,39 +114,23 @@ final class Wechat extends Base implements OauthInterface
         //获得token
         $token = $this->get_token($code, $error_msg);
         if ($error_msg) {
-            die($error_msg);
+            throw new Exception($error_msg);
         }
         // 如果用户取消授权 code 则不存在
         if (!$code){
             throw new Exception('用户取消授权');
         }
-
         //获得微信用户open资料
         $userinfo = $this->get_userinfo($token['access_token'], $token['openid'], $error_msg);
         if ($error_msg) {
             throw new Exception($error_msg);
         }
-        $member_data = array(
-            'avatar' => $userinfo['headimgurl'], //头像
-            'name' => $userinfo['nickname'], //昵称
-            'sex' => $userinfo['gender'] == '1' ? '2' : ($userinfo['gender'] == '2' ? '1' : '0'),
-            'addr' => $userinfo['country'] . $userinfo['city'] . $userinfo['province'],
-            'addon' => serialize($userinfo),//信任登录返回数据
-        );
-        $cur_time = time();
-        $pam_data = array(
-            'openid' => $userinfo['openid'],
-            'login_account' => 'wx_' . substr(md5($userinfo['openid']), -5), //OPEN账号名
-            'login_type' => $this->login_type,//登录类型
-            'login_password' => $cur_time,//自动密码
-            'password_account' => $userinfo['openid'],//用唯一openid ，微信unionid是跨应用唯一
-            'createtime' => $cur_time
-        );
-        $member_id = $this->doLogin($member_data, $pam_data);
-        if ($member_id) {
+        // 创建用户
+        $member = $this->oauth($userinfo,$this->login_type);
+        if ($member) {
             $forward = $forward ? $forward : '/';
             if ($params['qrlp']) {
-                $forward .= '?mid=' . $member_id . '&enc_str=' . $params['qrlp'];
+                $forward .= '?mid=' . $member->id . '&enc_str=' . $params['qrlp'];
             }
             $this->response->redirect($forward);
         } else {
@@ -193,5 +187,7 @@ final class Wechat extends Base implements OauthInterface
         }
         return true;
     }
+
+
 
 }
