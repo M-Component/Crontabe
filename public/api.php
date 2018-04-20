@@ -52,7 +52,11 @@ try{
     );
 
     $app->get(
-        "/api/member/{id}/logout",
+        "/api/member/islogin",
+        array( new \Api\Member(),"isLogin")
+    );
+    $app->get(
+        "/api/member/logout",
         array( new \Api\Member(),"logout")
     );
 
