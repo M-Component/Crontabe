@@ -17,7 +17,7 @@
  * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
  */
 
-//    error_reporting(E_ALL);
+    error_reporting(E_ALL);
 
     require_once 'PHPUnit.php';
     require_once 'PEAR.php';
