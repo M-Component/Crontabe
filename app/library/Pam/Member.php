@@ -24,7 +24,6 @@ class Member
             $password = \Utils::generate_password();
             $member->username = $mobile;
             $member->login_password = $password;
-            $member->reg_ip = $this->request->getClientAddress();
 
             $pamMember = new \PamMember();
             $pamMember->login_account = $mobile;
