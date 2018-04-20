@@ -52,6 +52,7 @@ class Member extends \Phalcon\Mvc\Model
     public function beforeCreate(){
         $security =  new Security();
         $this->login_password =$security->hash($this->login_password);
+        $this->reg_ip = $this->getDI()->get('request')->getClientAddress();
         $this->reg_time =time();
     }
 

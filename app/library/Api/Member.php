@@ -1,8 +1,8 @@
 <?php
 namespace Api;
 
-use Member\Auth;
 use Component\Vcode;
+use Pam\Member as Pam;
 
 class Member extends Base
 {
@@ -193,48 +193,8 @@ class Member extends Base
             $userinfo =$data['userinfo'];
             $type =$data['type'];
             $userinfo = json_decode($userinfo,1);
-
-            $memberOauth =\MemberOauth::findFirst(array(
-                "open_id = :open_id: AND type= :type:",
-                "bind" => array('open_id' => $userinfo['openid'] ,'type'=>$type)
-            ));
-            if(!$memberOauth){
-                $member = new \Member();
-
-                $password = \Utils::generate_password();
-                $member->username = $userinfo['nickname'];
-                $member->login_password = $password;
-                $member->reg_ip = $this->request->getClientAddress();
-
-                $member->nickname = $userinfo['nickname'];
-                $member->avatar = $userinfo['headimgurl'];
-                $member->sex = $userinfo['sex'] ? :0;
-
-                $memberOauth = new \MemberOauth();
-                $memberOauth->open_id =$userinfo['openid'];
-                $memberOauth->nickname =$userinfo['nickname'];
-                $memberOauth->type =$type;
-                $memberOauth->union_id =$userinfo['unionid'];
-
-                $this->db->begin();
-                if ($member->create() === false) {
-                    foreach ($member->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-                $memberOauth->member_id =$member->id;
-                if ($memberOauth->create() ===false) {
-                    foreach ($memberOauth->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-                $this->db->commit();
-            }else{
-                $member =$memberOauth->member;
-            }
-            $this->auth->saveLoginSession($member);
+            $pam = new Pam();
+            $member = $pam->oauthLogin($userinfo ,$type);
             $this->success($member);
 
         }catch(\Exception  $e){
@@ -257,55 +217,9 @@ class Member extends Base
             if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
-            $memberOauth =\MemberOauth::findFirst(array(
-                "open_id =:opend_id: AND type= :type:",
-                "bind"=>array('opend_id'=>$data['opendid'] ,'type'=>'type')
-            ));
-            if(!$memberOauth){
-                throw new \Exception('无效的openid');
-            }
-            $member =$memberOauth->member;
-            $pamMember = \PamMember::findFirst(array(
-                "login_account = :login_account:",
-                "bind" => array('login_account' => $data['username'])
-            ));
-            $this->db->begin();
-            if(!$pamMember){
-                $pamMember =new \PamMember();
-                $pamMember->login_account =$data['username'];
-                $pamMember->login_type =$data['type'];
-                $pamMember->member_id =$member->id;
-                if ($pamMember->create() ===false) {
-                    foreach ($pamMember->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-            }else{
-                $memberOauth->member_id =$pamMember->member_id;
-                $memberOauth->save();
-
-                $merge_member =$pamMember->member;
-                $merge_member->nickname = $member->nickname;
-                $merge_member->avatar = $member->avatar;
-                $merge_member->sex = $member->sex;
-
-                if ($member->delete()===false) {
-                    foreach ($member->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-                if ($merge_member->save()===false) {
-                    foreach ($merge_member->getMessages() as $message) {
-                        $this->db->rollback();
-                        throw new \Exception($message);
-                    }
-                }
-                $this->db->commit();
-                $this->auth->saveLoginSession($merge_member);
-            }
-            $this->success($merge_member);
+            $pam =new Pam();
+            $member =$pam->bindMember($data['openid'],$data['type'],$data['username'] ,'mobile');
+            $this->success($member);
         }catch(\Exception $e){
             $this->error($e->getMessage());
         }

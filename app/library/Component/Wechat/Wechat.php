@@ -69,13 +69,14 @@ class Wechat
         $app_id =$this->app_id;
         $app_secret =$this->app_secret;
         $key ='wechat_access_token_'.$app_id;
+        //并发覆盖问题
         if(!$access_token =$this->fileCache->get($key)){
             $access_token_action = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$app_id}&secret={$app_secret}";
             $res =\Utils::curl($access_token_action);
             $res = json_decode($res, 1);
             $access_token = $res['access_token'];
             if($access_token) {
-                $this->fileCache->save($key , $res['expires_in']);
+                $this->fileCache->save($key , $access_token, $res['expires_in']);
             }
         }
         return $access_token;

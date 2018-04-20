@@ -4,6 +4,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Validation\Validator\Regex;
+use Phalcon\Validation\Validator\InclusionIn;
 
 class Bind extends Validation{
   public function initialize(){
