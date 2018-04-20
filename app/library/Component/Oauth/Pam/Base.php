@@ -1,7 +1,7 @@
 <?php
 
 namespace Component\Oauth\Pam;
-use Member\Pam;
+use Pam\Member as Pam;
 use Phalcon\Exception;
 use Phalcon\Mvc\User\Component;
 class Base extends Component
@@ -23,6 +23,7 @@ class Base extends Component
         return $val[$key];
     }
 
+    // 创建用户，把信任登录进来的用户都存入数据库
     public function oauth($userinfo ,$type){
         $pam =new Pam();
         return $pam->oauthLogin($userinfo ,$type);

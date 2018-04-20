@@ -15,6 +15,11 @@ class Oauth extends Base
         if (!method_exists($oauth_instance, 'callback')) {
             throw new Exception('Oauth应用程序错误');
         }
-        $oauth_instance->callback($params);
+        try{
+            $oauth_instance->callback($params);
+        }catch (\Exception $e){
+            $this->error($e->getMessage());
+        }
+
     }
 }
