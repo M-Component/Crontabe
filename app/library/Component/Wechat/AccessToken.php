@@ -28,7 +28,7 @@ class AccessToken{
                 //logger
                 return false;
             }
-            $this->fileCache->save($this->cache_access_token , $access_token, $res['expires_in']);
+            $this->cache->save($this->cache_access_token , $access_token, $res['expires_in']);
 
         }
         return $access_token;
@@ -47,7 +47,7 @@ class AccessToken{
             }
             $oauth2Token =$res;
             $oauth2Token['expires_time'] =time()+ $oauth2Token['expires_in'];
-            $this->fileCache->save($this->cache_oauth2_access_token ,$res ,3600*24*30);
+            $this->cache->save($this->cache_oauth2_access_token ,$res ,3600*24*30);
         }
         if($oauth2Token['expires_time']>= time()){
             $oauth2Token = $this->refreshToken($oauth2Token['refresh_token']);
@@ -65,8 +65,8 @@ class AccessToken{
             //logger
             return false;
         }
-        $oauth2Token['expires_time'] =time()+ $oauth2Token['expires_in'];
-        $this->fileCache->save($this->cache_oauth2_access_token ,$oauth2Token);
+        $oauth2Token['expires_time'] =time()+ $res['expires_in'];
+        $this->cache->save($this->cache_oauth2_access_token ,$oauth2Token);
         return $oauth2Token;
     }
 }
