@@ -2,7 +2,7 @@
 
 use Phalcon\Mvc\Micro;
 use Phalcon\Di\FactoryDefault;
-
+error_reporting(E_ALL^E_NOTICE);
 define('APP_PATH', realpath('..'));
 try{
     $di = new FactoryDefault();
@@ -120,7 +120,7 @@ try{
         array(new \Api\Device(),'setDevice')
     );
 
-    error_reporting(E_ALL^E_NOTICE);
+
     $app->handle();
 }catch (\Phalcon\Exception $e){
     echo $e->getMessage() . '<br>';
