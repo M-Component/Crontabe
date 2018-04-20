@@ -70,6 +70,7 @@ class Wechat extends Component
         }else{
             $res = $accessToken->getToken();
         }
+	return $res;
     }
     
     public function get_userinfo($access_token,$openid){
