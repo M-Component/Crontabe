@@ -63,9 +63,12 @@ class Wechat extends Component
         return XML::parse($xml_data);
     }
 
-    public function get_access_token() {
-        $app_id =$this->app_id;
-        $app_secret =$this->app_secret;
-
+    public function get_access_token($code =null) {
+        $accessToken = new AccessToken($this->app_id ,$this->app_secret,$this->fileCache);
+        if($code){
+            $res = $accessToken->getOauth2Token($code);
+        }else{
+            $res = $accessToken->getToken();
+        }
     }
 }

@@ -10,7 +10,7 @@ class Jpush extends Base implements MsgPushInterface {
     private $conf;
 
     public function __construct(){
-        $this->conf =$this->getConf(null ,'JPush');
+        $this->conf =$this->getConf(null ,'Jpush');
     }
     public function setting()
     {
