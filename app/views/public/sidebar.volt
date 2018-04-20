@@ -64,7 +64,25 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        {{link_to('menu/index','<i class="fa fa-circle-o"></i>菜单栏管理')}}                                              {{link_to('start_page/index','<i class="fa fa-circle-o"></i>app启动页')}}
+                        {{link_to('menu/index','<i class="fa fa-circle-o"></i>菜单栏管理')}}
+                    </li>
+                    <li>
+                        {{link_to('start_page/index','<i class="fa fa-circle-o"></i>app启动页')}}
+                    </li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#" data-event='true'>
+                    <i class="fa fa-users"></i>
+                    <span>微信</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li>
+                        {{link_to('wechat/index','<i class="fa fa-circle-o"></i>绑定公众号')}}
                     </li>
                 </ul>
             </li>

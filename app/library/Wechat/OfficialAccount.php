@@ -10,7 +10,7 @@ class OfficialAccount{
 
     private $response_data;
 
-    public function initialize(){
+    public function __construct(){
         $config = \Setting::getConf('Wechat');
         $this->wechat = new Wechat($config);
     }

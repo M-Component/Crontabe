@@ -23,32 +23,49 @@ class Base extends Component
         return $val[$key];
     }
 
-    protected function doLogin($member_data ,$pam_data){
-        $login_type = $pam_data['login_type'];
-        $openid = $pam_data['openid'];
-        $pam_member = $this ->pam_members ->findFirst(array('openid="'.$openid.'" AND login_type="'.$login_type.'"'));
-        if($pam_member){
-            $pam_data = $pam_member ->toArray();
-        }else{
-            $pam_data = $this->create_member($member_data,$pam_data);
-        }
-        $this ->auth ->saveLoginSession($pam_data);
-        return $pam_data['members_id'];
-    }
+    public function oauth($userinfo ,$type){
 
-    /**
-     * 创建会员
-     */
-    protected function create_member($member_data,$pam_data){
-        $this->db->begin();
-        try{
-            $pam_data = \Utils::inputFilter($pam_data);
-            $this ->pam ->create($pam_data ,$member_data);
+        $memberOauth =\MemberOauth::findFirst(array(
+            "open_id = :open_id: AND type= :type:",
+            "bind" => array('open_id' => $userinfo['openid'] ,'type'=>$type)
+        ));
+        if(!$memberOauth){
+            $member = new \Member();
+
+            $password = \Utils::generate_password();
+            $member->username = $userinfo['nickname'];
+            $member->login_password = $password;
+            $member->reg_ip = $this->request->getClientAddress();
+
+            $member->nickname = $userinfo['nickname'];
+            $member->avatar = $userinfo['headimgurl'];
+            $member->sex = $userinfo['sex'] ? :0;
+
+            $memberOauth = new \MemberOauth();
+            $memberOauth->open_id =$userinfo['openid'];
+            $memberOauth->nickname =$userinfo['nickname'];
+            $memberOauth->type = $type;
+            $memberOauth->union_id =$userinfo['unionid'];
+
+            $this->db->begin();
+            if ($member->create() === false) {
+                foreach ($member->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
+            $memberOauth->member_id =$member->id;
+            if ($memberOauth->create() ===false) {
+                foreach ($memberOauth->getMessages() as $message) {
+                    $this->db->rollback();
+                    throw new \Exception($message);
+                }
+            }
             $this->db->commit();
-        }catch (Exception $e){
-            throw new Exception($e ->getMessage());
+        }else{
+            $member =$memberOauth->member;
         }
-        return $pam_data;
+        $this->auth->saveLoginSession($member);
+        return $member;
     }
-
 }
