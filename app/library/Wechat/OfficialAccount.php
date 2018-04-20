@@ -19,7 +19,7 @@ class OfficialAccount{
         $this->request_params =$params;
     }
     
-
+    // 验证消息的确来自于微信服务器
     public function checkSignature($signature ,$timestamp ,$nonce)
 	{
         return $this->wechat->check_sign($signature ,$timestamp ,$nonce);

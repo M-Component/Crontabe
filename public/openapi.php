@@ -26,8 +26,10 @@ try{
         "GET",
         "POST",
     ));
+
+    // 验证来自于微信服务器授权信息
     $app->get(
-        '/api/wechat',
+        '/openapi/wechat',
         array( new \Openapi\Wechat(), "doRequest")
     );
     /* $app->get(

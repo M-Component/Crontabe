@@ -1,6 +1,8 @@
+<?php
 namespace Component\Wechat;
 class User{
 
+    // 如果用户更新了头像，原有的图片地址将会失效
     public function getUserInfo($access_token ,$openid){
         $action_url = "https://api.weixin.qq.com/sns/userinfo?access_token={$access_token}&openid={$openid}&lang=zh_CN";
         $res = \Utils::curl_client($action_url);
