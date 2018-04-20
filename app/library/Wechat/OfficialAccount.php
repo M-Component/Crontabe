@@ -48,8 +48,10 @@ class OfficialAccount{
             'CreateTime'=>time()
         );
         $reply_xml = $this->wechat->xml_build($reply_data);
-        $nonce =\Utils::randomkeys(5);
-        $reply_xml = $this->wechat->encrypt_msg($reply_xml, $data['CreateTime'],$nonce);
+        if($this->request_params['encrypt_type'] == 'aes') {
+            $nonce = \Utils::randomkeys(5);
+            $reply_xml = $this->wechat->encrypt_msg($reply_xml, $data['CreateTime'], $nonce);
+        }
         echo $reply_xml;
 
     }
