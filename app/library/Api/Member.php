@@ -6,7 +6,14 @@ use Pam\Member as Pam;
 
 class Member extends Base
 {
-    // private $session_id;
+
+    public function isLogin(){
+        if($member=$this->auth->isLogin()){
+            $this->success($member);            
+        }
+        $this->error('未登录');
+
+    }
 
     //用户注册
     public function signup()
@@ -129,12 +136,10 @@ class Member extends Base
     }
 
     //用户注销
-    public function logout($member_id)
+    public function logout()
     {
-        if ($member_id) {
-            $this->auth->removeLoginSession();
-        }
-        $this->error('操作失败');
+        $this->auth->removeLoginSession();
+        $this->success('退出成功');
     }
 
     //用户更新
