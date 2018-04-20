@@ -8,7 +8,7 @@ use Phalcon\Exception;
 final class Wechat extends Base implements OauthInterface
 {
     public $login_type = 'wechat';
-    public $name = '微信信任登录';
+    public $name = '微信公众号信任登录';
     public $version = '';
 
     public $platform = array(
@@ -35,7 +35,7 @@ final class Wechat extends Base implements OauthInterface
             'display_name' => array(
                 'title' => '信任登录名称',
                 'type' => 'text',
-                'default' => '微信信任登录',
+                'default' => '微信公众号信任登录',
             ),
             'order_num' => array(
                 'title' => '排序',
@@ -55,6 +55,16 @@ final class Wechat extends Base implements OauthInterface
                 'title' => 'redirect_uri(回调地址)',
                 'type' => 'textarea',
                 'default' => $this->callback_url
+            ),
+            'token' => array(
+                'title' => 'Token',
+                'type' => 'text',
+                'default' => ''
+            ),
+            'key' => array(
+                'title' => 'EncodingAESKey',
+                'type' => 'text',
+                'default' => ''
             ),
             /*个性化字段结束*/
             'status' => array(

@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        支付方式
+        登录方式
     </h1>
 </section>
 <section class="content">
