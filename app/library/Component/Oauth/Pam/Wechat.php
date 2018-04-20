@@ -88,11 +88,10 @@ final class Wechat extends Base implements OauthInterface
         //state=STATE 在前台会被跟踪替换成state=$forward;
 
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=$app_id&redirect_uri=$redirect_uri&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
-        //微信里
         if (\Utils::is_wechat()) {
             return $url;
         }
-        //手机中，微信外
+
         if (\Utils::is_mobile()) {
             return false;
         }
@@ -108,23 +107,15 @@ final class Wechat extends Base implements OauthInterface
      * @params array - 所有第三方回调参数，包括POST和GET
      */
     public function callback(&$params)
-    {   // 如果用户同意授权，回调的时候会带上 code,state 这两个参数
+    {
         $code = $params['code'];
         $forward = $params['state']; //最终转向目标
-        //获得token
-        $token = $this->get_token($code, $error_msg);
-        if ($error_msg) {
-            throw new Exception($error_msg);
-        }
-        // 如果用户取消授权 code 则不存在
+
         if (!$code){
             throw new Exception('用户取消授权');
         }
         //获得微信用户open资料
-        $userinfo = $this->get_userinfo($token['access_token'], $token['openid'], $error_msg);
-        if ($error_msg) {
-            throw new Exception($error_msg);
-        }
+        $userinfo = $this->get_userinfo($code);
         // 创建用户
         $member = $this->oauth($userinfo,$this->login_type);
         if ($member) {
@@ -134,60 +125,25 @@ final class Wechat extends Base implements OauthInterface
             }
             $this->response->redirect($forward);
         } else {
-            throw new Exception($error_msg);
+            throw new \Exception('授权登录失败');
         }
     }
 
-    /**
-     * 根据用户授权的code 获得access_token.
-     */
-    private function get_token($code, &$msg)
+   // 根据用户授权的code 获得access_token.
+    private function get_userinfo($code)
     {
-        $app_id = $this->getConf('app_id', 'Wechat');
-        $app_secret = $this->getConf('app_secret', 'Wechat');
-        $action_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=$app_id&secret=$app_secret&code=$code&grant_type=authorization_code";
-        $res = \Utils::curl_client($action_url);
-        $res = json_decode($res, 1);
-        if ($res['errcode'] || !$res['access_token']) {
-            $msg = 'access_token获取失败!' . $res['errmsg'];
-            return false;
+        $conf = $this->getConf(null,'Wechat');
+        $wechat = new \Component\Wechat\Wechat($conf);
+        $access_token = $wechat->get_access_token($code);
+        if (!$access_token['access_token']){
+            throw new \Exception('access_token 获取失败');
         }
-        return $res;
-    }
-
-    /**
-     * 根据access_token 或 openid 获得用户资料.
-     *
-     * 如果用户更新了图片，原有的图片地址将会失效
-     */
-    private function get_userinfo($token, $openid, &$msg)
-    {
-        $action_url = "https://api.weixin.qq.com/sns/userinfo?access_token=$token&openid=$openid&lang=zh_CN";
-        $res = \Utils::curl_client($action_url);
-        $res = json_decode($res, 1);
-        if ($res['errcode'] || !$res['nickname']) {
-            $msg = '用户信息获得失败!' . $res['errmsg'];
-            return false;
+        $userinfo = $wechat->get_userinfo($access_token['access_token'],$access_token['openid']);
+        if (!$userinfo){
+            throw new \Exception('用户信息获取失败');
         }
-        return $res;
+        return $userinfo;
     }
-
-
-    /**
-     * 检查 access_token 是否失效
-     */
-    public function check_token($access_token, $openid, &$msg)
-    {
-        $action_url = "https://api.weixin.qq.com/sns/auth?access_token=$access_token&openid=$openid";
-        $res = \Utils::curl_client($action_url);
-        $res = json_decode($res,1);
-        if ($res['errcode'] != 0){
-            $msg = 'access_token已经失效,请从新获取';
-            return false;
-        }
-        return true;
-    }
-
 
 
 }

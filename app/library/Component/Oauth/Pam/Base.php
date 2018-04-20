@@ -17,10 +17,10 @@ class Base extends Component
      * @params string key
      * @payment api interface class name
      */
-    protected function getConf($key, $pkey)
+    protected function getConf($key = null, $pkey)
     {
         $val = \Setting::getConf($pkey);
-        return $val[$key];
+        return $key? $val[$key]:$val;
     }
 
     // 创建用户，把信任登录进来的用户都存入数据库

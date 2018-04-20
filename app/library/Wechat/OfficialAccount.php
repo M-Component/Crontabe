@@ -86,4 +86,5 @@ class OfficialAccount{
             return '收到默认信息';
         }
     }
+    
 }
