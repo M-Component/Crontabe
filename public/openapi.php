@@ -28,10 +28,13 @@ try{
     ));
 
     // 验证来自于微信服务器授权信息
-    $app->get(
+    $app->map(
         '/openapi/wechat',
         array( new \Openapi\Wechat(), "doRequest")
-    );
+    )->via(array(
+        "GET",
+        "POST",
+    ));
     /* $app->get(
         "/openapi/qrcode",
         array( new \Openapi\Tools(),"qrcode")
