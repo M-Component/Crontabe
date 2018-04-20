@@ -54,6 +54,7 @@ class Member
         return $member;
     }
 
+    // ?第三方信任登录,拿到数据之后在己方服务端登录
     public function oauthLogin($userinfo ,$type){
         $memberOauth =\MemberOauth::findFirst(array(
             "open_id = :open_id: AND type= :type:",
