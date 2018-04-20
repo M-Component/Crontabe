@@ -12,7 +12,7 @@
 <section class="content">
     <div class="row">
         {%for item in items%}
-        <div class="modal fade" id="conf_setting_{{item['drive_name']}}" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="conf_setting_{{item['driver_name']}}" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
 
@@ -25,8 +25,8 @@
                     <h3 class="box-title">{{item['display_name']}}</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <p>{{item['drive_name']}}</p>
-                    <a href="{{link_url('msg_push/setting/'~item['drive_name'])}}" data-target="#conf_setting_{{item['drive_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
+                    <p>{{item['driver_name']}}</p>
+                    <a href="{{link_url('msg_push/setting/'~item['driver_name'])}}" data-target="#conf_setting_{{item['driver_name']}}" data-toggle="modal" class="btn btn-primary"><i class="fa fa-cog"></i> 配置</a>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
         </div><!-- /.col -->
