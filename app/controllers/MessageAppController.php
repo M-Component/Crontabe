@@ -10,8 +10,10 @@ class MessageAppController extends BackstageController
     public function jpushAction(){
         $sender = new \Sender\App();
         $target ='1a0018970a8b3045795';
-        $res =$sender->sendOne($target , '' ,'' ,array(
-            'message' =>'hello world !'
+        $res =$sender->sendOne($target , 'hello' ,'' ,array(
+            'message' =>array(
+                $target=>'hello world !'
+            )
         ));
         var_dump($res);
         exit;
