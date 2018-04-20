@@ -26,8 +26,8 @@ class Base extends Component{
                 'msg'=>$data
             );
         }
-	$http_origin = $this->request->getHeader('ORIGIN');
-    if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
+        $http_origin = $this->request->getHeader('ORIGIN');
+        if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
             $this->response->setHeader('Access-Control-Allow-Origin',$http_origin);
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
             $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
@@ -37,6 +37,7 @@ class Base extends Component{
         }else{
             $this ->response ->setJsonContent($data);            
         }
+
         $this ->response ->send();
         exit;
     }
@@ -46,8 +47,8 @@ class Base extends Component{
             'errorCode'=>$code,
             'msg' =>$msg
         );
-	$http_origin = $this->request->getHeader('ORIGIN');
-    if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
+        $http_origin = $this->request->getHeader('ORIGIN');
+        if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
             $this->response->setHeader('Access-Control-Allow-Origin',$http_origin);
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
             $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
