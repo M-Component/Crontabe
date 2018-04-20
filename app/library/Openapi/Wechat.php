@@ -27,6 +27,7 @@ class Wechat extends Base
                 if (! $this->wechat->checkSignature($signature, $timestamp, $nonce)) {
                     throw new \Exception('接入微信服务器失败');
                 }
+                return $echostr;
             }
             // 接受用户发送的信息，xml 格式
             $post_xml = file_get_contents('php://input');
