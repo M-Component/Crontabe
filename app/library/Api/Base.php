@@ -9,7 +9,6 @@ class Base extends Component{
 
     public function __construct(){
         $this->session_id =$this->session->getId();
-        $this->response->setHeader('_SID' ,$this->session_id);
     }
 
     protected function checkLogin(){
@@ -32,6 +31,7 @@ class Base extends Component{
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
             $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
         }
+        $this->response->setHeader('_SID' ,$this->session_id);
         if($fun =$this->request->get('callback')){
             $this->response->setContent($fun.'('.json_encode($data).')');
         }else{
@@ -53,6 +53,7 @@ class Base extends Component{
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
             $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
         }
+        $this->response->setHeader('_SID' ,$this->session_id);
         if($fun =$this->request->get('callback')){
             $this->response->setContent($fun.'('.json_encode($data).')');
         }else{
