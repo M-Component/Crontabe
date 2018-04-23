@@ -21,6 +21,8 @@ class Auth extends Component{
         $this->session->set('member', array(
             'member_id' => $member->id,
             'username' => $member->username,
+            'mobile' =>$member->mobile,
+            'email'=>$member->email,
             'nickname' =>$member->nickname,
             'avatar' =>$member->avatar
         ));

@@ -84,7 +84,7 @@ class Message{
         $time =time();
         foreach($target_contents as $k => $v){
             $target =$v['target'];
-            $template =$templates[$this->template];
+            $template =$templates[$v['template']];
             $content =$template['content'];
             $this->_getContent($content ,$v['params']);
             $title =$v['title'] ?: $this->_getTitle($content ,$v);

@@ -99,6 +99,14 @@ class Subscribe extends AdvCollection
             $this->appendMessage($message);
             return false;
         }
+        //取出设备id
+        if($this->app_notice){
+            
+        }
+        //取出openid
+        if($this->wechat_notice){
+            
+        }
         return true;
     }
 

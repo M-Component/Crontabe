@@ -276,7 +276,7 @@ $di->set('dispatcher',function (){
 
 });
 
-$di->setShared('messageSender', function () {
+$di->set('messageSender', function () {
     return new Member\Message();
 });
 

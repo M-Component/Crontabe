@@ -1,8 +1,8 @@
 <?php
 use Phalcon\Di;
-class SubscribeEmail extends SubscribeMessageBase implements \Task\TaskInterface
+class SubscribeApp extends SubscribeMessageBase implements \Task\TaskInterface
 {
-    private $queue ='email';
+    private $queue ='app';
 
     /**
      * @param $params
@@ -17,6 +17,6 @@ class SubscribeEmail extends SubscribeMessageBase implements \Task\TaskInterface
                 'params' =>$v
             );
         }
-        $this->messageSender->setMsgType('email')->batchSend($messages);
+        $this->messageSender->setMsgType('app')->send($messages);
     }
 }

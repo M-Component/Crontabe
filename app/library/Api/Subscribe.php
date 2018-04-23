@@ -15,6 +15,7 @@ class Subscribe extends Base
                     throw new \Exception($message);
                 }
             }
+            //需要验证手机号码或者邮箱
             $subscribe =new \Subscribe();
             $subscribe->member_id =$this->member['member_id'];
             $subscribe->goods_id =$data['goods_id'];
@@ -96,6 +97,51 @@ class Subscribe extends Base
         );
         $page = $paginator->getPaginate();
         $this->success($page);
+    }
+
+    public function setNotice(){
+
+        $data = $this->request->getPost();
+        $vcode = new \Component\Vcode();
+        $member_id =$this->member['member_id'];
+        try {
+            if (!$vcode->verify($data['target'], 'vcode', $data['vcode'])) {
+                throw new \Exception('验证码错误');
+            }
+            if(!$member_id){
+                $this->success('验证成功');
+            }
+            $type = $data['type'];
+            if($type=='mobile'){
+                $memberMobile = \MemberMobile::findFirst(array(
+                    "member_id= :member_id: AND mobile = :mobile:",
+                    "bind" => array('member_id'=>$member_id, 'mobile' => $data['target'])
+                ));
+                if(!$memberMobile){
+                    $memberMobile = new \MemberMobile();
+                    $memberMobile->member_id =$member_id;
+                    $memberMobile->mobile = $data['target'];
+                    $memberMobile->create();
+                }
+
+            }
+            if($type=='email'){
+                $memberEmail = \MemberEmail::findFirst(array(
+                    "member_id= :member_id: AND email = :email:",
+                    "bind" => array('member_id'=>$member_id, 'email' => $data['email'])
+                ));
+                if(!$memberEmail){
+                    $memberEmail = new \MemberEmail();
+                    $memberEmail->member_id =$member_id;
+                    $memberEmail->email = $data['target'];
+                    $memberEmail->create();
+                }
+            }
+
+            $this->success('验证成功');
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 
 }

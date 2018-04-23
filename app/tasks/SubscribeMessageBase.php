@@ -12,7 +12,8 @@ class SubscribeMessageBase
     protected $redisDb;
 
     public function __construct(){
-        $this->redisDb =Di::getDefault()->getShared('redisDb');        
+        $this->redisDb =Di::getDefault()->getShared('redisDb');
+        $this->messageSender =Di::getDefault()->get('messageSender');
     }
 
     //从队列中读取可以发送的消息

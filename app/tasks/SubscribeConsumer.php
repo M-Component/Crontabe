@@ -91,6 +91,7 @@ class SubscribeConsumer implements \Task\TaskInterface{
             $this->redisDb->rpush('subscribe_wechat' ,json_encode($message));
         }
         if($subscribe->app_notice){
+            $message['target'] =$subscribe->registration_id;
             $this->redisDb->rpush('subscribe_app' ,json_encode($message));
         }
 

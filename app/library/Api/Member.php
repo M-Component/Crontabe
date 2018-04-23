@@ -35,7 +35,7 @@ class Member extends Base
                 throw new \Exception('该用户名已存在，不能重复');
             }
 
-            $vcode = new \Component\Vcode();
+            $vcode = new Vcode();
             if (!$vcode->verify($data['username'], 'signin', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
@@ -121,7 +121,7 @@ class Member extends Base
                 }
             }
 
-            $vcode = new \Component\Vcode();
+            $vcode = new Vcode();
             if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
@@ -173,7 +173,7 @@ class Member extends Base
         }
     }
 
-    //绑定手机号
+    //第三方账号绑定手机号
     public function bind(){
         $data =$this->request->getPost();
         try{
@@ -184,7 +184,7 @@ class Member extends Base
                     throw new \Exception($message);
                 }
             }
-            $vcode = new \Component\Vcode();
+            $vcode = new Vcode();
             if (!$vcode->verify($data['username'], 'vcode', $data['vcode'])) {
                 throw new \Exception('验证码错误');
             }
@@ -194,6 +194,13 @@ class Member extends Base
         }catch(\Exception $e){
             $this->error($e->getMessage());
         }
+    }
+
+    //获取绑定的第三方账号信息
+    public function getBinds(){
+        $member_id =$this->member['mmeber_id'];
+        $oauth = \MemberOauth::find('member_id='.$member_id);
+        $this->success($oauth);
     }
 
     /**

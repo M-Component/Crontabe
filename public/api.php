@@ -50,6 +50,10 @@ try{
         "/api/member/bind",
         array( new \Api\Member(),"bind")
     );
+    $app->get(
+        "/api/member/bind",
+        array( new \Api\Member(),"getBinds")
+    );
 
     $app->get(
         "/api/member/status",
@@ -103,6 +107,10 @@ try{
     $app->post(
         '/api/subscribe',
         array( new \Api\Subscribe(), "setSubscribe")
+    );
+    $app->post(
+        '/api/subscribe/notice',
+        array( new \Api\Subscribe(), "setNotice")
     );
 
     $app->get(
