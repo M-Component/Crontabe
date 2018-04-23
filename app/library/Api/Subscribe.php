@@ -100,7 +100,7 @@ class Subscribe extends Base
     }
 
     public function setNotice(){
-
+        $this->checkLogin();
         $data = $this->request->getPost();
         $vcode = new \Component\Vcode();
         $member_id =$this->member['member_id'];
