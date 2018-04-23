@@ -36,7 +36,8 @@ class AccessToken{
 
     //网页授权access_token
     public function getOauth2Token($code){
-        if(!$oauth2Token =$this->cache->get($this->cache_oauth2_access_token)){
+	$oauth2Token =$this->cache->get($this->cache_oauth2_access_token); 
+        if(!$oauth2Token['access_token']){
             $action_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->appSecret}&code={$code}&grant_type=authorization_code";
             $res = \Utils::curl_client($action_url);
             $res = json_decode($res, 1);
@@ -47,7 +48,7 @@ class AccessToken{
             }
             $oauth2Token =$res;
             $oauth2Token['expires_time'] =time()+ $oauth2Token['expires_in'];
-            $this->cache->save($this->cache_oauth2_access_token ,$res ,3600*24*30);
+            $this->cache->save($this->cache_oauth2_access_token ,$oauth2Token ,3600*24*30);
         }
         if($oauth2Token['expires_time']>= time()){
             $oauth2Token = $this->refreshToken($oauth2Token['refresh_token']);
@@ -65,8 +66,8 @@ class AccessToken{
             //logger
             return false;
         }
-        $oauth2Token['expires_time'] =time()+ $res['expires_in'];
-        $this->cache->save($this->cache_oauth2_access_token ,$oauth2Token);
-        return $oauth2Token;
+        $res['expires_time'] =time()+ $res['expires_in'];
+        $this->cache->save($this->cache_oauth2_access_token ,$res);
+        return $res;
     }
 }
