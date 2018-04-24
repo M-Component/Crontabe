@@ -33,7 +33,7 @@ class MessageTemplate
     {
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token=';
         $res = json_decode(\Utils::curl_client($action_url), 1);
-        if ($res['errcode'] != 0){
+        if ($res['errcode'] != 0) {
             throw new \Exception($res['errmsg']);
         }
         $this->industry = $res ['industry'];
@@ -63,7 +63,7 @@ class MessageTemplate
 
     public function getTemplateList()
     {
-        $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' ;
+        $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' . $this->access_token;
 
         $res = json_decode(\Utils::curl_client($action_url), 1);
         if ($res['errmsg'] != 'ok') {
@@ -89,12 +89,12 @@ class MessageTemplate
     // 发送模版消息
     public function sendTempMsg($params)
     {
-        $params['template_id'] ?: $params['template_id']= $this->template_id;
-        $action_url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->access_token;
+        $params['template_id'] ?: $params['template_id'] = $this->template_id;
+        $action_url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=' . $this->access_token;
 
         $res = json_decode(\Utils::curl_client($action_url, json_encode($params), "POST"), 1);
 
-        if ($res['errmsg'] == 'ok'){
+        if ($res['errmsg'] == 'ok') {
             return $res['msgid'];
         }
         throw new \Exception('消息发送失败');
