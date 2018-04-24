@@ -66,6 +66,7 @@ class MessageTemplate
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' . $this->access_token;
         $res = json_decode(\Utils::curl_client($action_url), 1);
         if ($res['errcode'] && $res['errcode'] != '0') {
+            if ($res['errcode'] == 40001) return $res['errcode']; // 防止线上和本地都刷新了 access_token(刷新一次access_token 会造成上一个access_token作废)
             throw new \Exception($res['errmsg']);
         }
         return $res['template_list'];

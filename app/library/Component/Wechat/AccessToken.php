@@ -16,10 +16,10 @@ class AccessToken{
 
 
     //普通access_token
-    public function getToken(){
+    public function getToken($errcode){
 
         //并发覆盖问题
-        if(!$access_token =$this->cache->get($this->cache_access_token)){
+        if(!$access_token =$this->cache->get($this->cache_access_token) || $errcode == 40001){
             $action_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
             $res =\Utils::curl_client($action_url);
             $res = json_decode($res, 1);
@@ -35,9 +35,10 @@ class AccessToken{
     }
 
     //网页授权access_token
-    public function getOauth2Token($code){
-	$oauth2Token =$this->cache->get($this->cache_oauth2_access_token); 
-        if(!$oauth2Token['access_token']){
+    public function getOauth2Token($code,$errcode){
+
+        $oauth2Token =$this->cache->get($this->cache_oauth2_access_token);
+        if(!$oauth2Token['access_token'] || $errcode == 40001){
             $action_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->appSecret}&code={$code}&grant_type=authorization_code";
             $res = \Utils::curl_client($action_url);
             $res = json_decode($res, 1);
