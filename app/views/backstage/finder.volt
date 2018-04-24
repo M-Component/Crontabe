@@ -73,7 +73,7 @@
      var $el = $(this),
          box = $el.closest('.finder'),
          checked = box.find('table>tbody input[type=checkbox]:checked');
-     if(!checked.length){
+     if(!checked.length && $el.data('ignore') == 'false'){
          return toastr.warning('请选择要操作的数据', '异常');
      }
      if ($el.attr('data-confirm') && !confirm($el.attr('data-confirm'))) {

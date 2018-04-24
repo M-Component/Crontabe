@@ -55,6 +55,7 @@ class Wechat extends Component
         return false;
     }
 
+    // 构建开发者回复用户信息【xml格式】
     public function xml_build($data =array()){
         return XML::build($data);
     }
@@ -76,5 +77,10 @@ class Wechat extends Component
     public function get_userinfo($access_token,$openid){
         $user = new User();
         return $user->getUserInfo($access_token,$openid);
+    }
+    
+    public function getTemplateList(){
+        $messgae_template = new MessageTemplate($this->get_access_token());
+        return $messgae_template->getTemplateList();
     }
 }

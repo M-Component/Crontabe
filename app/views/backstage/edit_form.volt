@@ -65,7 +65,7 @@
                 cm.replaceSelection(spaces);
             }
         });
-        editor.setSize('100%',500); 
+        editor.setSize('100%',500);
         </script>
         {%elseif column['type'] == 'datetime'%}
             <div class="input-group datetime">

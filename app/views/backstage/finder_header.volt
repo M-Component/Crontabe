@@ -38,7 +38,12 @@
 
         {% if list_action['custom_actions']%}
         {% for action in list_action['custom_actions'] %}
-        {{link_to(action['href'],action['title'],'class':'btn btn-primary btn-flat','data-finder-batch':'true')}}
+            {% if  action['data-ignore'] == 'true'%}
+            {% set data_ignore = 'true' %}
+            {% else %}
+            {% set data_ignore = 'false' %}
+            {% endif %}
+        {{link_to(action['href'],action['title'],'class':'btn btn-primary btn-flat','data-finder-batch':'true','data-ignore':data_ignore)}}
         {% endfor %}
         {%endif%}
 

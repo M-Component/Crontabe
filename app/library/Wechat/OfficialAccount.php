@@ -34,6 +34,7 @@ class OfficialAccount{
                 return false;
             }
         }
+        // 解析用户发送消息【xml格式】
         $data = $this->wechat->xml_parse($xml_data);
 
         if(!$data['MsgType']){
@@ -59,6 +60,27 @@ class OfficialAccount{
     private function replyMessage($msg_type ,$data){
         switch ($msg_type) {
         case 'event':
+            switch ($data['event']){
+                case 'subscribe':
+                    return '欢迎关注【便宜叫我】公众号';
+                    break;
+                case 'unsubscribe':   //  取消订阅
+                    break;
+
+                case 'scan':          // 二维码的ticket，可用来换取二维码图片
+                    break;
+
+                case 'location':      // 收到坐标消息
+                    break;
+
+                case 'click':         // 点击菜单拉取消息时的事件推送
+                    break;
+
+                case 'view':          //  点击菜单跳转链接时的事件推送
+                    break;
+                default:
+                    return '收到事件消息';
+            }
             return '收到事件消息';
             break;
         case 'text':
@@ -85,6 +107,10 @@ class OfficialAccount{
         default:
             return '收到默认信息';
         }
+    }
+    
+    public function getTemplateList(){
+        return $this->wechat->getTemplateList();
     }
     
 }

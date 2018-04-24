@@ -21,7 +21,7 @@ class AccessToken{
         //并发覆盖问题
         if(!$access_token =$this->cache->get($this->cache_access_token)){
             $action_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
-            $res =\Utils::curl($action_url);
+            $res =\Utils::curl_client($action_url);
             $res = json_decode($res, 1);
             if ($res['errcode'] || !$res['access_token']) {
                 $msg = 'access_token获取失败!' . $res['errmsg'];
