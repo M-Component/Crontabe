@@ -64,12 +64,11 @@ class MessageTemplate
     public function getTemplateList()
     {
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' . $this->access_token;
-
         $res = json_decode(\Utils::curl_client($action_url), 1);
         if ($res['errcode'] && $res['errcode'] != '0') {
             throw new \Exception($res['errmsg']);
         }
-        return $res;
+        return $res['template_list'];
     }
 
     public function deleteTemplate()

@@ -72,11 +72,17 @@ class WechatTemplate extends \Mvc\AdvModel
         ]));
         return $this->validate($validator);
     }
-    
-    public function beforeSave(){
-        $self = self::findFirst(\Mvc\DbFilter::filter(array('template_id'=>$this->template_id)));
-        if ($self){
-            return false;
+
+    public function check_update_msg_temp($template_list){
+        $self_template_list = self::find();
+        $template_ids = array_keys(\Utils::array_change_key($template_list,'template_id'));
+        foreach ($self_template_list as $key=>$item){
+            if (!in_array($item->template_id,$template_ids)){
+                self::findFirst(\Mvc\DbFilter::filter(array('template_id'=>$item->template_id)))->delete();
+            }else{
+                unset($template_list[array_search($item->template_id,$template_ids)]);
+            }
         }
+        return $template_list;
     }
 }

@@ -22,18 +22,22 @@ class WechatTemplateController extends BackstageController
         $official_account = new OfficialAccount();
         try {
             $template_list = $official_account->getTemplateList();
-            foreach ($template_list['template_list'] as $key => $item) {
-                $params = array();
-                $params = array(
-                    'title' => $item['title'],
-                    'template_id' => $item['template_id'],
-                    'primary_industry' => $item['primary_industry'],
-                    'deputy_industry' => $item['deputy_industry'],
-                    'content' => $item['content'],
-                    'example' => $item['example'],
-                );
-                $wechat_template = new \WechatTemplate();
-                $wechat_template->save($params);
+            $wechat_template = new \WechatTemplate();
+            $new_template_list = $wechat_template->check_update_msg_temp($template_list);
+            if ($new_template_list){
+                foreach ($new_template_list as $key => $item) {
+                    $params = array();
+                    $params = array(
+                        'title' => $item['title'],
+                        'template_id' => $item['template_id'],
+                        'primary_industry' => $item['primary_industry'],
+                        'deputy_industry' => $item['deputy_industry'],
+                        'content' => $item['content'],
+                        'example' => $item['example'],
+                    );
+                    $wechat_template = new \WechatTemplate();
+                    $wechat_template->save($params);
+                }
             }
             $this->success('更新成功');
         } catch (\Exception $exception) {

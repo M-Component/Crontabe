@@ -82,7 +82,6 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        {{link_to('wechat/index','<i class="fa fa-circle-o"></i>绑定公众号')}}
                         {{link_to('wechat_template/index','<i class="fa fa-circle-o"></i>微信消息模版')}}
                     </li>
                 </ul>

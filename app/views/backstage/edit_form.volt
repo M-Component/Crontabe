@@ -95,7 +95,9 @@
         {%elseif column['type'] == 'password'%}
             <input type="password" class="form-control" name="{{index}}" id="{{index}}" >
         {%else%}
-        <input type="{{column['type']}}" {%if model_data is defined AND model_data.readAttribute(index) AND column['update']===false%}readonly{%endif%} class="form-control" name="{{index}}" id="{{index}}" placeholder="输入{{column['name']}}" value="{%if model_data is defined%}{{model_data.readAttribute(index)}}{%endif%}">
+        <!--取消了 (model_data.readAttribute(index) 字段如果有值，还是可以编辑) 的功能-->
+       {# <input type="{{column['type']}}" {%if model_data is defined AND model_data.readAttribute(index) AND column['update']===false%}readonly{%endif%} class="form-control" name="{{index}}" id="{{index}}" placeholder="输入{{column['name']}}" value="{%if model_data is defined%}{{model_data.readAttribute(index)}}{%endif%}">#}
+        <input type="{{column['type']}}" {%if model_data is defined AND column['update']===false%}readonly{%endif%} class="form-control" name="{{index}}" id="{{index}}" placeholder="输入{{column['name']}}" value="{%if model_data is defined%}{{model_data.readAttribute(index)}}{%endif%}">
         {%endif%}
         <span class="help-inline">{{column['desc']}}</span>
     </div>
