@@ -28,8 +28,8 @@ class AccessToken{
                 //logger
                 return false;
             }
-            $this->cache->save($this->cache_access_token , $access_token, $res['expires_in']);
-
+            $this->cache->save($this->cache_access_token , $res['access_token'], $res['expires_in']);
+            $access_token = $res['access_token'];
         }
         return $access_token;
     }
