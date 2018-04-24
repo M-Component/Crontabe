@@ -23,7 +23,7 @@ class MessageTemplate
             'industry_id2' => $ids[1]
         );
         $res = json_decode(\Utils::curl_client($action_url, json_encode($params), 'POST'), 1);
-        if ($res['errcode'] != 0) {
+        if ($res['errcode'] &&  $res['errcode'] != 0) {
             throw new \Exception($res['errmsg']);
         }
         return $this;
@@ -33,7 +33,7 @@ class MessageTemplate
     {
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token=';
         $res = json_decode(\Utils::curl_client($action_url), 1);
-        if ($res['errcode'] != 0) {
+        if ($res['errcode'] && $res['errcode'] != 0) {
             throw new \Exception($res['errmsg']);
         }
         $this->industry = $res ['industry'];
@@ -55,7 +55,7 @@ class MessageTemplate
             'template_id_short' => $template_id_short
         );
         $res = json_decode(\Utils::curl_client($action_url, json_encode($params), "POST"), 1);
-        if ($res['errcode'] != 0) {
+        if ($res['errcode'] && $res['errcode'] != 0) {
             throw new \Exception($res['errmsg']);
         }
         return $res['template_id'];
@@ -66,7 +66,7 @@ class MessageTemplate
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' . $this->access_token;
 
         $res = json_decode(\Utils::curl_client($action_url), 1);
-        if ($res['errmsg'] != 'ok') {
+        if ($res['errcode'] && $res['errcode'] != '0') {
             throw new \Exception($res['errmsg']);
         }
         return $res;

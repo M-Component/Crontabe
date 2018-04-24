@@ -13,38 +13,42 @@ class Wechat extends Component
 
     private $key;
 
-    public function __construct($config){
-        $this->app_id =$config['app_id'];
-        $this->app_secret =$config['app_secret'];
-        $this->token =$config['token'];
-        $this->key =$config['key'];
+    public function __construct($config)
+    {
+        $this->app_id = $config['app_id'];
+        $this->app_secret = $config['app_secret'];
+        $this->token = $config['token'];
+        $this->key = $config['key'];
 
     }
 
-    public function check_sign($signature ,$timestamp ,$nonce)
-	{
-        		
-		$tmpArr = array($this->token, $timestamp, $nonce);
-		sort($tmpArr);
-		$tmpStr = implode( $tmpArr );
-		$tmpStr = sha1( $tmpStr );
-		if( $tmpStr == $signature ){
-			return true;
-		}
-        return false;
-	}
+    public function check_sign($signature, $timestamp, $nonce)
+    {
 
-    public function decrypt_msg($str ='' ,$msg_signature ,$timestamp ,$nonce){
+        $tmpArr = array($this->token, $timestamp, $nonce);
+        sort($tmpArr);
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+        if ($tmpStr == $signature) {
+            return true;
+        }
+        return false;
+    }
+
+    public function decrypt_msg($str = '', $msg_signature, $timestamp, $nonce)
+    {
         $pc = new WXBizMsgCrypt($this->token, $this->key, $this->app_id);
         $res = '';
-        $errCode = $pc->decryptMsg($msg_signature ,$timestamp, $nonce , $str, $res);
+        $errCode = $pc->decryptMsg($msg_signature, $timestamp, $nonce, $str, $res);
         if ($errCode == 0) {
             return $res;
         }
         //logger errCode
         return false;
     }
-    public function  encrypt_msg($str ,$timestamp ,$nonce){
+
+    public function encrypt_msg($str, $timestamp, $nonce)
+    {
 
         $pc = new WXBizMsgCrypt($this->token, $this->key, $this->app_id);
         $res = '';
@@ -56,30 +60,35 @@ class Wechat extends Component
     }
 
     // 构建开发者回复用户信息【xml格式】
-    public function xml_build($data =array()){
+    public function xml_build($data = array())
+    {
         return XML::build($data);
     }
 
-    public function xml_parse($xml_data =''){
+    public function xml_parse($xml_data = '')
+    {
         return XML::parse($xml_data);
     }
 
-    public function get_access_token($code =null) {
-        $accessToken = new AccessToken($this->app_id ,$this->app_secret,$this->fileCache);
-        if($code){
+    public function get_access_token($code = null)
+    {
+        $accessToken = new AccessToken($this->app_id, $this->app_secret, $this->fileCache);
+        if ($code) {
             $res = $accessToken->getOauth2Token($code);
-        }else{
+        } else {
             $res = $accessToken->getToken();
         }
-	return $res;
+        return $res;
     }
-    
-    public function get_userinfo($access_token,$openid){
+
+    public function get_userinfo($access_token, $openid)
+    {
         $user = new User();
-        return $user->getUserInfo($access_token,$openid);
+        return $user->getUserInfo($access_token, $openid);
     }
-    
-    public function getTemplateList(){
+
+    public function getTemplateList()
+    {
         $messgae_template = new MessageTemplate($this->get_access_token());
         return $messgae_template->getTemplateList();
     }

@@ -48,7 +48,7 @@ class WechatTemplate extends \Mvc\AdvModel
 
             'example'=>array(
                 'type' =>'code',
-                'name'=>'模版内容',
+                'name'=>'模版示例',
                 'update' => false
             )
         );

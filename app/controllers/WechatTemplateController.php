@@ -22,7 +22,7 @@ class WechatTemplateController extends BackstageController
         $official_account = new OfficialAccount();
         try {
             $template_list = $official_account->getTemplateList();
-            foreach ($template_list as $key => $item) {
+            foreach ($template_list['template_list'] as $key => $item) {
                 $params = array();
                 $params = array(
                     'title' => $item['title'],
