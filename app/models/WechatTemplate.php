@@ -67,8 +67,8 @@ class WechatTemplate extends \Mvc\AdvModel
     public function validation()
     {
         $validator = new Validation();
-        $validator->add(array('template','template_id'), new Uniqueness([
-            "message" => "已存在相同通知类型、模板类型的记录"
+        $validator->add("template", new Uniqueness([
+            "message" => "已存在相同消息模版的记录"
         ]));
         return $this->validate($validator);
     }
