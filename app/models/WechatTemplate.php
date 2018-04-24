@@ -74,6 +74,8 @@ class WechatTemplate extends \Mvc\AdvModel
     }
 
     public function check_update_msg_temp($template_list){
+
+        if (count($template_list) < 1) return false;
         $self_template_list = self::find();
         $template_ids = array_keys(\Utils::array_change_key($template_list,'template_id'));
         foreach ($self_template_list as $key=>$item){

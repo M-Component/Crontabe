@@ -18,8 +18,9 @@ class AccessToken{
     //普通access_token
     public function getToken($errcode){
 
+        $access_token =$this->cache->get($this->cache_access_token);
         //并发覆盖问题
-        if(!$access_token =$this->cache->get($this->cache_access_token) || $errcode == 40001){
+        if(!$access_token || $errcode == 40001){
             $action_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
             $res =\Utils::curl_client($action_url);
             $res = json_decode($res, 1);
