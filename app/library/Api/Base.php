@@ -29,7 +29,8 @@ class Base extends Component{
         if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
             $this->response->setHeader('Access-Control-Allow-Origin',$http_origin);
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
-            $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
+            $this->response->setHeader('Access-Control-Allow-Credentials','true');
+            $this->response->setHeader('Access-Control-Expose-Headers','_SID'); 
         }
         $this->response->setHeader('_SID' ,$this->session_id);
         if($fun =$this->request->get('callback')){
@@ -51,7 +52,8 @@ class Base extends Component{
         if ($http_origin == "https://test.pianyijiaowo.com" || $http_origin == "http://test.pianyijiaowo.com" || $http_origin == "http://local.pianyijiaowo.com:8080"){  
             $this->response->setHeader('Access-Control-Allow-Origin',$http_origin);
             $this->response->setHeader('Access-Control-Allow-Methods','POST,GET');
-            $this->response->setHeader('Access-Control-Allow-Credentials','true'); 
+            $this->response->setHeader('Access-Control-Allow-Credentials','true');
+            $this->response->setHeader('Access-Control-Expose-Headers','_SID'); 
         }
         $this->response->setHeader('_SID' ,$this->session_id);
         if($fun =$this->request->get('callback')){
