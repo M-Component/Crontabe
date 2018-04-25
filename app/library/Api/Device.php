@@ -11,12 +11,12 @@ class Device extends Base
             if(!$data['registration_id']){
                 throw new \Exception('registration_id 不能为空');
             }
-            $device =\Device::findFirst(array(
+            $device =\Member\Device::findFirst(array(
                 "registration_id=:id:" ,
                 'bind'=>array('id'=>$data['registration_id'])
             ));
             if(!$device){
-                $device = new \Device();
+                $device = new \Member\Device();
                 $device ->registration_id =$data['registration_id'];
             }
 

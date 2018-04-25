@@ -4,7 +4,7 @@ use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Message as Message;
 use Phalcon\Security;
 
-class MemberMobile extends \Phalcon\Mvc\Model
+class MemberMobile extends \Mvc\AdvModel
 {
 
     public function initialize()

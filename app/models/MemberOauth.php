@@ -4,7 +4,7 @@ use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Message as Message;
 use Phalcon\Security;
 
-class MemberOauth extends \Phalcon\Mvc\Model
+class MemberOauth extends \Mvc\AdvModel
 {
 
     public function initialize()

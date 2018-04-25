@@ -1,6 +1,6 @@
 <?php
 
-class AppPushTasks extends Phalcon\Mvc\Model
+class AppPushTasks extends \Mvc\AdvModel
 {
     public function get_columns(){
         return array(

@@ -3,7 +3,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Message as Message;
 use Phalcon\Security;
-class Member extends \Phalcon\Mvc\Model
+class Member extends \Mvc\AdvModel
 {
     public function get_columns(){
         return array(
