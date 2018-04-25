@@ -12,28 +12,6 @@ class WechatTemplate extends \Mvc\AdvModel
                 'update' => false,
             ),
 
-            'primary_industry'=>array(
-                'type' => 'text',
-                'name' => '模板所属行业的一级行业',
-                'update' => false
-            ),
-
-            'deputy_industry'=>array(
-                'type' => 'text',
-                'name' => '模板所属行业的二级行业',
-                'update' => false
-            ),
-
-            'template'=>array(
-                'type' =>array(
-                    'vcode'=>'通用提醒',
-                    'payment'=>'支付提醒',
-                    'signin'=>'登录提醒',
-                    'signup'=>'注册提醒',
-                ),
-                'name'=>'模版类型',
-            ),
-
             'template_id'=>array(
                 'type' =>'text',
                 'name'=>'模版ID (用于接口调用)',
@@ -45,12 +23,6 @@ class WechatTemplate extends \Mvc\AdvModel
                 'name'=>'模版内容',
                 'update' => false
             ),
-
-            'example'=>array(
-                'type' =>'code',
-                'name'=>'模版示例',
-                'update' => false
-            )
         );
     }
 

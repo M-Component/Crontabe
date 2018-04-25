@@ -5,6 +5,7 @@ use Component\Vcode;
 use Sender\Sms as SmsSender;
 use Sender\Email as EmailSender;
 use Sender\App as AppSender;
+use Sender\Wechat as WechatSender;
 
 class Message{
 
@@ -48,16 +49,27 @@ class Message{
      */
     public function send(array $targets , array $params ,$extend_params =null ){
         $this->_getSender();
-        $template = \MessageTemplate::findFirst("template='{$this->template}' AND msg_type='{$this->msg_type}'");
-        if(!$template){
-            throw new \Exception('未知的消息模板');
-        }
-        $content =$template->content;
-        $this->_getContent($content ,$params);
-        $title = $template->title?:$this->_getTitle($content);
-        $send_targets =array();
-        foreach($targets as $target){
-            $send_targets[]= $target['target'];
+
+        $send_targets = array();
+        $title = '';
+        if($this->msg_type == 'wechat'){
+            foreach($targets as $target){
+                $send_targets[]= $target['target'];
+            }
+            $content = $params; // 模版里面的 data 数据
+
+        }else{
+            $template = \MessageTemplate::findFirst("template='{$this->template}' AND msg_type='{$this->msg_type}'");
+            if(!$template){
+                throw new \Exception('未知的消息模板');
+            }
+            $content =$template->content;
+            $this->_getContent($content ,$params);
+            $title = $template->title?:$this->_getTitle($content);
+            $send_targets =array();
+            foreach($targets as $target){
+                $send_targets[]= $target['target'];
+            }
         }
         $this->sender->send($send_targets ,$content, $title,$extend_params);
 
@@ -77,31 +89,54 @@ class Message{
 
     public function batchSend(array $target_contents){
         $this->_getSender();
-        $templates =\MessageTemplate::find("msg_type='{$this->msg_type}'")->toArray();
-        $templates =\Utils::array_change_key($templates ,'template');
 
         $log_data = $send_data =[];
         $time =time();
-        foreach($target_contents as $k => $v){
-            $target =$v['target'];
-            $template =$templates[$v['template']];
-            $content =$template['content'];
-            $this->_getContent($content ,$v['params']);
-            $title =$v['title'] ?: $this->_getTitle($content ,$v);
-            $send_data[]=[
-                'target'=>$target,
-                'content' =>$content,
-                'title' =>$title,
-            ];
+        if($this->msg_type == 'wechat'){
+            foreach($target_contents as $key=>$value){
+                $send_data[] = [
+                    'touser'=>$value['target'],
+                    'url'=>$value['url'],
+                    'miniprogram'=> $value['miniprogram']?:array(),
+                    'template_id' => $value['template_id'],
+                    'data'=>$value['data'],
+                    'color'=>$value['color']?:''
+                ];
 
-            $log_data[] =[
-                'member_id' =>$v['member_id'] ? :0,
-                'target'=>$target,
-                'title' =>$title,
-                'content' =>$content,
-                'create_time' =>$time
-            ];
+                $log_data[] = [
+                    'member_id' => $value['member_id']?:0,
+                    'target'=> $value['target'],
+                    'title'=> $value['title']?:'微信消息推送',
+                    'content'=> serialize($value['data']),
+                    'create_time'=> $time,
+                ];
+            }
+        }else{
+            $templates =\MessageTemplate::find("msg_type='{$this->msg_type}'")->toArray();
+            $templates =\Utils::array_change_key($templates ,'template');
+
+            foreach($target_contents as $k => $v){
+                $target =$v['target'];
+                $template =$templates[$v['template']];
+                $content =$template['content'];
+                $this->_getContent($content ,$v['params']);
+                $title =$v['title'] ?: $this->_getTitle($content ,$v);
+                $send_data[]=[
+                    'target'=>$target,
+                    'content' =>$content,
+                    'title' =>$title,
+                ];
+
+                $log_data[] =[
+                    'member_id' =>$v['member_id'] ? :0,
+                    'target'=>$target,
+                    'title' =>$title,
+                    'content' =>$content,
+                    'create_time' =>$time
+                ];
+            }            
         }
+
         $this->sender->sendList($send_data);
         return $this->log_model->batchCreate($log_data);
     }
@@ -118,7 +153,7 @@ class Message{
             $this->log_model =new \MessageEmail();
             break;
         case 'wechat':
-            $this->sender =  null;
+            $this->sender =  new WechatSender();
             $this->log_model =new \MessageWechat();
             break;
         case 'app':
