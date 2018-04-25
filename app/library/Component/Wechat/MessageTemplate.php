@@ -8,10 +8,19 @@ class MessageTemplate
     private $template_id;
     private $industry;
     private $access_token;
+    private $error;
 
     public function __construct($access_token)
     {
         $this->access_token = $access_token;
+    }
+
+    public function setError($error){
+        $this->error =$error;
+    }
+
+    public function getError(){
+        return $this->error;
     }
 
     // 设置所属行业 每月可修改行业1次
@@ -66,8 +75,8 @@ class MessageTemplate
         $action_url = 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=' . $this->access_token;
         $res = json_decode(\Utils::curl_client($action_url), 1);
         if ($res['errcode'] && $res['errcode'] != '0') {
-            if ($res['errcode'] == 40001) return $res['errcode']; // 防止线上和本地都刷新了 access_token(刷新一次access_token 会造成上一个access_token作废)
-            throw new \Exception($res['errmsg']);
+            $this->setError(['code'=>$res['errcode'] ,'msg'=>$res['errmsg']]);
+            return false;
         }
         return $res['template_list'];
     }
