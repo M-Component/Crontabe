@@ -66,25 +66,12 @@ class WechatTemplate extends \Mvc\AdvModel
 
     public function validation()
     {
+
         $validator = new Validation();
         $validator->add("template", new Uniqueness([
-            "message" => "已存在相同消息模版的记录"
+            "message" => "已存在相同消息模版的记录",
+            'allowEmpty'=>true // 允许在数据库的字段为空的情况下，不做判断
         ]));
         return $this->validate($validator);
-    }
-
-    public function check_update_msg_temp($template_list){
-
-        if (count($template_list) < 1) return false;
-        $self_template_list = self::find();
-        $template_ids = array_keys(\Utils::array_change_key($template_list,'template_id'));
-        foreach ($self_template_list as $key=>$item){
-            if (!in_array($item->template_id,$template_ids)){
-                self::findFirst(\Mvc\DbFilter::filter(array('template_id'=>$item->template_id)))->delete();
-            }else{
-                unset($template_list[array_search($item->template_id,$template_ids)]);
-            }
-        }
-        return $template_list;
     }
 }

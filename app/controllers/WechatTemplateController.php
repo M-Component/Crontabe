@@ -22,23 +22,31 @@ class WechatTemplateController extends BackstageController
         $official_account = new OfficialAccount();
         try {
             $template_list = $official_account->getTemplateList();
-            $wechat_template = new \WechatTemplate();
-            $new_template_list = $wechat_template->check_update_msg_temp($template_list);
-            if ($new_template_list){
-                foreach ($new_template_list as $key => $item) {
-                    $params = array();
-                    $params = array(
-                        'title' => $item['title'],
-                        'template_id' => $item['template_id'],
-                        'primary_industry' => $item['primary_industry'],
-                        'deputy_industry' => $item['deputy_industry'],
-                        'content' => $item['content'],
-                        'example' => $item['example'],
-                    );
+            $wechat_template_list =\WechatTemplate::find();
+            $wechat_template_arr =[];
+
+            foreach ($wechat_template_list as $template){
+                $wechat_template_arr[$template->template_id] =$template;
+            }
+
+            foreach ($template_list as $item){
+                if(!$wechat_template = $wechat_template_arr[$item['template_id']]){
                     $wechat_template = new \WechatTemplate();
-                    $wechat_template->save($params);
+                    $wechat_template->template_id =$item['template_id'];
+                }else{
+                    unset($wechat_template_arr[$item['template_id']]);
+                }
+                $wechat_template->content =$item['content'];
+                if (!$wechat_template->save()){
+                    foreach ($wechat_template->getMessages() as $message){
+                        throw new \Exception($message->getMessage());
+                    }
                 }
             }
+            foreach ($wechat_template_arr as $item){
+                $item->delete();
+            }
+
             $this->success('更新成功');
         } catch (\Exception $exception) {
             $this->error('更新失败 ' . $exception->getMessage());

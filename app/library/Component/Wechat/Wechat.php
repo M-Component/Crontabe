@@ -87,14 +87,23 @@ class Wechat extends Component
         return $user->getUserInfo($access_token, $openid);
     }
 
-    public function getTemplateList()
+    public function refresh_token($refresh_token = null){
+        $accessToken = new AccessToken($this->app_id, $this->app_secret, $this->fileCache);
+        if ($refresh_token) {
+            $res = $accessToken->refreshOauth2Token($refresh_token);
+        } else {
+            $res = $accessToken->refreshToken();
+        }
+        return $res;
+    }
+    public function get_Template_list()
     {
         $messgae_template = new MessageTemplate($this->get_access_token());
         $res = $messgae_template->getTemplateList();
-        
+
         //  防止线上和本地都刷新了 access_token(刷新一次access_token 会造成上一个access_token作废)
         if ($res == 40001) {
-            $messgae_template = new MessageTemplate($this->get_access_token());
+            $messgae_template = new MessageTemplate($this->refresh_token());
             $res = $messgae_template->getTemplateList();
         }
         return $res;
