@@ -3,6 +3,7 @@ namespace Api;
 class Goods extends Base
 {
     public function __construct(){
+        parent::__construct();
         $this->config = $this->getDI()->getConfig()->api['translation'];
     }
     public function getList()
