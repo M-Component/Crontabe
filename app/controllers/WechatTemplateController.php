@@ -37,6 +37,7 @@ class WechatTemplateController extends BackstageController
                     unset($wechat_template_arr[$item['template_id']]);
                 }
                 $wechat_template->content =$item['content'];
+                $wechat_template->title =$item['title'];
                 if (!$wechat_template->save()){
                     foreach ($wechat_template->getMessages() as $message){
                         throw new \Exception($message->getMessage());
