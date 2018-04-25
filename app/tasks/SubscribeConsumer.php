@@ -25,7 +25,7 @@ class SubscribeConsumer implements \Task\TaskInterface{
         $price =$this->goods['price'];
         //更新订阅记录的价格
         $subscribe = new \Subscribe();
-        $subscribe->batchUpdate(array('price'=>$price),array('goods_id' =>$goods_id));
+        $subscribe->batchUpdate(array('price'=>(float)$price),array('goods_id' =>(string)$goods_id));
 
         $pattern = 'subscribe-'.$goods_id.'-*';
         $it = null;

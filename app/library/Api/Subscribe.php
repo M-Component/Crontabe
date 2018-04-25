@@ -18,20 +18,19 @@ class Subscribe extends Base
             }
             //需要验证手机号码或者邮箱
             $subscribe =new \Subscribe();
-            $subscribe->member_id = (int)$member_id;
-            $subscribe->goods_id = (string)$data['goods_id'];
+            $subscribe->member_id = $member_id;
+            $subscribe->goods_id = $data['goods_id'];
             $subscribe->rule =$data['rule'];
-            $subscribe->value=(float)$data['value'];
+            $subscribe->value=$data['value'];
             $subscribe->current_price=$subscribe->price= (float)$data['current_price'];
             $subscribe->from =$data['from'];
             $subscribe->to =$data['to'];
             $subscribe->tag =$data['tag'];
-            $subscribe->mobile =(string)$data['mobile'];
+            $subscribe->mobile =$data['mobile'];
             $subscribe->email =$data['email'];
 
-            $subscribe->wechat_notice=(int)$data['wechat_notice'];
-            $subscribe->app_notice=(int)$data['app_notice'];
-
+            $subscribe->wechat_notice=$data['wechat_notice'];
+            $subscribe->app_notice=$data['app_notice'];
             $subscribe->sms_notice= $data['mobile'] ? 1 :0;
             $subscribe->email_notice=$data['email'] ? 1 :0;
 

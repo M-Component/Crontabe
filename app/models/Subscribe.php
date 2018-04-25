@@ -13,6 +13,10 @@ class Subscribe extends AdvCollection
 
     public $value;
 
+    public $mobile;
+
+    public $email;
+
     public $wechat_notice;
 
     public $app_notice;
@@ -99,13 +103,17 @@ class Subscribe extends AdvCollection
             $this->appendMessage($message);
             return false;
         }
+        $this->member_id =(int)($this->member_id);
+        $this->goods_id =(string)($this->goods_id);
+        $this->value =(float)($this->value);
+        $this->wechat_notice =(int)($this->wechat_notice);
+        $this->app_notice =(int)($this->app_notice);
+        $this->mobile =(string)($this->mobile);
         //取出设备id
         if($this->app_notice){
-            
         }
         //取出openid
         if($this->wechat_notice){
-            
         }
         return true;
     }

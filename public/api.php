@@ -101,7 +101,7 @@ try{
         array( new \Api\Subscribe(), "getList")
     );
     $app->get(
-        '/api/subscribe/{id}',
+        '/api/subscribe/{goods_id}',
         array( new \Api\Subscribe(), "getSubscribe")
     );
     $app->post(
@@ -111,6 +111,10 @@ try{
     $app->post(
         '/api/subscribe/notice',
         array( new \Api\Subscribe(), "setNotice")
+    );
+    $app->get(
+        '/api/subscribe/notice',
+        array( new \Api\Subscribe(), "getNotice")
     );
 
     $app->get(
