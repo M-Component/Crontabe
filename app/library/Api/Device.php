@@ -16,7 +16,7 @@ class Device extends Base
                 'bind'=>array('id'=>$data['registration_id'])
             ));
             if(!$device){
-                $device = new \Member\Device();
+                $device = new \MemberDevice();
                 $device ->registration_id =$data['registration_id'];
             }
 
