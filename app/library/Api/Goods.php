@@ -27,6 +27,13 @@ class Goods extends Base
         $goods = \Utils::curl_client($this->config."/api/search/goods/" . $id);
         $goods = json_decode($goods,1);
         if(!$goods['errorCode']){
+            if($memebr =$this->auth->isLogin()){
+                $subscribe =\Subscribe::findFirst(array(
+                    'goods_id'=>(string)$id,
+                    'member_id'=>(int)$member['member_id']
+                ));
+            }
+            $goods['subscribe']= $subscribe ? true :false;
             $this->success($goods);   
         }
         $this->error($goods['msg']);

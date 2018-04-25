@@ -16,33 +16,9 @@ class Subscribe extends Base
                     throw new \Exception($message);
                 }
             }
-            //需要验证手机号码或者邮箱
-            $subscribe =new \Subscribe();
-            $subscribe->member_id = $member_id;
-            $subscribe->goods_id = $data['goods_id'];
-            $subscribe->rule =$data['rule'];
-            $subscribe->value=$data['value'];
-            $subscribe->current_price=$subscribe->price= (float)$data['current_price'];
-            $subscribe->from =$data['from'];
-            $subscribe->to =$data['to'];
-            $subscribe->tag =$data['tag'];
-            $subscribe->mobile =$data['mobile'];
-            $subscribe->email =$data['email'];
-
-            $subscribe->wechat_notice=$data['wechat_notice'];
-            $subscribe->app_notice=$data['app_notice'];
-            $subscribe->sms_notice= $data['mobile'] ? 1 :0;
-            $subscribe->email_notice=$data['email'] ? 1 :0;
-
-            $subscribe->create_time=time();
-
-            if(false ===$subscribe->create()){
-                foreach ($subscribe->getMessages() as $message) {
-                    throw new \Exception($message);
-                }
-                throw new \Exception('保存失败');
-            }
-            $this->success($subscribe);
+            $subscribe = new \Member\Subscribe();
+            $res =$subscribe->saveSubscribe($member_id ,$data['goods_id'] ,$data);
+            $this->success($res);
 
         } catch (\Exception $e) {
             $this->error($e->getMessage());

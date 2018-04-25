@@ -87,13 +87,6 @@ class Subscribe extends AdvCollection
         );
     }
 
-    private $eventManager;
-
-    public function initialize()
-    {
-        $this->eventManager =new SubscribeManager;
-    }
-
     public function beforeSave(){
 
         $checker = new \Member\Subscribe();
@@ -115,12 +108,14 @@ class Subscribe extends AdvCollection
         //取出openid
         if($this->wechat_notice){
         }
+        //是否删除id字段
         return true;
     }
 
     public function afterSave(){
         parent::afterSave();
-        $this->eventManager->afterSave($this);
+        $eventManager =new SubscribeManager;
+        $eventManager->afterSave($this);
         return true;
     }
 }
