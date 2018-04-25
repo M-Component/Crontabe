@@ -110,7 +110,7 @@ class OfficialAccount{
     }
     
     public function getTemplateList(){
-        return $this->wechat->get_Template_list();
+        return $this->wechat->get_template_list();
     }
     
 }
