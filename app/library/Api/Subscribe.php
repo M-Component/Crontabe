@@ -3,7 +3,7 @@ namespace Api;
 use Mvc\Paginator\Adapter\Collection as PaginatorCollectionBuilder;
 class Subscribe extends Base
 {
-
+    // 订阅
     public function setSubscribe(){
         $this->checkLogin();
         $member_id =$this->member['member_id'];
@@ -25,6 +25,7 @@ class Subscribe extends Base
         }
     }
 
+    // 获取订阅
     public function getSubscribe($goods_id){
         $this->checkLogin();
         $member_id =$this->member['member_id'];
@@ -35,6 +36,7 @@ class Subscribe extends Base
         $this->success($data);
     }
 
+    // 获取订阅列表
     public function getList(){
         $this->checkLogin();
         $member_id =$this->member['member_id'];
@@ -80,6 +82,7 @@ class Subscribe extends Base
         $this->success($page);
     }
 
+    // 设置通知
     public function setNotice(){
         $this->checkLogin();
         $data = $this->request->getPost();
@@ -134,6 +137,7 @@ class Subscribe extends Base
         }
     }
 
+    // 获取通知
     public function getNotice(){
         $this->checkLogin();
         $member_id =$this->member['member_id'];

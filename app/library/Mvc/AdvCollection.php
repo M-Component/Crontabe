@@ -23,7 +23,7 @@ class AdvCollection extends \Phalcon\Mvc\MongoCollection
     public static function find(array $parameters = null) {
         $items =parent::find($parameters);
         foreach($items as &$v){
-            $item->id =(string)$v->getId();
+            $v->id =(string)$v->getId();
         }
         return $items;
     }

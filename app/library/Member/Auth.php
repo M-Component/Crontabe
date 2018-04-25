@@ -7,7 +7,7 @@ class Auth extends Component{
         $member_expires =$this ->session ->get('member_expire');
         if(time()<$member_expires && $member){
             $this->updateExpireTime();
-            return $member['member_id'];
+            return $member;
         }
         $this ->removeLoginSession();
         return false;
