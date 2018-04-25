@@ -70,13 +70,13 @@ class Wechat extends Component
         return XML::parse($xml_data);
     }
 
-    public function get_access_token($code = null,$errcode =null)
+    public function get_access_token($code = null)
     {
         $accessToken = new AccessToken($this->app_id, $this->app_secret, $this->fileCache);
         if ($code) {
-            $res = $accessToken->getOauth2Token($code,$errcode);
+            $res = $accessToken->getOauth2Token($code);
         } else {
-            $res = $accessToken->getToken($errcode);
+            $res = $accessToken->getToken();
         }
         return $res;
     }
@@ -94,7 +94,7 @@ class Wechat extends Component
         
         //  防止线上和本地都刷新了 access_token(刷新一次access_token 会造成上一个access_token作废)
         if ($res == 40001) {
-            $messgae_template = new MessageTemplate($this->get_access_token(null,40001));
+            $messgae_template = new MessageTemplate($this->get_access_token());
             $res = $messgae_template->getTemplateList();
         }
         return $res;
