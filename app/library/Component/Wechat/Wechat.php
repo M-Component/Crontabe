@@ -108,4 +108,9 @@ class Wechat extends Component
         }
         return $res;
     }
+    public function send_temp_msg($params){
+        $messgae_template = new MessageTemplate($this->get_access_token());
+        $res = $messgae_template->sendTempMsg($params);
+        return $res;
+    }
 }

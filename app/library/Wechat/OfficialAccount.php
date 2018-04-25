@@ -112,5 +112,8 @@ class OfficialAccount{
     public function getTemplateList(){
         return $this->wechat->get_template_list();
     }
-    
+
+    public function sendTempMsg($params){
+        return $this->wechat->send_temp_msg($params);
+    }    
 }
