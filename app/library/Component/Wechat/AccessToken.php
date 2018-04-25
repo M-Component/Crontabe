@@ -5,6 +5,7 @@ class AccessToken{
     private $appSecret;
     private $cache;
     private $cache_key='';
+    const EXPIRES_IN = 7200;
 
     public function __construct($appId ,$appSecret ,$cache){
         $this->appId =$appId ;
@@ -18,7 +19,7 @@ class AccessToken{
     //普通access_token
     public function getToken(){
 
-        $access_token =$this->cache->get($this->cache_access_token);
+        $access_token =$this->cache->get($this->cache_access_token,self::EXPIRES_IN);
         //并发覆盖问题
         if(!$access_token){
             $action_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
@@ -35,8 +36,9 @@ class AccessToken{
         return $access_token;
     }
     
-    public function clearTokenCache(){
+    public function refreshToken(){
         $this->cache->delete($this->cache_access_token);
+        return $this->getToken();
     }
 
     //网页授权access_token
@@ -57,13 +59,13 @@ class AccessToken{
             $this->cache->save($this->cache_oauth2_access_token ,$oauth2Token ,3600*24*30);
         }
         if($oauth2Token['expires_time']>= time()){
-            $oauth2Token = $this->refreshToken($oauth2Token['refresh_token']);
+            $oauth2Token = $this->refreshOauth2Token($oauth2Token['refresh_token']);
         }
         return $oauth2Token;
     }
 
     //刷新网页授权token
-    public function refreshToken($refresh_token){
+    public function refreshOauth2Token($refresh_token){
         $action_url ="https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={$this->appId}&grant_type=refresh_token&refresh_token={$refresh_token}";
         $res = \Utils::curl_client($action_url);
         $res = json_decode($res, 1);
