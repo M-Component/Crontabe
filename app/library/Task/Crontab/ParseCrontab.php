@@ -48,6 +48,7 @@ class ParseCrontab
         if(count($cron) == 5){
             array_unshift($cron ,'1');
         }
+        
         $date = array(
             'second'  => self::_parse_cron_number($cron[0], 0, 59),
             'minutes' => self::_parse_cron_number($cron[1], 0, 59),

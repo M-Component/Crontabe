@@ -23,7 +23,9 @@ class Process
 
 
     /**
-     * 启动
+     * 启动判断使用是定时任务还是队列
+     *
+     * public/start_cron.sh、start_queue.sh 文件，里面start --cron=true 等于true代表使用，两个文件都可以同行运行
      */
     static public function start()
     {
@@ -39,7 +41,7 @@ class Process
         self::$process_name .= self::$queue ? '_Queue' : '';
         self::$process_name .= self::$cron ? '_Cron' : '';
         self::daemon();
-        self::set_process_name();
+        self::set_process_name(); // 设置进程名称
         self::run();
     }
 

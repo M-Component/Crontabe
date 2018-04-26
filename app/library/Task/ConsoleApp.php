@@ -40,17 +40,17 @@ HELP;
     }
 
     /**
-     * 运行入口
+     * 2.运行入口
      */
     public function run()
     {
-        $opt = getopt($this->options, $this->longopts);
+        $opt = getopt($this->options, $this->longopts);// 获取参数
         $this->params_help($opt);
         $this->params_daemon($opt);
         $this->params_queue($opt);
         $this->params_cron($opt);
         $this->params_checktime($opt);
-        $this->params_s($opt);
+        $this->params_s($opt);  // 开启登录
     }
 
     /**
@@ -93,7 +93,7 @@ HELP;
      */
     public function params_s($opt)
     {
-        //判断传入了s参数但是值，则提示错误
+        //判断传入了s参数但是值，则提示错误 public/start_cron.sh文件
         $allow = array("start", "stop", "restart");
         if ((isset($opt["s"]) && !$opt["s"]) || (isset($opt["s"]) && !in_array($opt["s"],$allow))) {
             Output::stdout("Please run: path/to/php task.php -s [start|stop|restart]");

@@ -24,7 +24,7 @@ try{
     $console = new ConsoleApp();
 //    $di->setShared("console", $console);
     $console->setDI($di);
-    $console->run();
+    $console->run(); // 1.开始运行
 }catch (Exception $e) {
     echo get_class($e), ": ", $e->getMessage(), "\n";
     echo " File=", $e->getFile(), "\n";

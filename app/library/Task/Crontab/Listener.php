@@ -26,7 +26,7 @@ class Listener
         $this ->table = Table::init();
         $this ->manager = Manager::getInstance();
         $this ->cronWorker = Crontab::getInstance();
-        $this ->loadTask();
+        $this ->loadTask(); // 加载计划任务
         $this ->runTask();
     }
 
@@ -38,7 +38,7 @@ class Listener
             }
             $this ->cronWorker ->loadTask($this ->manager ->getCrontab());
             //持续加载任务配置
-            \swoole_timer_tick(60000,function()use($worker){
+            \swoole_timer_tick(60000,function()use($worker){  // 每一分钟60秒,回去查询一次下一分钟内需要执行的任务(以当前时间做对比)
                 $this ->checkMpid($worker);
                 try{
                     $this->cronWorker->loadTask($this->manager ->getCrontab());
